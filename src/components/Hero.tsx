@@ -1,6 +1,6 @@
 import heroImage from '../assets/jeevdristi-device.png'
 
-const RELEASES_URL = 'https://github.com/iitbh-poct/poct_fw_app_releases/releases'
+const RELEASES_URL = 'https://github.com/doc-poct/poct_fw_app_releases/releases'
 
 function ArrowIcon() {
   return (

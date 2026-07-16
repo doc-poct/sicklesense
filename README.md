@@ -16,4 +16,4 @@ bun run lint
 bun run build
 ```
 
-APK and device-image links point to the public [`poct_fw_app_releases`](https://github.com/iitbh-poct/poct_fw_app_releases/releases) repository.
+APK and device-image links point to the public [`poct_fw_app_releases`](https://github.com/doc-poct/poct_fw_app_releases/releases) repository.

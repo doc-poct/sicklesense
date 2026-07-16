@@ -1,7 +1,7 @@
 import { Brand } from './Brand'
 
-const RELEASES_URL = 'https://github.com/iitbh-poct/poct_fw_app_releases/releases'
-const GITHUB_URL = 'https://github.com/iitbh-poct'
+const RELEASES_URL = 'https://github.com/doc-poct/poct_fw_app_releases/releases'
+const GITHUB_URL = 'https://github.com/doc-poct'
 
 function ArrowIcon() {
   return <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg>
