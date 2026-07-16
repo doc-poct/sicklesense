@@ -1,4 +1,3 @@
-import './App.css'
 import { Downloads } from './components/Downloads'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
