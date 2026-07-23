@@ -4,6 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/poct_get_webapp/',
+  base: process.env.VITE_BASE_PATH ?? '/sicklesense/',
   plugins: [react(), tailwindcss()],
 })

@@ -19,6 +19,6 @@ bun run build
 ## Deployment
 
 Pushes to `main` build the Vite application and deploy `dist/` to GitHub Pages at
-<https://doc-poct.github.io/poct_get_webapp/>.
+<https://doc-poct.github.io/sicklesense/>.
 
 APK and device-image links point to the public [`poct_fw_app_releases`](https://github.com/doc-poct/poct_fw_app_releases/releases) repository.
