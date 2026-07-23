@@ -1,6 +1,5 @@
 import heroImage from '../assets/jeevdristi-device.png'
-
-const RELEASES_URL = 'https://github.com/doc-poct/poct_fw_app_releases/releases'
+import type { ReleaseDownloads } from '../releaseDownloads'
 
 function ArrowIcon() {
   return (
@@ -18,7 +17,12 @@ function DownloadIcon() {
   )
 }
 
-export function Hero() {
+type HeroProps = {
+  apk: ReleaseDownloads['apk']
+  isLoading: boolean
+}
+
+export function Hero({ apk, isLoading }: HeroProps) {
   return (
     <section className="mx-auto grid min-h-[710px] w-full max-w-[82.5rem] grid-cols-[minmax(0,0.92fr)_minmax(28.75rem,1.08fr)] items-center gap-5 overflow-hidden border-b border-line px-6 max-lg:min-h-0 max-lg:grid-cols-1 max-md:px-4" id="top">
       <div className="relative z-10 py-21 max-lg:pt-17.5 max-lg:pb-5">
@@ -30,9 +34,9 @@ export function Hero() {
           and on-device analysis.
         </p>
         <div className="flex flex-wrap items-center gap-4 max-[480px]:flex-col max-[480px]:items-stretch">
-          <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-teal bg-teal px-6 font-bold text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:bg-teal-dark max-[480px]:w-full" href={RELEASES_URL} target="_blank" rel="noreferrer">
+          <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-teal bg-teal px-6 font-bold text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:bg-teal-dark aria-disabled:pointer-events-none aria-disabled:cursor-wait aria-disabled:opacity-70 max-[480px]:w-full" href={apk?.url} aria-disabled={!apk}>
             <DownloadIcon />
-            Download the app
+            {apk ? `Download app v${apk.version}` : isLoading ? 'Preparing app download…' : 'App download unavailable'}
           </a>
           <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-navy bg-transparent px-6 font-bold text-navy no-underline transition duration-200 hover:-translate-y-0.5 max-[480px]:w-full" href="#project">
             Explore the project
