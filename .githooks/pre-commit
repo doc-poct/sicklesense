@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+git diff --cached --check
+bun run lint
+bun run build
