@@ -31,6 +31,14 @@ type CachedReleaseDownloads = {
 
 export const RELEASES_PAGE_URL = 'https://github.com/doc-poct/poct_fw_app_releases/releases'
 
+const FALLBACK_DOWNLOADS: ReleaseDownloads = {
+  apk: {
+    url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/app-v1.7.4%2B10704999/JeevDristi-1.7.4-release.apk',
+    version: '1.7.4',
+  },
+  zero2wImage: null,
+}
+
 let inFlightRequest: Promise<ReleaseDownloads> | null = null
 
 function readCache(): CachedReleaseDownloads | null {
@@ -80,7 +88,11 @@ function clearRetryAfter(): void {
 }
 
 export function getCachedReleaseDownloads(): ReleaseDownloads | null {
-  return readCache()?.downloads ?? null
+  const downloads = readCache()?.downloads
+  return {
+    apk: downloads?.apk ?? FALLBACK_DOWNLOADS.apk,
+    zero2wImage: downloads?.zero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
+  }
 }
 
 export function shouldRefreshReleaseDownloads(now = Date.now()): boolean {

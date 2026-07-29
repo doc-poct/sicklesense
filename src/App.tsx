@@ -13,7 +13,7 @@ import {
 
 function App() {
   const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null })
-  const [isLoadingDownloads, setIsLoadingDownloads] = useState(() => getCachedReleaseDownloads() === null)
+  const [isLoadingDownloads, setIsLoadingDownloads] = useState(false)
 
   useEffect(() => {
     const controller = new AbortController()
