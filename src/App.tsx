@@ -4,27 +4,48 @@ import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { ProjectOverview } from './components/ProjectOverview'
 import { Workflow } from './components/Workflow'
-import { fetchLatestStableDownloads, type ReleaseDownloads } from './releaseDownloads'
+import {
+  fetchLatestStableDownloads,
+  getCachedReleaseDownloads,
+  shouldRefreshReleaseDownloads,
+  type ReleaseDownloads,
+} from './releaseDownloads'
 
 function App() {
-  const [downloads, setDownloads] = useState<ReleaseDownloads>({ apk: null, zero2wImage: null })
-  const [isLoadingDownloads, setIsLoadingDownloads] = useState(true)
+  const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null })
+  const [isLoadingDownloads, setIsLoadingDownloads] = useState(() => getCachedReleaseDownloads() === null)
 
   useEffect(() => {
     const controller = new AbortController()
 
-    void fetchLatestStableDownloads(controller.signal)
-      .then(setDownloads)
-      .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === 'AbortError')) {
-          console.error('Could not resolve public release downloads.', error)
-        }
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setIsLoadingDownloads(false)
-      })
+    const refreshDownloads = () => {
+      if (document.visibilityState !== 'visible') return
+      if (!shouldRefreshReleaseDownloads()) {
+        setIsLoadingDownloads(false)
+        return
+      }
 
-    return () => controller.abort()
+      void fetchLatestStableDownloads(controller.signal)
+        .then(setDownloads)
+        .catch((error: unknown) => {
+          if (!(error instanceof DOMException && error.name === 'AbortError')) {
+            console.error('Could not resolve public release downloads.', error)
+          }
+        })
+        .finally(() => {
+          if (!controller.signal.aborted) setIsLoadingDownloads(false)
+        })
+    }
+
+    refreshDownloads()
+    const interval = window.setInterval(refreshDownloads, 60 * 60 * 1000)
+    document.addEventListener('visibilitychange', refreshDownloads)
+
+    return () => {
+      controller.abort()
+      window.clearInterval(interval)
+      document.removeEventListener('visibilitychange', refreshDownloads)
+    }
   }, [])
 
   return (

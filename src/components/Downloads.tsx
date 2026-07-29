@@ -1,5 +1,5 @@
 import { Brand } from './Brand'
-import type { ReleaseDownloads } from '../releaseDownloads'
+import { RELEASES_PAGE_URL, type ReleaseDownloads } from '../releaseDownloads'
 
 const GITHUB_URL = 'https://github.com/doc-poct'
 
@@ -22,12 +22,12 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
               Download the latest stable Android build or the Raspberry Pi Zero 2W firmware image.
             </p>
             <div className="flex flex-wrap items-center gap-4 max-[480px]:flex-col max-[480px]:items-stretch">
-              <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-saffron bg-saffron px-6 font-bold text-navy no-underline transition duration-200 hover:-translate-y-0.5 aria-disabled:pointer-events-none aria-disabled:cursor-wait aria-disabled:opacity-70 max-[480px]:w-full" href={apk?.url} aria-disabled={!apk}>
-                {apk ? `Download Android v${apk.version}` : isLoading ? 'Preparing Android download…' : 'Android download unavailable'}
+              <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-saffron bg-saffron px-6 font-bold text-navy no-underline transition duration-200 hover:-translate-y-0.5 max-[480px]:w-full" href={apk?.url ?? RELEASES_PAGE_URL} target={apk ? undefined : '_blank'} rel={apk ? undefined : 'noreferrer'}>
+                {apk ? `Download Android v${apk.version}` : isLoading ? 'Preparing Android download…' : 'View Android releases'}
                 <ArrowIcon />
               </a>
-              <a className="inline-flex items-center gap-2.5 border-b border-white/70 px-1 py-3.5 font-bold text-white no-underline aria-disabled:pointer-events-none aria-disabled:cursor-wait aria-disabled:opacity-70 max-[480px]:w-full max-[480px]:justify-center" href={zero2wImage?.url} aria-disabled={!zero2wImage}>
-                {zero2wImage ? `Download Zero 2W image v${zero2wImage.version}` : isLoading ? 'Preparing Zero 2W image…' : 'Zero 2W image unavailable'}
+              <a className="inline-flex items-center gap-2.5 border-b border-white/70 px-1 py-3.5 font-bold text-white no-underline max-[480px]:w-full max-[480px]:justify-center" href={zero2wImage?.url ?? RELEASES_PAGE_URL} target={zero2wImage ? undefined : '_blank'} rel={zero2wImage ? undefined : 'noreferrer'}>
+                {zero2wImage ? `Download Zero 2W image v${zero2wImage.version}` : isLoading ? 'Preparing Zero 2W image…' : 'View box releases'}
                 <ArrowIcon />
               </a>
             </div>
@@ -54,8 +54,8 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
         </div>
         <nav className="flex flex-wrap gap-7.5 max-[480px]:flex-col max-[480px]:gap-4" aria-label="Project links">
           <a className="text-navy underline decoration-1 underline-offset-4" href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
-          <a className="text-navy underline decoration-1 underline-offset-4 aria-disabled:pointer-events-none aria-disabled:opacity-60" href={apk?.url} aria-disabled={!apk}>Android app</a>
-          <a className="text-navy underline decoration-1 underline-offset-4 aria-disabled:pointer-events-none aria-disabled:opacity-60" href={zero2wImage?.url} aria-disabled={!zero2wImage}>Zero 2W firmware</a>
+          <a className="text-navy underline decoration-1 underline-offset-4" href={apk?.url ?? RELEASES_PAGE_URL} target={apk ? undefined : '_blank'} rel={apk ? undefined : 'noreferrer'}>Android app</a>
+          <a className="text-navy underline decoration-1 underline-offset-4" href={zero2wImage?.url ?? RELEASES_PAGE_URL} target={zero2wImage ? undefined : '_blank'} rel={zero2wImage ? undefined : 'noreferrer'}>Zero 2W firmware</a>
         </nav>
       </footer>
     </>

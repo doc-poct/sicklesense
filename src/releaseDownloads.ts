@@ -1,4 +1,8 @@
 const RELEASES_API_URL = 'https://api.github.com/repos/doc-poct/poct_fw_app_releases/releases?per_page=100'
+const CACHE_KEY = 'jeevdristi-release-downloads-v1'
+const RETRY_KEY = 'jeevdristi-release-downloads-retry-at'
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000
+const FAILURE_RETRY_MS = 60 * 60 * 1000
 
 type ReleaseAsset = {
   browser_download_url?: unknown
@@ -17,6 +21,71 @@ type Version = readonly [number, number, number]
 export type ReleaseDownloads = {
   apk: { url: string; version: string } | null
   zero2wImage: { url: string; version: string } | null
+}
+
+type CachedReleaseDownloads = {
+  downloads: ReleaseDownloads
+  checkedAt: number
+  etag: string | null
+}
+
+export const RELEASES_PAGE_URL = 'https://github.com/doc-poct/poct_fw_app_releases/releases'
+
+let inFlightRequest: Promise<ReleaseDownloads> | null = null
+
+function readCache(): CachedReleaseDownloads | null {
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(CACHE_KEY) ?? 'null')
+    if (typeof value !== 'object' || value === null) return null
+
+    const cache = value as CachedReleaseDownloads
+    if (!Number.isFinite(cache.checkedAt) || typeof cache.downloads !== 'object' || cache.downloads === null) return null
+    return cache
+  } catch {
+    return null
+  }
+}
+
+function writeCache(downloads: ReleaseDownloads, etag: string | null, checkedAt = Date.now()): void {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ downloads, etag, checkedAt } satisfies CachedReleaseDownloads))
+  } catch {
+    // Private browsing or storage restrictions must not prevent release links from working.
+  }
+}
+
+function retryAfter(): number {
+  try {
+    const value = Number(localStorage.getItem(RETRY_KEY))
+    return Number.isFinite(value) ? value : 0
+  } catch {
+    return 0
+  }
+}
+
+function setRetryAfter(value: number): void {
+  try {
+    localStorage.setItem(RETRY_KEY, String(value))
+  } catch {
+    // Ignore unavailable browser storage.
+  }
+}
+
+function clearRetryAfter(): void {
+  try {
+    localStorage.removeItem(RETRY_KEY)
+  } catch {
+    // Ignore unavailable browser storage.
+  }
+}
+
+export function getCachedReleaseDownloads(): ReleaseDownloads | null {
+  return readCache()?.downloads ?? null
+}
+
+export function shouldRefreshReleaseDownloads(now = Date.now()): boolean {
+  const cache = readCache()
+  return now >= retryAfter() && (cache === null || now - cache.checkedAt >= CACHE_TTL_MS)
 }
 
 function parseVersion(tagName: string, prefix: string): Version | null {
@@ -52,12 +121,30 @@ function findAsset(release: Release, name: string): string | null {
   return typeof asset?.browser_download_url === 'string' ? asset.browser_download_url : null
 }
 
-export async function fetchLatestStableDownloads(signal?: AbortSignal): Promise<ReleaseDownloads> {
+async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<ReleaseDownloads> {
+  const cache = readCache()
   const response = await fetch(RELEASES_API_URL, {
-    headers: { Accept: 'application/vnd.github+json' },
+    headers: {
+      Accept: 'application/vnd.github+json',
+      ...(cache?.etag ? { 'If-None-Match': cache.etag } : {}),
+    },
     signal,
   })
-  if (!response.ok) throw new Error(`Release lookup failed with HTTP ${response.status}`)
+
+  if (response.status === 304 && cache) {
+    writeCache(cache.downloads, cache.etag)
+    clearRetryAfter()
+    return cache.downloads
+  }
+
+  if (!response.ok) {
+    const resetAt = Number(response.headers.get('x-ratelimit-reset')) * 1000
+    const retryAt = Number.isFinite(resetAt) && resetAt > Date.now()
+      ? resetAt
+      : Date.now() + FAILURE_RETRY_MS
+    setRetryAfter(retryAt)
+    throw new Error(`Release lookup failed with HTTP ${response.status}`)
+  }
 
   let latestApk: ReleaseDownloads['apk'] = null
   let latestApkVersion: Version | null = null
@@ -87,5 +174,17 @@ export async function fetchLatestStableDownloads(signal?: AbortSignal): Promise<
     }
   }
 
-  return { apk: latestApk, zero2wImage: latestZero2wImage }
+  const downloads = { apk: latestApk, zero2wImage: latestZero2wImage }
+  writeCache(downloads, response.headers.get('etag'))
+  clearRetryAfter()
+  return downloads
+}
+
+export function fetchLatestStableDownloads(signal?: AbortSignal): Promise<ReleaseDownloads> {
+  if (inFlightRequest === null) {
+    inFlightRequest = resolveLatestStableDownloads(signal).finally(() => {
+      inFlightRequest = null
+    })
+  }
+  return inFlightRequest
 }

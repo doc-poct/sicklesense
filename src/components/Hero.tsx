@@ -1,5 +1,5 @@
 import heroImage from '../assets/jeevdristi-device.png'
-import type { ReleaseDownloads } from '../releaseDownloads'
+import { RELEASES_PAGE_URL, type ReleaseDownloads } from '../releaseDownloads'
 
 function ArrowIcon() {
   return (
@@ -34,9 +34,9 @@ export function Hero({ apk, isLoading }: HeroProps) {
           and on-device analysis.
         </p>
         <div className="flex flex-wrap items-center gap-4 max-[480px]:flex-col max-[480px]:items-stretch">
-          <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-teal bg-teal px-6 font-bold text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:bg-teal-dark aria-disabled:pointer-events-none aria-disabled:cursor-wait aria-disabled:opacity-70 max-[480px]:w-full" href={apk?.url} aria-disabled={!apk}>
+          <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-teal bg-teal px-6 font-bold text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:bg-teal-dark max-[480px]:w-full" href={apk?.url ?? RELEASES_PAGE_URL} target={apk ? undefined : '_blank'} rel={apk ? undefined : 'noreferrer'}>
             <DownloadIcon />
-            {apk ? `Download app v${apk.version}` : isLoading ? 'Preparing app download…' : 'App download unavailable'}
+            {apk ? `Download app v${apk.version}` : isLoading ? 'Preparing app download…' : 'View app releases'}
           </a>
           <a className="inline-flex min-h-14 items-center justify-center gap-3 rounded-lg border-2 border-navy bg-transparent px-6 font-bold text-navy no-underline transition duration-200 hover:-translate-y-0.5 max-[480px]:w-full" href="#project">
             Explore the project
