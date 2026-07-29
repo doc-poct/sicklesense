@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&display=swap');
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'DM Sans', system-ui, sans-serif;
-  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-sans: 'Lexend', system-ui, sans-serif;
+  --font-display: 'Lexend', system-ui, sans-serif;
   --color-navy: #071b3f;
   --color-teal: #007d7b;
   --color-teal-dark: #005a61;

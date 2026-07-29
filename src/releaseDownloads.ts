@@ -36,7 +36,10 @@ const FALLBACK_DOWNLOADS: ReleaseDownloads = {
     url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/app-v1.7.4%2B10704999/JeevDristi-1.7.4-release.apk',
     version: '1.7.4',
   },
-  zero2wImage: null,
+  zero2wImage: {
+    url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/firmware-v2.1.10/poct-2.1.10-dietpi-zero2w-arm64-ab.img.xz',
+    version: '2.1.10',
+  },
 }
 
 let inFlightRequest: Promise<ReleaseDownloads> | null = null
@@ -178,7 +181,7 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
     const firmwareVersion = parseVersion(tagName, 'firmware-')
     if (firmwareVersion && isNewer(firmwareVersion, latestFirmwareVersion)) {
       const version = firmwareVersion.join('.')
-      const url = findAsset(release, `poct-${version}-dietpi-zero2w-arm64.img.xz`)
+      const url = findAsset(release, `poct-${version}-dietpi-zero2w-arm64-ab.img.xz`)
       if (url) {
         latestZero2wImage = { url, version }
         latestFirmwareVersion = firmwareVersion
@@ -186,7 +189,10 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
     }
   }
 
-  const downloads = { apk: latestApk, zero2wImage: latestZero2wImage }
+  const downloads = {
+    apk: latestApk ?? FALLBACK_DOWNLOADS.apk,
+    zero2wImage: latestZero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
+  }
   writeCache(downloads, response.headers.get('etag'))
   clearRetryAfter()
   return downloads
