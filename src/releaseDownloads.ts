@@ -1,7 +1,7 @@
 const RELEASES_API_URL = 'https://api.github.com/repos/doc-poct/poct_fw_app_releases/releases?per_page=100'
-const CACHE_KEY = 'jeevdristi-release-downloads-v1'
+const CACHE_KEY = 'jeevdristi-release-downloads-v3'
 const RETRY_KEY = 'jeevdristi-release-downloads-retry-at'
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000
+const CACHE_TTL_MS = 60 * 60 * 1000
 const FAILURE_RETRY_MS = 60 * 60 * 1000
 
 type ReleaseAsset = {
@@ -33,8 +33,8 @@ export const RELEASES_PAGE_URL = 'https://github.com/doc-poct/poct_fw_app_releas
 
 const FALLBACK_DOWNLOADS: ReleaseDownloads = {
   apk: {
-    url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/app-v1.7.4%2B10704999/JeevDristi-1.7.4-release.apk',
-    version: '1.7.4',
+    url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/app-v1.7.7%2B10707999/JeevDristi-1.7.7-release.apk',
+    version: '1.7.7',
   },
   zero2wImage: {
     url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/firmware-v2.1.10/poct-2.1.10-dietpi-zero2w-arm64-ab.img.xz',
