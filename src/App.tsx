@@ -53,8 +53,8 @@ function App() {
       <Header />
       <main>
         <Hero apk={downloads.apk} isLoading={isLoadingDownloads} />
-        <Workflow />
         <ProjectOverview />
+        <Workflow />
         <Downloads {...downloads} isLoading={isLoadingDownloads} />
       </main>
     </>

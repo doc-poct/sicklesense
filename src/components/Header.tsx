@@ -2,15 +2,16 @@ import { Brand } from './Brand'
 
 export function Header() {
   return (
-    <header className="mx-auto flex min-h-22 w-full max-w-[82.5rem] items-center justify-between border-b border-line px-6 max-md:min-h-19 max-md:px-4">
-      <a className="no-underline" href="#top" aria-label="JeevDristi home">
+    <header className="mx-auto grid h-24 w-full max-w-[94rem] grid-cols-[1fr_auto_1fr] items-center px-8 max-md:flex max-md:h-20 max-md:justify-between max-md:px-5">
+      <a className="justify-self-start no-underline" href="#top" aria-label="JeevDristi home">
         <Brand />
       </a>
-      <nav className="flex items-center gap-10 max-md:gap-4.5" aria-label="Primary navigation">
-        <a className="relative font-semibold text-navy no-underline after:absolute after:right-full after:-bottom-2 after:left-0 after:h-0.5 after:bg-teal after:transition-[right] after:duration-200 hover:after:right-0 max-md:hidden" href="#project">Project</a>
-        <a className="relative font-semibold text-navy no-underline after:absolute after:right-full after:-bottom-2 after:left-0 after:h-0.5 after:bg-teal after:transition-[right] after:duration-200 hover:after:right-0 max-md:hidden" href="#workflow">How it works</a>
-        <a className="relative font-semibold text-navy no-underline after:absolute after:right-full after:-bottom-2 after:left-0 after:h-0.5 after:bg-teal after:transition-[right] after:duration-200 hover:after:right-0" href="#downloads">Downloads</a>
+      <nav className="flex items-center gap-[clamp(2rem,4vw,4.5rem)] max-md:hidden" aria-label="Primary navigation">
+        <a className="nav-link" href="#product">Product</a>
+        <a className="nav-link" href="#workflow">How it works</a>
+        <a className="nav-link" href="#downloads">Downloads</a>
       </nav>
+      <a className="button button-primary header-action justify-self-end" href="#downloads">Download app</a>
     </header>
   )
 }

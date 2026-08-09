@@ -1,38 +1,51 @@
-function PhoneIcon() {
-  return <svg className="size-10.5 text-teal" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="12" y="4" width="24" height="40" rx="4" stroke="currentColor" strokeWidth="2" /><path d="M20 9h8M21 38h6" stroke="currentColor" strokeLinecap="round" strokeWidth="2" /></svg>
+function OfflineIcon() {
+  return (
+    <svg className="value-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <circle cx="40" cy="40" r="31" stroke="currentColor" strokeWidth="2.5" />
+      <path d="M21 34c11-10 27-10 38 0M27 42c7-7 19-7 26 0M34 50c3-3 9-3 12 0" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
+      <circle cx="40" cy="57" r="3" fill="currentColor" />
+    </svg>
+  )
 }
 
-function ChipIcon() {
-  return <svg className="size-10.5 text-teal" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="12" y="12" width="24" height="24" rx="3" stroke="currentColor" strokeWidth="2" /><path d="M18 2v10m6-10v10m6-10v10m0 24v10m-6-10v10m-6-10v10M2 18h10M2 24h10M2 30h10m24-12h10M36 24h10M36 30h10" stroke="currentColor" strokeWidth="2" /></svg>
+function GuideIcon() {
+  return (
+    <svg className="value-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <path d="M25 19h30a4 4 0 0 1 4 4v43H21V23a4 4 0 0 1 4-4Z" stroke="currentColor" strokeWidth="2.5" />
+      <rect x="32" y="14" width="16" height="10" rx="3" fill="white" stroke="currentColor" strokeWidth="2.5" />
+      <path d="m29 35 4 4 7-9M44 36h8m-23 13 4 4 7-9m4 6h8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
+    </svg>
+  )
 }
 
-function VisionIcon() {
-  return <svg className="size-10.5 text-teal" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M4 24s7-12 20-12 20 12 20 12-7 12-20 12S4 24 4 24Z" stroke="currentColor" strokeWidth="2" /><circle cx="24" cy="24" r="6" stroke="currentColor" strokeWidth="2" /><path d="M24 2v5m0 34v5M6 8l4 4m28 24 4 4M42 8l-4 4M10 36l-4 4" stroke="currentColor" strokeLinecap="round" strokeWidth="2" /></svg>
+function ResultsIcon() {
+  return (
+    <svg className="value-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+      <path d="M22 60V45h10v15H22Zm18 0V33h10v27H40Zm18 0V19h10v41H58Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="2.5" />
+    </svg>
+  )
 }
 
-const stack = [
-  { title: 'Flutter app', description: 'Device pairing, test control, local reports, and permitted cloud synchronisation.', icon: <PhoneIcon /> },
-  { title: 'Embedded service', description: 'Hardware control, secure transport, local storage, and device update support.', icon: <ChipIcon /> },
-  { title: 'CV/ML pipeline', description: 'Image analysis and structured report generation for diagnostic workflows.', icon: <VisionIcon /> },
+const values = [
+  { title: 'Works without internet', description: 'Keep testing and get results on site, even in low-connectivity settings.', icon: <OfflineIcon /> },
+  { title: 'Guided from start to finish', description: 'Simple on-screen guidance helps every test run the same way, every time.', icon: <GuideIcon /> },
+  { title: 'Results where you need them', description: 'View and share results quickly within the app, with built-in reporting.', icon: <ResultsIcon /> },
 ]
 
 export function ProjectOverview() {
   return (
-    <section className="bg-[#f1f7f6] py-26" id="project">
-      <div className="mx-auto grid w-full max-w-[82.5rem] grid-cols-[0.85fr_1.65fr] gap-22 px-6 max-lg:grid-cols-1 max-lg:gap-12.5 max-md:px-4">
-        <div className="self-start">
-          <h2 className="font-display mb-5 text-[clamp(2.3rem,4vw,4.25rem)] leading-[1.04] font-bold tracking-[-0.055em] text-navy">Built across the stack</h2>
-          <p className="text-lg leading-[1.65] text-muted">
-            JeevDristi brings the app, embedded device, and analysis workflow together as one
-            coordinated POCT platform.
-          </p>
+    <section className="bg-[#f7f8f7] py-24 max-md:py-18" id="product">
+      <div className="mx-auto w-full max-w-[94rem] px-8 max-md:px-5">
+        <div className="section-heading">
+          <h2>Designed around the realities of field care.</h2>
+          <span aria-hidden="true" />
         </div>
-        <div className="border-t border-teal">
-          {stack.map((item) => (
-            <article className="grid grid-cols-[3.5rem_minmax(10rem,0.45fr)_1fr] items-center gap-7 border-b border-[#b9cecf] py-7.5 max-md:grid-cols-[2.875rem_1fr] max-md:gap-4.5" key={item.title}>
+        <div className="mt-14 grid grid-cols-3 max-md:mt-10 max-md:grid-cols-1">
+          {values.map((item) => (
+            <article className="value-item" key={item.title}>
               {item.icon}
-              <h3 className="font-display mb-0 text-xl font-bold tracking-[-0.025em] text-navy">{item.title}</h3>
-              <p className="mb-0 leading-[1.6] text-muted max-md:col-start-2">{item.description}</p>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
             </article>
           ))}
         </div>
