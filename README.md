@@ -13,6 +13,7 @@ bun run dev
 
 ```sh
 bun run lint
+bun run test
 bun run build
 ```
 
@@ -45,3 +46,6 @@ another server.
   and phone approval. The portal never silently resumes a previous session,
   but it reuses an attached, previously granted accessory without requiring a
   cable replug or another browser chooser.
+- Denying phone approval cleanly ends only that attempt. The next Connect click
+  discards any stale pre-handshake USB frame, generates a fresh key and code,
+  and can be approved without unplugging the cable or restarting either side.

@@ -14,7 +14,7 @@ const PHONE_APPROVAL_TIMEOUT_MS = 120_000
 const encoder = new TextEncoder()
 const decoder = new TextDecoder('utf-8', { fatal: true })
 
-export type PhoneExportErrorCode = 'unsupported' | 'session_in_use' | 'disconnected' | 'cancelled' | 'connection_failed' | 'reselect_required'
+export type PhoneExportErrorCode = 'unsupported' | 'session_in_use' | 'disconnected' | 'cancelled' | 'connection_failed' | 'reselect_required' | 'approval_denied'
 export type PhoneExportConnectPhase = 'selecting' | 'preparing' | 'waiting_for_phone'
 
 export class PhoneExportError extends Error {
@@ -72,6 +72,7 @@ export class WebUsbPhoneExport {
   private releaseLease?: () => void
   private leaseTask?: Promise<void>
   private closing = false
+  private sessionApproved = false
 
   static supported(): boolean {
     return window.isSecureContext && 'usb' in navigator
@@ -159,12 +160,10 @@ export class WebUsbPhoneExport {
     this.closing = true
     navigator.usb?.removeEventListener('disconnect', this.handleUsbDisconnect)
     const device = this.device
-    if (graceful) {
+    if (graceful && this.sessionApproved) {
       try { await this.sendControl({ type: 'close' }) } catch { /* already disconnected */ }
-      try { await device?.close() } catch { /* already closed */ }
-    } else {
-      void device?.close().catch(() => undefined)
     }
+    try { await device?.close() } catch { /* already closed */ }
     this.clearSession()
     this.releaseSessionLease()
   }
@@ -174,6 +173,9 @@ export class WebUsbPhoneExport {
     this.sendKey = undefined
     this.receiveKey = undefined
     this.receiveBuffer = new Uint8Array()
+    this.sendSequence = 0n
+    this.receiveSequence = 0n
+    this.sessionApproved = false
   }
 
   private async acquireSessionLease(): Promise<void> {
@@ -263,20 +265,43 @@ export class WebUsbPhoneExport {
   private async handshake(onCode?: (code: string) => void): Promise<string> {
     const keys = x25519.keygen()
     await this.sendPlain({ type: 'hello', protocol_min: 1, protocol_max: 1, bridge_version: 'webusb-1', computer_name: navigator.platform || 'Browser', public_key: base64Url(keys.publicKey) })
-    const pending = await this.receiveJson(false, PHONE_RESPONSE_TIMEOUT_MS)
-    if (pending.type !== 'session_pending' || typeof pending.public_key !== 'string') throw new Error('JeevDristi rejected the WebUSB handshake.')
-    const phoneKey = fromBase64Url(pending.public_key)
-    const transcript = sha256(new Uint8Array([...encoder.encode('PEL1'), ...keys.publicKey, ...phoneKey]))
-    const shared = x25519.getSharedSecret(keys.secretKey, phoneKey)
-    const derived = hkdf(sha256, shared, transcript, encoder.encode('jeevdristi-phone-export-link-v1'), 64)
-    this.sendKey = derived.slice(0, 32)
-    this.receiveKey = derived.slice(32, 64)
-    const code = (new DataView(transcript.buffer, transcript.byteOffset, 4).getUint32(0) % 1_000_000).toString().padStart(6, '0')
-    if (pending.short_code !== code) throw new Error('The phone and browser security codes do not match.')
+    const { code, sendKey, receiveKey } = await this.receiveFreshPending(keys)
+    this.sendKey = sendKey
+    this.receiveKey = receiveKey
     onCode?.(code)
     const approved = await this.receiveJson(true, PHONE_APPROVAL_TIMEOUT_MS)
+    if (approved.type === 'session_denied') {
+      throw new PhoneExportError('approval_denied', 'Approval was denied on the phone. Click Connect Android phone to generate a new code and try again.')
+    }
     if (approved.type !== 'session_approved') throw new Error('The session was not approved on the phone.')
+    this.sessionApproved = true
     return code
+  }
+
+  private async receiveFreshPending(keys: ReturnType<typeof x25519.keygen>): Promise<{ code: string; sendKey: Uint8Array; receiveKey: Uint8Array }> {
+    const deadline = Date.now() + PHONE_RESPONSE_TIMEOUT_MS
+    // A rejected or interrupted attempt may have left a complete old frame in
+    // the USB input queue. Drain only pre-handshake frames and accept a pending
+    // response when its transcript proves it belongs to this fresh hello.
+    for (let attempt = 0; attempt < 4; attempt += 1) {
+      const remaining = deadline - Date.now()
+      if (remaining <= 0) break
+      const frame = await this.readFrame(remaining, false)
+      if (frame.kind !== 1 || frame.sequence !== 1n) continue
+      let pending: Record<string, unknown>
+      try { pending = this.decodeJson(frame.payload) } catch { continue }
+      if (pending.type !== 'session_pending' || typeof pending.public_key !== 'string') continue
+      let phoneKey: Uint8Array
+      try { phoneKey = fromBase64Url(pending.public_key) } catch { continue }
+      const transcript = sha256(new Uint8Array([...encoder.encode('PEL1'), ...keys.publicKey, ...phoneKey]))
+      const code = (new DataView(transcript.buffer, transcript.byteOffset, 4).getUint32(0) % 1_000_000).toString().padStart(6, '0')
+      if (pending.short_code !== code) continue
+      const shared = x25519.getSharedSecret(keys.secretKey, phoneKey)
+      const derived = hkdf(sha256, shared, transcript, encoder.encode('jeevdristi-phone-export-link-v1'), 64)
+      this.receiveSequence = 1n
+      return { code, sendKey: derived.slice(0, 32), receiveKey: derived.slice(32, 64) }
+    }
+    throw new Error('JeevDristi did not return a fresh matching security code. Retry the connection on both devices.')
   }
 
   private async request(message: Record<string, unknown>): Promise<Record<string, unknown>> {
@@ -357,16 +382,18 @@ export class WebUsbPhoneExport {
     return value as Record<string, unknown>
   }
 
-  private async readFrame(timeoutMs: number): Promise<Frame> {
+  private async readFrame(timeoutMs: number, enforceSequence = true): Promise<Frame> {
     const header = await this.readExact(HEADER_BYTES, timeoutMs)
     if (decoder.decode(header.slice(0, 4)) !== 'PEL1' || header[4] !== 1) throw new Error('Invalid Phone Export Link frame.')
     const view = new DataView(header.buffer, header.byteOffset, header.byteLength)
     const requestId = view.getBigUint64(8)
     const sequence = view.getBigUint64(16)
     const length = view.getUint32(24)
-    if (sequence !== this.receiveSequence + 1n || length > MAX_PAYLOAD) throw new Error('Unsafe or reordered USB frame.')
-    this.receiveSequence = sequence
-    return { kind: header[5], requestId, sequence, header, payload: await this.readExact(length, timeoutMs) }
+    if (length > MAX_PAYLOAD) throw new Error('Unsafe USB frame length.')
+    const payload = await this.readExact(length, timeoutMs)
+    if (enforceSequence && sequence !== this.receiveSequence + 1n) throw new Error('Unsafe or reordered USB frame.')
+    if (enforceSequence) this.receiveSequence = sequence
+    return { kind: header[5], requestId, sequence, header, payload }
   }
 
   private async readExact(length: number, timeoutMs: number): Promise<Uint8Array> {
