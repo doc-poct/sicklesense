@@ -3,6 +3,7 @@ import { Downloads } from './components/Downloads'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { ProjectOverview } from './components/ProjectOverview'
+import { PhoneResults } from './components/PhoneResults'
 import { Workflow } from './components/Workflow'
 import {
   fetchLatestStableDownloads,
@@ -12,7 +13,7 @@ import {
 } from './releaseDownloads'
 
 function App() {
-  const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null })
+  const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null, bridge: null })
   const [isLoadingDownloads, setIsLoadingDownloads] = useState(false)
 
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
         <Hero apk={downloads.apk} isLoading={isLoadingDownloads} />
         <ProjectOverview />
         <Workflow />
+        <PhoneResults bridge={downloads.bridge} isLoading={isLoadingDownloads} />
         <Downloads {...downloads} isLoading={isLoadingDownloads} />
       </main>
     </>

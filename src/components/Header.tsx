@@ -9,6 +9,7 @@ export function Header() {
       <nav className="flex items-center gap-[clamp(2rem,4vw,4.5rem)] max-md:hidden" aria-label="Primary navigation">
         <a className="nav-link" href="#product">Product</a>
         <a className="nav-link" href="#workflow">How it works</a>
+        <a className="nav-link" href="#phone-results">Phone Results</a>
         <a className="nav-link" href="#downloads">Downloads</a>
       </nav>
       <a className="button button-primary header-action justify-self-end" href="#downloads">Download app</a>

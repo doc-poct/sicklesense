@@ -13,7 +13,7 @@ type DownloadsProps = ReleaseDownloads & {
   isLoading: boolean
 }
 
-export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
+export function Downloads({ apk, zero2wImage, bridge, isLoading }: DownloadsProps) {
   const appLabel = apk
     ? `Download Android app version ${apk.version}`
     : isLoading
@@ -24,7 +24,6 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
     : isLoading
       ? 'Preparing testing device setup files'
       : 'View testing device releases'
-
   return (
     <>
       <section className="download-band px-8 py-22 text-white max-md:px-5 max-md:py-18" id="downloads">
@@ -55,7 +54,9 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
         <nav className="flex flex-wrap gap-10 max-sm:flex-col max-sm:gap-4" aria-label="Footer navigation">
           <a className="footer-link" href="#product">Product</a>
           <a className="footer-link" href="#workflow">How it works</a>
+          <a className="footer-link" href="#phone-results">Phone Results</a>
           <a className="footer-link" href="#downloads">Downloads</a>
+          {bridge && <a className="footer-link" href={bridge.url}>Windows bridge</a>}
         </nav>
       </footer>
     </>
