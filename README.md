@@ -42,4 +42,6 @@ another server.
   session. Browser USB permission may remain granted, but session keys and
   clinical data do not.
 - Reconnection is always operator initiated and requires a new matching code
-  and phone approval. The portal never silently resumes a previous session.
+  and phone approval. The portal never silently resumes a previous session,
+  but it reuses an attached, previously granted accessory without requiring a
+  cable replug or another browser chooser.

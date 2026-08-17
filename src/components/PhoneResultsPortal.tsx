@@ -18,7 +18,7 @@ import {
   WarningCircleIcon,
   XIcon,
 } from '@phosphor-icons/react'
-import { PhoneExportError, WebUsbPhoneExport, type PhoneResult, type PhoneResultDetail } from '@/phoneExport'
+import { PhoneExportError, WebUsbPhoneExport, type PhoneExportConnectPhase, type PhoneResult, type PhoneResultDetail } from '@/phoneExport'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -130,6 +130,8 @@ function PortalSidebar({ resultCount, status }: { resultCount: number; status: P
 
 export function PhoneResultsPortal() {
   const client = useRef<WebUsbPhoneExport | null>(null)
+  const connectionAttempt = useRef(0)
+  const grantedAccessory = useRef<USBDevice | undefined>(undefined)
   const previewUrl = useRef<string | null>(null)
   const [status, setStatus] = useState<PortalStatus>(() => new URLSearchParams(location.search).get('preview') === 'dashboard' ? 'preview' : 'idle')
   const [code, setCode] = useState('')
@@ -140,6 +142,7 @@ export function PhoneResultsPortal() {
   const [nextCursor, setNextCursor] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [connectPhase, setConnectPhase] = useState<PhoneExportConnectPhase>('selecting')
   const supported = WebUsbPhoneExport.supported()
   const connected = status === 'connected'
   const exportableCount = useMemo(() => results.filter((result) => result.exportable).length, [results])
@@ -154,13 +157,27 @@ export function PhoneResultsPortal() {
   }
 
   useEffect(() => {
+    const rememberGrantedAccessory = () => {
+      void WebUsbPhoneExport.grantedAccessory().then((device) => { grantedAccessory.current = device })
+    }
+    const rememberConnectedAccessory = (event: USBConnectionEvent) => {
+      if (WebUsbPhoneExport.isAccessory(event.device)) grantedAccessory.current = event.device
+    }
+    const forgetDisconnectedAccessory = (event: USBConnectionEvent) => {
+      if (event.device === grantedAccessory.current) grantedAccessory.current = undefined
+    }
     const endPageSession = () => {
       const active = client.current
       client.current = null
       void active?.close(false)
     }
+    rememberGrantedAccessory()
+    navigator.usb?.addEventListener('connect', rememberConnectedAccessory)
+    navigator.usb?.addEventListener('disconnect', forgetDisconnectedAccessory)
     window.addEventListener('pagehide', endPageSession)
     return () => {
+      navigator.usb?.removeEventListener('connect', rememberConnectedAccessory)
+      navigator.usb?.removeEventListener('disconnect', forgetDisconnectedAccessory)
       window.removeEventListener('pagehide', endPageSession)
       if (previewUrl.current) URL.revokeObjectURL(previewUrl.current)
       endPageSession()
@@ -188,7 +205,9 @@ export function PhoneResultsPortal() {
 
   async function connect() {
     if (client.current) return
+    const attempt = ++connectionAttempt.current
     setStatus('connecting')
+    setConnectPhase('selecting')
     const next = new WebUsbPhoneExport()
     client.current = next
     next.onDisconnect(() => {
@@ -200,20 +219,39 @@ export function PhoneResultsPortal() {
       setError('The USB cable or phone connection was lost. Reconnect and approve a new secure session.')
     })
     try {
-      await next.connect((shortCode) => {
-        setCode(shortCode)
-        setStatus('approval')
-      })
+      await next.connect(
+        (shortCode) => {
+          if (attempt !== connectionAttempt.current) return
+          setCode(shortCode)
+          setStatus('approval')
+        },
+        (phase) => { if (attempt === connectionAttempt.current) setConnectPhase(phase) },
+        grantedAccessory.current,
+        (device) => { grantedAccessory.current = device },
+      )
+      if (attempt !== connectionAttempt.current) return
       const page = await next.list()
+      if (attempt !== connectionAttempt.current) return
       setResults(page.results)
       setNextCursor(page.next_cursor)
       setStatus('connected')
     } catch (reason) {
+      if (attempt !== connectionAttempt.current) return
       if (client.current === next) client.current = null
       await next.close()
       setStatus(reason instanceof PhoneExportError && reason.code === 'session_in_use' ? 'in_use' : reason instanceof PhoneExportError && reason.code === 'disconnected' ? 'disconnected' : 'idle')
       throw reason
     }
+  }
+
+  async function cancelConnection() {
+    connectionAttempt.current += 1
+    const active = client.current
+    client.current = null
+    setBusy(false)
+    setError('')
+    setStatus('idle')
+    await active?.close(false)
   }
 
   async function disconnect() {
@@ -315,12 +353,16 @@ export function PhoneResultsPortal() {
                       {connected ? (
                         <Button variant="outline" onClick={() => void run(disconnect)} disabled={busy}><LinkBreakIcon data-icon="inline-start" />Disconnect</Button>
                       ) : status !== 'preview' ? (
-                        <Button onClick={() => void run(connect)} disabled={!supported || busy || !['idle', 'disconnected', 'in_use'].includes(status)}>
-                          {busy || status === 'connecting' ? <Spinner data-icon="inline-start" /> : <UsbIcon data-icon="inline-start" />}
-                          {status === 'connecting' ? 'Waiting for USB selection…' : status === 'approval' ? 'Waiting for approval…' : 'Connect Android phone'}
-                        </Button>
+                        <>
+                          <Button onClick={() => void run(connect)} disabled={!supported || busy || !['idle', 'disconnected', 'in_use'].includes(status)}>
+                            {busy || status === 'connecting' ? <Spinner data-icon="inline-start" /> : <UsbIcon data-icon="inline-start" />}
+                            {status === 'connecting' ? connectPhase === 'selecting' ? 'Select phone in browser…' : connectPhase === 'preparing' ? 'Preparing USB connection…' : 'Waiting for JeevDristi…' : status === 'approval' ? 'Waiting for approval…' : 'Connect Android phone'}
+                          </Button>
+                          {status === 'connecting' || status === 'approval' ? <Button variant="outline" onClick={() => void cancelConnection()}><XIcon data-icon="inline-start" />Cancel</Button> : null}
+                        </>
                       ) : null}
                     </div>
+                    {status === 'connecting' && connectPhase === 'selecting' ? <p className="text-xs text-muted-foreground">The browser device chooser should be open. If it is not visible, cancel and retry while keeping this tab active.</p> : null}
                   </div>
                 </div>
                 <div className="flex flex-col gap-3 border-t pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
