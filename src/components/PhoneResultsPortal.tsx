@@ -18,7 +18,7 @@ import {
   WarningCircleIcon,
   XIcon,
 } from '@phosphor-icons/react'
-import { WebUsbPhoneExport, type PhoneResult, type PhoneResultDetail } from '@/phoneExport'
+import { PhoneExportError, WebUsbPhoneExport, type PhoneResult, type PhoneResultDetail } from '@/phoneExport'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -45,7 +45,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
-type PortalStatus = 'idle' | 'connecting' | 'approval' | 'connected' | 'preview'
+type PortalStatus = 'idle' | 'connecting' | 'approval' | 'connected' | 'disconnected' | 'in_use' | 'preview'
 
 const previewResults: PhoneResult[] = [
   { id: 'DEMO-240514-001', patient_name: 'Demonstration A', patient_id: 'DEMO-001', status: 'completed', category: 'SickleSense', source: 'poct_box', created_at_ms: 1715663520000, exportable: true },
@@ -120,7 +120,7 @@ function PortalSidebar({ resultCount, status }: { resultCount: number; status: P
         </div>
         <div className="flex items-center gap-2 px-2 text-xs text-sidebar-foreground/70 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
           <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-sidebar-primary opacity-50" /><span className="relative inline-flex size-2 rounded-full bg-sidebar-primary" /></span>
-          <span className="group-data-[collapsible=icon]:hidden">{status === 'connected' ? 'Secure session active' : status === 'preview' ? 'Dashboard preview' : 'Phone not connected'}</span>
+          <span className="group-data-[collapsible=icon]:hidden">{status === 'connected' ? 'Secure session active' : status === 'preview' ? 'Dashboard preview' : status === 'in_use' ? 'Phone in use elsewhere' : 'Phone not connected'}</span>
         </div>
       </SidebarFooter>
       <SidebarRail />
@@ -144,9 +144,27 @@ export function PhoneResultsPortal() {
   const connected = status === 'connected'
   const exportableCount = useMemo(() => results.filter((result) => result.exportable).length, [results])
 
-  useEffect(() => () => {
+  function clearResultState() {
+    setResults([])
+    setDetail(null)
+    setNextCursor(null)
     if (previewUrl.current) URL.revokeObjectURL(previewUrl.current)
-    void client.current?.close()
+    previewUrl.current = null
+    setArtifactPreview(null)
+  }
+
+  useEffect(() => {
+    const endPageSession = () => {
+      const active = client.current
+      client.current = null
+      void active?.close(false)
+    }
+    window.addEventListener('pagehide', endPageSession)
+    return () => {
+      window.removeEventListener('pagehide', endPageSession)
+      if (previewUrl.current) URL.revokeObjectURL(previewUrl.current)
+      endPageSession()
+    }
   }, [])
 
   async function run(action: () => Promise<void>) {
@@ -155,6 +173,13 @@ export function PhoneResultsPortal() {
     try {
       await action()
     } catch (reason) {
+      if (reason instanceof PhoneExportError && reason.code === 'disconnected') {
+        const active = client.current
+        client.current = null
+        void active?.close(false)
+        clearResultState()
+        setStatus('disconnected')
+      }
       setError(reason instanceof Error ? reason.message : 'The USB request failed.')
     } finally {
       setBusy(false)
@@ -162,21 +187,31 @@ export function PhoneResultsPortal() {
   }
 
   async function connect() {
+    if (client.current) return
     setStatus('connecting')
     const next = new WebUsbPhoneExport()
+    client.current = next
+    next.onDisconnect(() => {
+      if (client.current !== next) return
+      client.current = null
+      setStatus('disconnected')
+      clearResultState()
+      setBusy(false)
+      setError('The USB cable or phone connection was lost. Reconnect and approve a new secure session.')
+    })
     try {
       await next.connect((shortCode) => {
         setCode(shortCode)
         setStatus('approval')
       })
-      client.current = next
       const page = await next.list()
       setResults(page.results)
       setNextCursor(page.next_cursor)
       setStatus('connected')
     } catch (reason) {
+      if (client.current === next) client.current = null
       await next.close()
-      setStatus('idle')
+      setStatus(reason instanceof PhoneExportError && reason.code === 'session_in_use' ? 'in_use' : reason instanceof PhoneExportError && reason.code === 'disconnected' ? 'disconnected' : 'idle')
       throw reason
     }
   }
@@ -185,9 +220,7 @@ export function PhoneResultsPortal() {
     await client.current?.close()
     client.current = null
     setStatus('idle')
-    setResults([])
-    setDetail(null)
-    setNextCursor(null)
+    clearResultState()
   }
 
   async function search() {
@@ -274,7 +307,7 @@ export function PhoneResultsPortal() {
                   <span className="grid size-16 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary"><DeviceMobileIcon className="size-8" weight="duotone" /></span>
                   <div className="flex min-w-0 flex-1 flex-col gap-2">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-heading text-base font-semibold">{connected ? 'Android phone connected via USB' : status === 'approval' ? 'Approve this secure session' : status === 'preview' ? 'Dashboard demonstration' : 'Connect your Android phone'}</h2>
+                      <h2 className="font-heading text-base font-semibold">{connected ? 'Android phone connected via USB' : status === 'approval' ? 'Approve this secure session' : status === 'in_use' ? 'Phone is in use elsewhere' : status === 'disconnected' ? 'Phone connection ended' : status === 'preview' ? 'Dashboard demonstration' : 'Connect your Android phone'}</h2>
                       {connected ? <Badge>Secure session active</Badge> : null}
                     </div>
                     <p className="text-sm text-muted-foreground">Read-only access • Local connection • No server upload • No browser storage</p>
@@ -282,7 +315,7 @@ export function PhoneResultsPortal() {
                       {connected ? (
                         <Button variant="outline" onClick={() => void run(disconnect)} disabled={busy}><LinkBreakIcon data-icon="inline-start" />Disconnect</Button>
                       ) : status !== 'preview' ? (
-                        <Button onClick={() => void run(connect)} disabled={!supported || busy || status !== 'idle'}>
+                        <Button onClick={() => void run(connect)} disabled={!supported || busy || !['idle', 'disconnected', 'in_use'].includes(status)}>
                           {busy || status === 'connecting' ? <Spinner data-icon="inline-start" /> : <UsbIcon data-icon="inline-start" />}
                           {status === 'connecting' ? 'Waiting for USB selection…' : status === 'approval' ? 'Waiting for approval…' : 'Connect Android phone'}
                         </Button>
@@ -306,6 +339,7 @@ export function PhoneResultsPortal() {
                         <li>Select the phone in the browser prompt.</li>
                         <li>Match the six-digit code and approve on the phone.</li>
                       </ol>
+                      <p className="text-xs leading-relaxed text-muted-foreground"><strong className="font-medium text-foreground">One secure session at a time.</strong> Refreshing, closing this tab, changing browser, or disconnecting the cable ends the session. Reconnect here and approve a new code on the phone; sessions never resume automatically.</p>
                     </>
                   )}
                 </div>

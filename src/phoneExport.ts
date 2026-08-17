@@ -7,8 +7,21 @@ const GOOGLE_VID = 0x18d1
 const ACCESSORY_PIDS = [0x2d00, 0x2d01]
 const HEADER_BYTES = 28
 const MAX_PAYLOAD = 65_536
+const SESSION_LOCK = 'jeevdristi-phone-export-link-v1'
 const encoder = new TextEncoder()
 const decoder = new TextDecoder('utf-8', { fatal: true })
+
+export type PhoneExportErrorCode = 'unsupported' | 'session_in_use' | 'disconnected' | 'cancelled' | 'connection_failed'
+
+export class PhoneExportError extends Error {
+  readonly code: PhoneExportErrorCode
+
+  constructor(code: PhoneExportErrorCode, message: string, options?: ErrorOptions) {
+    super(message, options)
+    this.name = 'PhoneExportError'
+    this.code = code
+  }
+}
 
 export type PhoneResult = {
   id: string
@@ -39,28 +52,45 @@ export class WebUsbPhoneExport {
   private sendKey?: Uint8Array
   private receiveKey?: Uint8Array
   private operation: Promise<void> = Promise.resolve()
+  private disconnectHandler?: () => void
+  private releaseLease?: () => void
+  private leaseTask?: Promise<void>
+  private closing = false
 
   static supported(): boolean {
     return window.isSecureContext && 'usb' in navigator
   }
 
+  onDisconnect(handler: () => void): void {
+    this.disconnectHandler = handler
+  }
+
   async connect(onCode?: (code: string) => void): Promise<string> {
-    if (!WebUsbPhoneExport.supported()) throw new Error('WebUSB is unavailable. Use a current Chrome or Edge browser over HTTPS.')
-    let device = await this.findGrantedAccessory()
-    if (!device) {
-      const selected = await navigator.usb.requestDevice({ filters: [] })
-      if (this.isAccessory(selected)) {
-        device = selected
-      } else {
-        await this.startAccessoryMode(selected)
-        device = await this.waitForGrantedAccessory()
-        if (!device) {
-          device = await navigator.usb.requestDevice({ filters: ACCESSORY_PIDS.map((productId) => ({ vendorId: GOOGLE_VID, productId })) })
+    if (!WebUsbPhoneExport.supported()) throw new PhoneExportError('unsupported', 'WebUSB is unavailable. Use a current Chrome or Edge browser over HTTPS.')
+    await this.acquireSessionLease()
+    navigator.usb.addEventListener('disconnect', this.handleUsbDisconnect)
+    try {
+      let device = await this.findGrantedAccessory()
+      if (!device) {
+        const selected = await navigator.usb.requestDevice({ filters: [] })
+        if (this.isAccessory(selected)) {
+          device = selected
+        } else {
+          await this.startAccessoryMode(selected)
+          device = await this.waitForGrantedAccessory()
+          if (!device) {
+            device = await navigator.usb.requestDevice({ filters: ACCESSORY_PIDS.map((productId) => ({ vendorId: GOOGLE_VID, productId })) })
+          }
         }
       }
+      await this.openAccessory(device)
+      return await this.handshake(onCode)
+    } catch (reason) {
+      if (reason instanceof DOMException && reason.name === 'NotFoundError') {
+        throw new PhoneExportError('cancelled', 'No USB device was selected.', { cause: reason })
+      }
+      throw reason
     }
-    await this.openAccessory(device)
-    return this.handshake(onCode)
   }
 
   async list(query = '', cursor?: string): Promise<{ results: PhoneResult[]; next_cursor: string | null }> {
@@ -80,13 +110,63 @@ export class WebUsbPhoneExport {
     return this.enqueue(() => this.requestFile({ type: 'export_result', test_id: testId }))
   }
 
-  async close(): Promise<void> {
-    try { await this.sendControl({ type: 'close' }) } catch { /* already disconnected */ }
-    try { await this.device?.close() } catch { /* already closed */ }
+  async close(graceful = true): Promise<void> {
+    if (this.closing) return
+    this.closing = true
+    navigator.usb?.removeEventListener('disconnect', this.handleUsbDisconnect)
+    const device = this.device
+    if (graceful) {
+      try { await this.sendControl({ type: 'close' }) } catch { /* already disconnected */ }
+      try { await device?.close() } catch { /* already closed */ }
+    } else {
+      void device?.close().catch(() => undefined)
+    }
+    this.clearSession()
+    this.releaseSessionLease()
+  }
+
+  private clearSession(): void {
     this.device = undefined
     this.sendKey = undefined
     this.receiveKey = undefined
     this.receiveBuffer = new Uint8Array()
+  }
+
+  private async acquireSessionLease(): Promise<void> {
+    if (!('locks' in navigator)) return
+    let resolveDecision!: (acquired: boolean) => void
+    const decision = new Promise<boolean>((resolve) => { resolveDecision = resolve })
+    let decided = false
+    const decide = (acquired: boolean) => {
+      if (decided) return
+      decided = true
+      resolveDecision(acquired)
+    }
+    this.leaseTask = navigator.locks.request(SESSION_LOCK, { mode: 'exclusive', ifAvailable: true }, async (lock) => {
+      decide(Boolean(lock))
+      if (!lock) return
+      await new Promise<void>((resolve) => { this.releaseLease = resolve })
+    }).catch(() => { decide(false) })
+    if (!await decision) {
+      await this.leaseTask
+      this.leaseTask = undefined
+      throw new PhoneExportError('session_in_use', 'This phone portal is already active in another tab. Disconnect there, then try again.')
+    }
+  }
+
+  private releaseSessionLease(): void {
+    const release = this.releaseLease
+    this.releaseLease = undefined
+    release?.()
+    this.leaseTask = undefined
+  }
+
+  private handleUsbDisconnect = (event: USBConnectionEvent): void => {
+    if (this.closing || !this.device || event.device !== this.device) return
+    navigator.usb.removeEventListener('disconnect', this.handleUsbDisconnect)
+    this.clearSession()
+    this.releaseSessionLease()
+    this.disconnectHandler?.()
   }
 
   private async startAccessoryMode(device: USBDevice): Promise<void> {
@@ -109,15 +189,28 @@ export class WebUsbPhoneExport {
 
   private async openAccessory(device: USBDevice): Promise<void> {
     if (!this.isAccessory(device)) throw new Error('Select the reconnected Sicklesense Android accessory.')
-    await device.open()
-    if (!device.configuration) await device.selectConfiguration(1)
+    try {
+      await device.open()
+      if (!device.configuration) await device.selectConfiguration(1)
+    } catch (reason) {
+      try { await device.close() } catch { /* already closed */ }
+      throw new PhoneExportError('connection_failed', 'The phone could not be opened. Close any other browser using it, reconnect the cable, and try again.', { cause: reason })
+    }
     const candidate = device.configuration?.interfaces.flatMap((usbInterface) => usbInterface.alternates.map((alternate) => ({ usbInterface, alternate }))).find(({ alternate }) => {
       const input = alternate.endpoints.find((endpoint) => endpoint.direction === 'in' && endpoint.type === 'bulk')
       const output = alternate.endpoints.find((endpoint) => endpoint.direction === 'out' && endpoint.type === 'bulk')
       return input && output
     })
-    if (!candidate) throw new Error('The phone accessory has no usable bulk interface.')
-    await device.claimInterface(candidate.usbInterface.interfaceNumber)
+    if (!candidate) {
+      try { await device.close() } catch { /* already closed */ }
+      throw new Error('The phone accessory has no usable bulk interface.')
+    }
+    try {
+      await device.claimInterface(candidate.usbInterface.interfaceNumber)
+    } catch (reason) {
+      try { await device.close() } catch { /* already closed */ }
+      throw new PhoneExportError('session_in_use', 'The phone is already in use by another tab, browser, or application. Disconnect it there, then try again.', { cause: reason })
+    }
     this.inputEndpoint = candidate.alternate.endpoints.find((endpoint) => endpoint.direction === 'in' && endpoint.type === 'bulk')!.endpointNumber
     this.outputEndpoint = candidate.alternate.endpoints.find((endpoint) => endpoint.direction === 'out' && endpoint.type === 'bulk')!.endpointNumber
     this.device = device
@@ -196,8 +289,13 @@ export class WebUsbPhoneExport {
     if (payloadLength > MAX_PAYLOAD) throw new Error('USB frame exceeds the protocol limit.')
     const header = makeHeader(kind, requestId, sequence, payloadLength)
     const payload = encrypted ? chacha20poly1305(this.sendKey!, nonce('PC2P', sequence), header).encrypt(clear) : clear
-    const result = await this.device!.transferOut(this.outputEndpoint, concat([header, payload]))
-    if (result.status !== 'ok') throw new Error('USB write failed.')
+    let result: USBOutTransferResult
+    try {
+      result = await this.device!.transferOut(this.outputEndpoint, concat([header, payload]))
+    } catch (reason) {
+      throw new PhoneExportError('disconnected', 'The phone disconnected. Reconnect it and approve a new secure session.', { cause: reason })
+    }
+    if (result.status !== 'ok') throw new PhoneExportError('disconnected', 'The phone disconnected. Reconnect it and approve a new secure session.')
   }
 
   private async receiveJson(encrypted: boolean): Promise<Record<string, unknown>> {
@@ -229,8 +327,13 @@ export class WebUsbPhoneExport {
 
   private async readExact(length: number): Promise<Uint8Array> {
     while (this.receiveBuffer.length < length) {
-      const result = await this.device!.transferIn(this.inputEndpoint, Math.max(16_384, length - this.receiveBuffer.length))
-      if (result.status !== 'ok' || !result.data) throw new Error('USB read failed or the phone disconnected.')
+      let result: USBInTransferResult
+      try {
+        result = await this.device!.transferIn(this.inputEndpoint, Math.max(16_384, length - this.receiveBuffer.length))
+      } catch (reason) {
+        throw new PhoneExportError('disconnected', 'The phone disconnected. Reconnect it and approve a new secure session.', { cause: reason })
+      }
+      if (result.status !== 'ok' || !result.data) throw new PhoneExportError('disconnected', 'The phone disconnected. Reconnect it and approve a new secure session.')
       this.receiveBuffer = concat([this.receiveBuffer, new Uint8Array(result.data.buffer, result.data.byteOffset, result.data.byteLength)])
     }
     const value = this.receiveBuffer.slice(0, length)

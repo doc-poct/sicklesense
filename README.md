@@ -30,3 +30,16 @@ export workflow.
 Clinical bytes remain in transient browser memory and travel only over the
 approved encrypted USB session; they are never uploaded to GitHub Pages or
 another server.
+
+### Phone session lifecycle
+
+- Exactly one portal tab per browser profile may own the connection. A second
+  tab reports that the portal is already active instead of competing for USB.
+- The operating system's exclusive USB-interface claim prevents another
+  browser or application from using the phone at the same time.
+- Refresh, tab close, browser exit, cable removal, phone lock/background, idle
+  timeout, cancellation, and explicit disconnect terminate the ephemeral
+  session. Browser USB permission may remain granted, but session keys and
+  clinical data do not.
+- Reconnection is always operator initiated and requires a new matching code
+  and phone approval. The portal never silently resumes a previous session.
