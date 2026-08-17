@@ -13,7 +13,7 @@ type DownloadsProps = ReleaseDownloads & {
   isLoading: boolean
 }
 
-export function Downloads({ apk, zero2wImage, bridge, isLoading }: DownloadsProps) {
+export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
   const appLabel = apk
     ? `Download Android app version ${apk.version}`
     : isLoading
@@ -56,7 +56,6 @@ export function Downloads({ apk, zero2wImage, bridge, isLoading }: DownloadsProp
           <a className="footer-link" href="#workflow">How it works</a>
           <a className="footer-link" href="#phone-results">Phone Results</a>
           <a className="footer-link" href="#downloads">Downloads</a>
-          {bridge && <a className="footer-link" href={bridge.url}>Windows bridge</a>}
         </nav>
       </footer>
     </>

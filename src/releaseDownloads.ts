@@ -1,5 +1,5 @@
 const RELEASES_API_URL = 'https://api.github.com/repos/doc-poct/poct_fw_app_releases/releases?per_page=100'
-const CACHE_KEY = 'jeevdristi-release-downloads-v4'
+const CACHE_KEY = 'jeevdristi-release-downloads-v5'
 const RETRY_KEY = 'jeevdristi-release-downloads-retry-at'
 const CACHE_TTL_MS = 60 * 60 * 1000
 const FAILURE_RETRY_MS = 60 * 60 * 1000
@@ -21,7 +21,6 @@ type Version = readonly [number, number, number]
 export type ReleaseDownloads = {
   apk: { url: string; version: string } | null
   zero2wImage: { url: string; version: string } | null
-  bridge: { url: string; version: string } | null
 }
 
 type CachedReleaseDownloads = {
@@ -41,7 +40,6 @@ const FALLBACK_DOWNLOADS: ReleaseDownloads = {
     url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/firmware-v2.1.10/poct-2.1.10-dietpi-zero2w-arm64-ab.img.xz',
     version: '2.1.10',
   },
-  bridge: null,
 }
 
 let inFlightRequest: Promise<ReleaseDownloads> | null = null
@@ -97,7 +95,6 @@ export function getCachedReleaseDownloads(): ReleaseDownloads | null {
   return {
     apk: downloads?.apk ?? FALLBACK_DOWNLOADS.apk,
     zero2wImage: downloads?.zero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
-    bridge: downloads?.bridge ?? null,
   }
 }
 
@@ -168,8 +165,6 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
   let latestApkVersion: Version | null = null
   let latestZero2wImage: ReleaseDownloads['zero2wImage'] = null
   let latestFirmwareVersion: Version | null = null
-  let latestBridge: ReleaseDownloads['bridge'] = null
-  let latestBridgeVersion: Version | null = null
 
   for (const release of stableReleases(await response.json())) {
     const tagName = release.tag_name as string
@@ -193,21 +188,11 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
       }
     }
 
-    const bridgeVersion = parseVersion(tagName, 'bridge-')
-    if (bridgeVersion && isNewer(bridgeVersion, latestBridgeVersion)) {
-      const version = bridgeVersion.join('.')
-      const url = findAsset(release, `SicklesenseBridge-${version}-x64.msi`)
-      if (url) {
-        latestBridge = { url, version }
-        latestBridgeVersion = bridgeVersion
-      }
-    }
   }
 
   const downloads = {
     apk: latestApk ?? FALLBACK_DOWNLOADS.apk,
     zero2wImage: latestZero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
-    bridge: latestBridge,
   }
   writeCache(downloads, response.headers.get('etag'))
   clearRetryAfter()

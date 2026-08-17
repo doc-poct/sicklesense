@@ -13,7 +13,7 @@ import {
 } from './releaseDownloads'
 
 function App() {
-  const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null, bridge: null })
+  const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null })
   const [isLoadingDownloads, setIsLoadingDownloads] = useState(false)
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function App() {
         <Hero apk={downloads.apk} isLoading={isLoadingDownloads} />
         <ProjectOverview />
         <Workflow />
-        <PhoneResults bridge={downloads.bridge} isLoading={isLoadingDownloads} />
+        <PhoneResults />
         <Downloads {...downloads} isLoading={isLoadingDownloads} />
       </main>
     </>
