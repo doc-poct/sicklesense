@@ -7,6 +7,14 @@ import path from 'path'
 export default defineConfig({
   base: process.env.VITE_BASE_PATH ?? '/sicklesense/',
   plugins: [react(), tailwindcss()],
+  build: {
+    rolldownOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        webportal: path.resolve(__dirname, 'webportal/index.html'),
+      },
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
