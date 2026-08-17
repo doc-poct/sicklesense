@@ -18,7 +18,7 @@ import {
   WarningCircleIcon,
   XIcon,
 } from '@phosphor-icons/react'
-import { PhoneExportError, WebUsbPhoneExport, type PhoneExportConnectPhase, type PhoneResult, type PhoneResultDetail } from '@/phoneExport'
+import { PhoneExportError, WebUsbPhoneExport, type PhoneDeviceInfo, type PhoneExportConnectPhase, type PhoneResult, type PhoneResultDetail } from '@/phoneExport'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -137,6 +137,7 @@ export function PhoneResultsPortal() {
   const [code, setCode] = useState('')
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<PhoneResult[]>(() => status === 'preview' ? previewResults : [])
+  const [deviceInfo, setDeviceInfo] = useState<PhoneDeviceInfo | null>(null)
   const [detail, setDetail] = useState<PhoneResultDetail | null>(() => status === 'preview' ? previewDetail : null)
   const [artifactPreview, setArtifactPreview] = useState<string | null>(null)
   const [nextCursor, setNextCursor] = useState<string | null>(null)
@@ -149,6 +150,7 @@ export function PhoneResultsPortal() {
 
   function clearResultState() {
     setResults([])
+    setDeviceInfo(null)
     setDetail(null)
     setNextCursor(null)
     if (previewUrl.current) URL.revokeObjectURL(previewUrl.current)
@@ -230,10 +232,14 @@ export function PhoneResultsPortal() {
         (device) => { grantedAccessory.current = device },
       )
       if (attempt !== connectionAttempt.current) return
-      const page = await next.list()
+      const [page, info] = await Promise.all([
+        next.list(),
+        next.deviceInfo().catch(() => undefined),
+      ])
       if (attempt !== connectionAttempt.current) return
       setResults(page.results)
       setNextCursor(page.next_cursor)
+      setDeviceInfo(info ?? null)
       setStatus('connected')
     } catch (reason) {
       if (attempt !== connectionAttempt.current) return
@@ -393,6 +399,16 @@ export function PhoneResultsPortal() {
               <Card size="sm"><CardHeader><CardDescription>Exportable results</CardDescription><CardTitle className="text-2xl tabular-nums">{exportableCount}</CardTitle></CardHeader><CardContent className="flex items-center gap-2 text-muted-foreground"><DownloadSimpleIcon />Ready for verified ZIP</CardContent></Card>
               <Card size="sm"><CardHeader><CardDescription>Session security</CardDescription><CardTitle className="text-base">{connected ? 'Encrypted and active' : status === 'preview' ? 'Preview only' : 'Awaiting connection'}</CardTitle></CardHeader><CardContent className="flex items-center gap-2 text-muted-foreground"><LockKeyIcon />Read-only and local</CardContent></Card>
             </section>
+
+            {connected && deviceInfo ? <Card id="device-info">
+              <CardHeader className="border-b"><CardTitle>Connected phone</CardTitle><CardDescription>Live, non-identifying status from JeevDristi. This page does not store it.</CardDescription></CardHeader>
+              <CardContent className="grid gap-4 pt-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div><p className="text-xs text-muted-foreground">Phone</p><p className="font-medium">{deviceInfo.brand || deviceInfo.manufacturer || 'Android'} {deviceInfo.model || 'phone'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Android</p><p className="font-medium">{deviceInfo.android_version ? `Android ${deviceInfo.android_version}` : 'Unavailable'}{deviceInfo.android_sdk ? ` (API ${deviceInfo.android_sdk})` : ''}</p></div>
+                <div><p className="text-xs text-muted-foreground">Battery</p><p className="font-medium">{typeof deviceInfo.battery_percent === 'number' ? `${deviceInfo.battery_percent}%${deviceInfo.charging ? ' · Charging' : ''}` : 'Unavailable'}</p></div>
+                <div><p className="text-xs text-muted-foreground">Network</p><p className="font-medium">{deviceInfo.network || 'Unavailable'}</p><p className="mt-1 text-xs text-muted-foreground">JeevDristi {deviceInfo.jeevdristi_version || 'version unavailable'}</p></div>
+              </CardContent>
+            </Card> : null}
 
             <section id="results" className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">
               <Card className="min-w-0">

@@ -43,6 +43,18 @@ export type PhoneResultDetail = PhoneResult & {
   artifacts: Array<{ id: string; kind: string; mime: string }>
 }
 
+export type PhoneDeviceInfo = {
+  brand?: string
+  manufacturer?: string
+  model?: string
+  android_version?: string
+  android_sdk?: number
+  battery_percent?: number
+  charging?: boolean
+  network?: string
+  jeevdristi_version?: string
+}
+
 type Frame = { kind: number; requestId: bigint; sequence: bigint; header: Uint8Array; payload: Uint8Array }
 
 export class WebUsbPhoneExport {
@@ -121,6 +133,12 @@ export class WebUsbPhoneExport {
 
   async list(query = '', cursor?: string): Promise<{ results: PhoneResult[]; next_cursor: string | null }> {
     return this.enqueue(() => this.request({ type: 'list_results', query, cursor, limit: 50 }) as Promise<{ results: PhoneResult[]; next_cursor: string | null }>)
+  }
+
+  async deviceInfo(): Promise<PhoneDeviceInfo> {
+    const value = await this.enqueue(() => this.request({ type: 'get_device_info' }))
+    if (value.type !== 'device_info' || !value.device || typeof value.device !== 'object' || Array.isArray(value.device)) throw new Error('The phone returned invalid device information.')
+    return value.device as PhoneDeviceInfo
   }
 
   async detail(testId: string): Promise<PhoneResultDetail> {
