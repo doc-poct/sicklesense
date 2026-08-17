@@ -54,7 +54,7 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
         <nav className="flex flex-wrap gap-10 max-sm:flex-col max-sm:gap-4" aria-label="Footer navigation">
           <a className="footer-link" href="#product">Product</a>
           <a className="footer-link" href="#workflow">How it works</a>
-          <a className="footer-link" href="#phone-results">Phone Results</a>
+          <a className="footer-link" href="webportal/">Phone Results</a>
           <a className="footer-link" href="#downloads">Downloads</a>
         </nav>
       </footer>

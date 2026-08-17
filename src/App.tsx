@@ -3,7 +3,8 @@ import { Downloads } from './components/Downloads'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { ProjectOverview } from './components/ProjectOverview'
-import { PhoneResults } from './components/PhoneResults'
+import { PhonePortalPromo } from './components/PhonePortalPromo'
+import { PhoneResultsPortal } from './components/PhoneResultsPortal'
 import { Workflow } from './components/Workflow'
 import {
   fetchLatestStableDownloads,
@@ -12,7 +13,7 @@ import {
   type ReleaseDownloads,
 } from './releaseDownloads'
 
-function App() {
+function MarketingSite() {
   const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null })
   const [isLoadingDownloads, setIsLoadingDownloads] = useState(false)
 
@@ -56,11 +57,16 @@ function App() {
         <Hero apk={downloads.apk} isLoading={isLoadingDownloads} />
         <ProjectOverview />
         <Workflow />
-        <PhoneResults />
+        <PhonePortalPromo />
         <Downloads {...downloads} isLoading={isLoadingDownloads} />
       </main>
     </>
   )
+}
+
+function App() {
+  const isPhonePortal = window.location.pathname.replace(/\/+$/, '').endsWith('/webportal')
+  return isPhonePortal ? <PhoneResultsPortal /> : <MarketingSite />
 }
 
 export default App
