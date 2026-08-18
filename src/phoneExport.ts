@@ -98,29 +98,12 @@ export class WebUsbPhoneExport {
     onAccessory?: (device: USBDevice) => void,
   ): Promise<string> {
     if (!WebUsbPhoneExport.supported()) throw new PhoneExportError('unsupported', 'WebUSB is unavailable. Use a current Chrome or Edge browser over HTTPS.')
+    let selected: USBDevice
     try {
       // requestDevice must be the first asynchronous browser operation so the
       // chooser remains directly associated with the button's user gesture.
       if (!preferredDevice) onPhase?.('selecting')
-      const selected = preferredDevice ?? await navigator.usb.requestDevice({ filters: [] })
-      if (this.closing) {
-        try { await selected.close() } catch { /* not opened */ }
-        throw new PhoneExportError('cancelled', 'The connection attempt was cancelled.')
-      }
-      onPhase?.('preparing')
-      await this.acquireSessionLease()
-      navigator.usb.addEventListener('disconnect', this.handleUsbDisconnect)
-      let device = selected
-      if (!WebUsbPhoneExport.isAccessory(selected)) {
-        await this.startAccessoryMode(selected)
-        const accessory = await this.waitForGrantedAccessory()
-        if (!accessory) throw new PhoneExportError('reselect_required', 'The phone switched to accessory mode. Click Connect again, then select the reconnected Sicklesense Android accessory.')
-        device = accessory
-      }
-      await this.openAccessory(device)
-      onAccessory?.(device)
-      onPhase?.('waiting_for_phone')
-      return await this.handshake(onCode)
+      selected = preferredDevice ?? await navigator.usb.requestDevice({ filters: [] })
     } catch (reason) {
       if (reason instanceof DOMException && reason.name === 'NotFoundError') {
         throw new PhoneExportError('cancelled', 'No USB device was selected.', { cause: reason })
@@ -130,6 +113,24 @@ export class WebUsbPhoneExport {
       }
       throw reason
     }
+    if (this.closing) {
+      try { await selected.close() } catch { /* not opened */ }
+      throw new PhoneExportError('cancelled', 'The connection attempt was cancelled.')
+    }
+    onPhase?.('preparing')
+    await this.acquireSessionLease()
+    navigator.usb.addEventListener('disconnect', this.handleUsbDisconnect)
+    let device = selected
+    if (!WebUsbPhoneExport.isAccessory(selected)) {
+      await this.startAccessoryMode(selected)
+      const accessory = await this.waitForGrantedAccessory()
+      if (!accessory) throw new PhoneExportError('reselect_required', 'The phone switched to accessory mode. Click Connect again, then select the reconnected Sicklesense Android accessory.')
+      device = accessory
+    }
+    await this.openAccessory(device)
+    onAccessory?.(device)
+    onPhase?.('waiting_for_phone')
+    return await this.handshake(onCode)
   }
 
   async list(query = '', cursor?: string): Promise<{ results: PhoneResult[]; next_cursor: string | null }> {
@@ -216,7 +217,14 @@ export class WebUsbPhoneExport {
   }
 
   private async startAccessoryMode(device: USBDevice): Promise<void> {
-    await withTimeout(device.open(), USB_OPERATION_TIMEOUT_MS, 'The browser timed out while opening the phone.')
+    try {
+      await withTimeout(device.open(), USB_OPERATION_TIMEOUT_MS, 'The browser timed out while opening the phone.')
+    } catch (reason) {
+      if (reason instanceof DOMException && (reason.name === 'SecurityError' || reason.name === 'NetworkError')) {
+        throw new PhoneExportError('connection_failed', 'Access to the phone was denied by the operating system. On Windows, the default MTP driver locks direct USB access. A WinUSB driver or compatible setup is required.', { cause: reason })
+      }
+      throw reason
+    }
     try {
       const version = await withTimeout(device.controlTransferIn({ requestType: 'vendor', recipient: 'device', request: 51, value: 0, index: 0 }, 2), USB_OPERATION_TIMEOUT_MS, 'The phone did not respond while starting accessory mode.')
       if (version.status !== 'ok' || !version.data || version.data.getUint16(0, true) < 1) throw new Error('This phone does not support Android accessory mode.')
@@ -240,6 +248,9 @@ export class WebUsbPhoneExport {
       if (!device.configuration) await withTimeout(device.selectConfiguration(1), USB_OPERATION_TIMEOUT_MS, 'The browser timed out while configuring the phone.')
     } catch (reason) {
       try { await device.close() } catch { /* already closed */ }
+      if (reason instanceof DOMException && (reason.name === 'SecurityError' || reason.name === 'NetworkError')) {
+        throw new PhoneExportError('connection_failed', 'Access to the Android accessory was denied by the operating system. Ensure the reconnected accessory has the WinUSB driver loaded on Windows.', { cause: reason })
+      }
       throw new PhoneExportError('connection_failed', 'The phone could not be opened. Close any other browser using it, reconnect the cable, and try again.', { cause: reason })
     }
     const candidate = device.configuration?.interfaces.flatMap((usbInterface) => usbInterface.alternates.map((alternate) => ({ usbInterface, alternate }))).find(({ alternate }) => {

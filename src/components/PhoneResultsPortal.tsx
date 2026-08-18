@@ -338,7 +338,18 @@ export function PhoneResultsPortal() {
               <Alert variant="destructive"><WarningCircleIcon /><AlertTitle>WebUSB is unavailable</AlertTitle><AlertDescription>Open this HTTPS page in a current Chrome or Edge browser on a computer.</AlertDescription></Alert>
             ) : null}
             {error ? (
-              <Alert variant="destructive"><WarningCircleIcon /><AlertTitle>Connection or transfer failed</AlertTitle><AlertDescription>{error}</AlertDescription></Alert>
+              <Alert variant="destructive">
+                <WarningCircleIcon />
+                <AlertTitle>Connection or transfer failed</AlertTitle>
+                <AlertDescription className="flex flex-col gap-1.5">
+                  <span>{error}</span>
+                  {error.includes('WinUSB') ? (
+                    <span className="text-xs font-normal opacity-90">
+                      Tip: Refer to the <strong>First-time setup guide</strong> below to bind the WinUSB driver in Zadig.
+                    </span>
+                  ) : null}
+                </AlertDescription>
+              </Alert>
             ) : null}
 
             <Card id="connection">
@@ -388,6 +399,28 @@ export function PhoneResultsPortal() {
                         <li>Match the six-digit code and approve on the phone.</li>
                       </ol>
                       <p className="text-xs leading-relaxed text-muted-foreground"><strong className="font-medium text-foreground">One secure session at a time.</strong> Refreshing, closing this tab, changing browser, or disconnecting the cable ends the session. Reconnect here and approve a new code on the phone; sessions never resume automatically.</p>
+
+                      <details className="group rounded-lg border bg-muted/40 p-3 text-xs leading-relaxed">
+                        <summary className="flex cursor-pointer select-none items-center justify-between font-medium text-foreground hover:text-primary">
+                          <span>First-time setup guide (Windows &amp; Linux)</span>
+                          <span className="text-[10px] text-muted-foreground transition-transform group-open:rotate-180">▼</span>
+                        </summary>
+                        <div className="mt-3 flex flex-col gap-3 border-t pt-3 text-muted-foreground">
+                          <div>
+                            <p className="font-semibold text-foreground">Windows (One-time WinUSB driver association):</p>
+                            <ol className="mt-1 list-decimal space-y-1 pl-4">
+                              <li>Download and open standalone <a href="https://zadig.akeo.ie/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline">Zadig</a>.</li>
+                              <li>In Zadig, enable <strong>Options → List All Devices</strong>.</li>
+                              <li>Select your connected phone from the dropdown list, set the target driver to <strong>WinUSB</strong>, and click <strong>Replace Driver</strong>.</li>
+                              <li>If prompted when connecting in AOA mode, select the <em>Android Accessory</em> device and assign <strong>WinUSB</strong>.</li>
+                            </ol>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-foreground">Linux (One-time udev rule):</p>
+                            <p className="mt-1">Add a udev rule for your phone vendor (or Google AOA VID <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">18d1</code>) in <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">/etc/udev/rules.d/51-android.rules</code> with <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">MODE="0666"</code> or <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">TAG+="uaccess"</code>, then run <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">udevadm control --reload-rules</code>.</p>
+                          </div>
+                        </div>
+                      </details>
                     </>
                   )}
                 </div>

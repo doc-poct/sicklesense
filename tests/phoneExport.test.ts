@@ -145,6 +145,83 @@ test('denial cleanup does not poison a fresh approved retry', async () => {
   expect(fake.closeCalls).toBe(2)
 })
 
+test('chooser blocked SecurityError produces clear chooser guidance', async () => {
+  const usb = {
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    getDevices: async () => [],
+    requestDevice: async () => { throw new DOMException('Must be handling a user gesture', 'SecurityError') },
+  }
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: { isSecureContext: true },
+  })
+  Object.defineProperty(globalThis, 'navigator', {
+    configurable: true,
+    value: { platform: 'Test browser', usb },
+  })
+
+  const client = new WebUsbPhoneExport()
+  await expect(client.connect()).rejects.toThrow('The browser blocked the USB chooser. Keep this tab active and click Connect Android phone again.')
+  await client.close()
+})
+
+test('OS driver access denial during startAccessoryMode produces clear driver guidance', async () => {
+  const nonAccessory = {
+    vendorId: 0x22b8,
+    productId: 0x2e82,
+    open: async () => { throw new DOMException('Access denied.', 'SecurityError') },
+    close: async () => undefined,
+  } as unknown as USBDevice
+
+  const usb = {
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    getDevices: async () => [],
+    requestDevice: async () => nonAccessory,
+  }
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: { isSecureContext: true },
+  })
+  Object.defineProperty(globalThis, 'navigator', {
+    configurable: true,
+    value: { platform: 'Test browser', usb },
+  })
+
+  const client = new WebUsbPhoneExport()
+  await expect(client.connect()).rejects.toThrow('Access to the phone was denied by the operating system. On Windows, the default MTP driver locks direct USB access. A WinUSB driver or compatible setup is required.')
+  await client.close()
+})
+
+test('OS driver access denial during openAccessory produces clear accessory driver guidance', async () => {
+  const accessory = {
+    vendorId: 0x18d1,
+    productId: 0x2d00,
+    open: async () => { throw new DOMException('Access denied.', 'SecurityError') },
+    close: async () => undefined,
+  } as unknown as USBDevice
+
+  const usb = {
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+    getDevices: async () => [accessory],
+    requestDevice: async () => accessory,
+  }
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: { isSecureContext: true },
+  })
+  Object.defineProperty(globalThis, 'navigator', {
+    configurable: true,
+    value: { platform: 'Test browser', usb },
+  })
+
+  const client = new WebUsbPhoneExport()
+  await expect(client.connect(undefined, undefined, accessory)).rejects.toThrow('Access to the Android accessory was denied by the operating system. Ensure the reconnected accessory has the WinUSB driver loaded on Windows.')
+  await client.close()
+})
+
 function plainFrame(message: Record<string, unknown>, sequence: bigint): Uint8Array {
   const payload = encoder.encode(JSON.stringify(message))
   return concat([header(sequence, payload.length), payload])
