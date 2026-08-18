@@ -1,18 +1,126 @@
+import { useState } from 'react'
+import {
+  ArrowSquareOutIcon,
+  DownloadSimpleIcon,
+  GithubLogoIcon,
+  ListIcon,
+  UsbIcon,
+} from '@phosphor-icons/react'
 import { Brand } from './Brand'
+import { Button } from '@/components/ui/button'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
+import { RELEASES_PAGE_URL } from '../releaseDownloads'
 
 export function Header() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const navLinks = [
+    { label: 'Overview', href: '#product' },
+    { label: 'Workflow', href: '#workflow' },
+    { label: 'Architecture', href: '#tech-specs' },
+    { label: 'Phone Results', href: 'webportal/' },
+    { label: 'Downloads', href: '#downloads' },
+  ]
+
   return (
-    <header className="mx-auto grid h-24 w-full max-w-[94rem] grid-cols-[1fr_auto_1fr] items-center px-8 max-md:flex max-md:h-20 max-md:justify-between max-md:px-5">
-      <a className="justify-self-start no-underline" href="#top" aria-label="JeevDristi home">
-        <Brand />
-      </a>
-      <nav className="flex items-center gap-[clamp(2rem,4vw,4.5rem)] max-md:hidden" aria-label="Primary navigation">
-        <a className="nav-link" href="#product">Product</a>
-        <a className="nav-link" href="#workflow">How it works</a>
-        <a className="nav-link" href="webportal/">Phone Results</a>
-        <a className="nav-link" href="#downloads">Downloads</a>
-      </nav>
-      <a className="button button-primary header-action justify-self-end" href="#downloads">Download app</a>
+    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md transition-colors">
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <a className="no-underline transition-opacity hover:opacity-90" href="#top" aria-label="JeevDristi home">
+          <Brand />
+        </a>
+
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-2.5 md:flex">
+          <Button variant="outline" size="sm" nativeButton={false} render={<a href="webportal/" />}>
+            <UsbIcon data-icon="inline-start" />
+            Web Portal
+          </Button>
+
+          <Button size="sm" nativeButton={false} render={<a href="#downloads" />}>
+            <DownloadSimpleIcon data-icon="inline-start" />
+            Get App
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            nativeButton={false}
+            render={
+              <a
+                href={RELEASES_PAGE_URL}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub release repository"
+              />
+            }
+          >
+            <GithubLogoIcon className="size-4" />
+          </Button>
+        </div>
+
+        {/* Mobile menu trigger */}
+        <div className="flex items-center gap-2 md:hidden">
+          <Button variant="outline" size="xs" nativeButton={false} render={<a href="webportal/" />}>
+            <UsbIcon data-icon="inline-start" />
+            Portal
+          </Button>
+
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Open navigation menu" />}>
+              <ListIcon className="size-5" />
+            </SheetTrigger>
+            <SheetContent side="right" className="flex w-72 flex-col justify-between p-6">
+              <div className="flex flex-col gap-6">
+                <SheetHeader className="p-0 text-left">
+                  <SheetTitle>
+                    <Brand />
+                  </SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col gap-2">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+
+              <div className="flex flex-col gap-2.5 border-t border-border pt-4">
+                <Button nativeButton={false} render={<a href="#downloads" onClick={() => setIsOpen(false)} />}>
+                  <DownloadSimpleIcon data-icon="inline-start" />
+                  Download JeevDristi App
+                </Button>
+                <Button variant="outline" nativeButton={false} render={<a href={RELEASES_PAGE_URL} target="_blank" rel="noreferrer" />}>
+                  <ArrowSquareOutIcon data-icon="inline-start" />
+                  GitHub Releases
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
     </header>
   )
 }

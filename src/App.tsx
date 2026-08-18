@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Downloads } from './components/Downloads'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { ProjectOverview } from './components/ProjectOverview'
 import { PhonePortalPromo } from './components/PhonePortalPromo'
-import { PhoneResultsPortal } from './components/PhoneResultsPortal'
+import { TechSpecs } from './components/TechSpecs'
 import { Workflow } from './components/Workflow'
+import { Spinner } from './components/ui/spinner'
 import {
   fetchLatestStableDownloads,
   getCachedReleaseDownloads,
@@ -13,8 +14,16 @@ import {
   type ReleaseDownloads,
 } from './releaseDownloads'
 
+const PhoneResultsPortal = lazy(() =>
+  import('./components/PhoneResultsPortal').then((mod) => ({
+    default: mod.PhoneResultsPortal,
+  }))
+)
+
 function MarketingSite() {
-  const [downloads, setDownloads] = useState<ReleaseDownloads>(() => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null })
+  const [downloads, setDownloads] = useState<ReleaseDownloads>(
+    () => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null }
+  )
   const [isLoadingDownloads, setIsLoadingDownloads] = useState(false)
 
   useEffect(() => {
@@ -51,22 +60,41 @@ function MarketingSite() {
   }, [])
 
   return (
-    <>
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       <main>
         <Hero apk={downloads.apk} isLoading={isLoadingDownloads} />
         <ProjectOverview />
         <Workflow />
+        <TechSpecs />
         <PhonePortalPromo />
         <Downloads {...downloads} isLoading={isLoadingDownloads} />
       </main>
-    </>
+    </div>
   )
 }
 
 function App() {
   const isPhonePortal = window.location.pathname.replace(/\/+$/, '').endsWith('/webportal')
-  return isPhonePortal ? <PhoneResultsPortal /> : <MarketingSite />
+
+  if (isPhonePortal) {
+    return (
+      <Suspense
+        fallback={
+          <div className="flex h-screen w-screen items-center justify-center bg-background text-foreground">
+            <div className="flex flex-col items-center gap-3">
+              <Spinner className="size-8 text-primary" />
+              <p className="text-xs font-medium text-muted-foreground">Loading Phone Results Portal…</p>
+            </div>
+          </div>
+        }
+      >
+        <PhoneResultsPortal />
+      </Suspense>
+    )
+  }
+
+  return <MarketingSite />
 }
 
 export default App

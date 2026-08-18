@@ -1,57 +1,118 @@
-function PairIcon() {
-  return (
-    <svg className="workflow-icon" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-      <path d="M16 55h39v23H16zM20 60h20v13H20zm45-34h18v52H65zM70 32h8M70 72h8M74 45v16m-6-10 6-6 6 6-6 6-6-6Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
-      <path d="M20 71h5" stroke="#f5a623" strokeLinecap="round" strokeWidth="2.5" />
-    </svg>
-  )
-}
-
-function TestIcon() {
-  return (
-    <svg className="workflow-icon" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-      <rect x="34" y="17" width="28" height="12" rx="4" stroke="currentColor" strokeWidth="2.5" />
-      <path d="M38 29h20v47a10 10 0 0 1-20 0V29Z" stroke="currentColor" strokeWidth="2.5" />
-      <path d="M38 52h20M48 58v3m0 5v3" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
-    </svg>
-  )
-}
-
-function ReviewIcon() {
-  return (
-    <svg className="workflow-icon" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-      <rect x="29" y="13" width="38" height="70" rx="5" stroke="currentColor" strokeWidth="2.5" />
-      <path d="M41 19h14M42 76h12" stroke="currentColor" strokeLinecap="round" strokeWidth="2.5" />
-      <circle cx="48" cy="48" r="15" stroke="currentColor" strokeWidth="2.5" />
-      <path d="m41 48 5 5 10-11" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" />
-    </svg>
-  )
-}
+import {
+  CheckFatIcon,
+  DeviceMobileIcon,
+  FlaskIcon,
+  LightningIcon,
+  UsbIcon,
+} from '@phosphor-icons/react'
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 
 const steps = [
-  { number: '1', title: 'Connect', description: 'Pair the app with your testing device.', icon: <PairIcon /> },
-  { number: '2', title: 'Run the test', description: 'Follow simple prompts to complete the test.', icon: <TestIcon /> },
-  { number: '3', title: 'Review the result', description: 'See the result on screen and save or share.', icon: <ReviewIcon /> },
+  {
+    step: '01',
+    duration: '10 sec',
+    title: 'Pair & Initialize',
+    subtitle: 'Zero-config pairing',
+    description:
+      'Turn on the POCT box and open JeevDristi. The app discovers the device locally over Wi-Fi/BLE and completes automatic optical self-calibration.',
+    icon: DeviceMobileIcon,
+  },
+  {
+    step: '02',
+    duration: '2 min',
+    title: 'Load Specimen Slide',
+    subtitle: 'Microfluidic cartridge',
+    description:
+      'Insert prepared capillary blood cartridge into the light-shielded optical chamber. Guided prompts ensure correct positioning and sample focus.',
+    icon: FlaskIcon,
+  },
+  {
+    step: '03',
+    duration: '30 sec',
+    title: 'Autonomous AI Scan',
+    subtitle: 'Pi Zero 2W Inference',
+    description:
+      'The box executes multi-frame optical capture and runs local CV/ML morphology models to identify sickled erythrocytes and cellular density.',
+    icon: LightningIcon,
+  },
+  {
+    step: '04',
+    duration: 'Instant',
+    title: 'Review & WebUSB Export',
+    subtitle: 'Verified clinical bundle',
+    description:
+      'View diagnostic classification immediately on the mobile app. Connect to any PC via USB to inspect high-res artifacts and download signed ZIPs.',
+    icon: UsbIcon,
+  },
 ]
 
 export function Workflow() {
   return (
-    <section className="mx-auto w-full max-w-[94rem] px-8 py-24 max-md:px-5 max-md:py-18" id="workflow">
-      <div className="section-heading">
-        <h2>From sample to result, one clear path.</h2>
-        <span aria-hidden="true" />
-      </div>
-      <div className="workflow-grid mt-12 grid grid-cols-3 max-md:mt-10 max-md:grid-cols-1">
-        {steps.map((step) => (
-          <article className="workflow-step" key={step.number}>
-            <div className="workflow-visual">
-              <span>{step.number}</span>
-              {step.icon}
-            </div>
-            <h3>{step.title}</h3>
-            <p>{step.description}</p>
-          </article>
-        ))}
+    <section className="py-20 lg:py-28" id="workflow">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="mx-auto max-w-3xl text-center">
+          <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
+            STEP-BY-STEP OPERATION
+          </Badge>
+          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            From sample to verified result. One unified flow.
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Designed for minimal cognitive overhead so community health workers and clinicians can conduct rapid tests with high repeatability.
+          </p>
+        </div>
+
+        {/* Workflow Steps Grid */}
+        <div className="relative mt-16">
+          {/* Connector line for desktop */}
+          <div
+            className="absolute top-1/2 left-8 right-8 -translate-y-8 hidden lg:block h-0.5 border-t-2 border-dashed border-border"
+            aria-hidden="true"
+          />
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((step, idx) => (
+              <Card
+                key={step.step}
+                className="group relative flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-md"
+              >
+                <div className="flex flex-col">
+                  {/* Top badges */}
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="font-mono text-xs font-bold text-primary">
+                      STEP {step.step}
+                    </span>
+                    <Badge variant="secondary" className="text-[10px] font-mono">
+                      {step.duration}
+                    </Badge>
+                  </div>
+
+                  {/* Icon circle */}
+                  <div className="mb-4 grid size-12 place-items-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-105">
+                    <step.icon className="size-6" weight="duotone" />
+                  </div>
+
+                  <h3 className="font-heading text-base font-bold text-foreground">
+                    {step.title}
+                  </h3>
+                  <p className="mt-0.5 text-xs font-medium text-primary">
+                    {step.subtitle}
+                  </p>
+                  <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground">
+                    {step.description}
+                  </p>
+                </div>
+
+                <div className="mt-6 flex items-center gap-1.5 border-t border-border/50 pt-3 text-[11px] font-medium text-muted-foreground">
+                  <CheckFatIcon className="size-3 text-emerald-500" weight="fill" />
+                  <span>Phase {idx + 1} completed</span>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )
