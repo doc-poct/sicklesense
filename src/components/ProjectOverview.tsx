@@ -15,50 +15,50 @@ const features = [
   {
     icon: WifiSlashIcon,
     tag: 'Autonomous',
-    title: '100% Offline AI Inference',
+    title: '100% Offline AI Analysis',
     description:
-      'CV/ML algorithms execute directly on the embedded POCT box hardware. Complete screening autonomy in remote field clinics and tribal areas with zero internet or cloud dependency.',
-    highlights: ['On-device morphology detection', 'No cloud latency or API cost', 'Local SQLite encrypted storage'],
+      'Advanced computer vision models run directly inside the testing device. Complete screening autonomy in remote field clinics and rural health camps with zero internet or cloud dependency.',
+    highlights: ['On-device morphology detection', 'No cloud delay or subscription fees', 'Local encrypted result storage'],
   },
   {
     icon: ShieldCheckIcon,
     tag: 'Quality Control',
-    title: 'Standardized Guided Workflow',
+    title: 'Standardized Guided Testing',
     description:
-      'Interactive, foolproof mobile guidance takes community health workers through sample preparation, optical calibration, incubation timing, and cartridge insertion.',
-    highlights: ['Step-by-step visual timers', 'Error prevention checks', 'Operator signature verification'],
+      'Interactive, clear on-screen guidance takes health workers step-by-step through sample preparation, optical calibration, incubation timing, and test completion.',
+    highlights: ['Step-by-step visual timers', 'Error prevention checks', 'Operator test verification'],
   },
   {
     icon: UsbIcon,
     tag: 'Zero-Cloud',
-    title: 'Direct WebUSB Peer-to-Peer Relay',
+    title: 'Direct USB Data Transfer',
     description:
-      'Transfer completed test records directly from Android to a clinic computer using standard USB cable and Android Open Accessory (AOA) protocol—without uploading data to any external server.',
-    highlights: ['6-digit PIN code matching', 'No desktop driver install required', 'End-to-end local privacy'],
+      'Transfer completed test records directly from your Android phone to a computer using a standard USB cable—without uploading sensitive patient data to any external server.',
+    highlights: ['6-digit PIN code confirmation', 'Zero computer software setup', 'End-to-end local privacy'],
   },
   {
     icon: FileTextIcon,
     tag: 'Diagnostics',
-    title: 'Clinical Reports & Data Integrity',
+    title: 'Clinical Reports & Integrity',
     description:
-      'Instant clinical PDF summary generation, cropped cell morphology inspection, and cryptographically signed ZIP packages for seamless electronic health record integration.',
-    highlights: ['SHA-256 integrity checks', 'Standardized medical format', 'Tamper-evident test logs'],
+      'Instant clinical PDF summary generation, high-resolution cell morphology inspection, and verified archive packages for seamless medical record integration.',
+    highlights: ['Digital verification checks', 'Standardized medical format', 'Tamper-evident audit logs'],
   },
   {
     icon: BatteryChargingIcon,
-    tag: 'Field Hardware',
+    tag: 'Portability',
     title: 'Ultra-Low Power & Portable',
     description:
-      'Optimized for the Raspberry Pi Zero 2W with custom optical chamber and controlled LED illumination, powered for hours from a standard 5V portable power bank.',
-    highlights: ['5V USB-C power input', 'Compact rugged enclosure', 'Sub-5W average power draw'],
+      'Engineered with an optimized optical chamber and calibrated illumination, powered for all-day mobile screening from any standard USB power bank or adapter.',
+    highlights: ['Standard USB-C power input', 'Compact rugged enclosure', 'All-day field battery life'],
   },
   {
     icon: CpuIcon,
-    tag: 'Architecture',
-    title: 'Open & Reproducible Releases',
+    tag: 'Engineering',
+    title: 'Medical Grade Reliability',
     description:
-      'Engineered with modern engineering standards at IIT Bhilai. Versioned release bundles, immutable release channels, and verifiable source code.',
-    highlights: ['Semantic versioning', 'Release checksum verification', 'Modular sensor integration'],
+      'Engineered with rigorous quality standards at IIT Bhilai. Calibrated optics, precision manufacturing, and validated diagnostic workflows.',
+    highlights: ['Institutional quality standards', 'Consistent optical response', 'Field-tested durability'],
   },
 ]
 
@@ -76,7 +76,7 @@ export function ProjectOverview() {
             Designed around the realities of rural &amp; point-of-care clinics.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Every layer of the JeevDristi platform—from embedded optics to mobile UI—is built to ensure high diagnostic reliability in resource-limited environments.
+            Every layer of the JeevDristi platform—from precision optics to intuitive mobile UI—is built to ensure high diagnostic reliability in resource-limited environments.
           </p>
         </div>
 

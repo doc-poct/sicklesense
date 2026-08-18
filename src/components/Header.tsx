@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import {
-  ArrowSquareOutIcon,
   DownloadSimpleIcon,
-  GithubLogoIcon,
   ListIcon,
   UsbIcon,
 } from '@phosphor-icons/react'
@@ -15,7 +13,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { RELEASES_PAGE_URL } from '../releaseDownloads'
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,7 +20,7 @@ export function Header() {
   const navLinks = [
     { label: 'Overview', href: '#product' },
     { label: 'Workflow', href: '#workflow' },
-    { label: 'Architecture', href: '#tech-specs' },
+    { label: 'Specifications', href: '#tech-specs' },
     { label: 'Phone Results', href: 'webportal/' },
     { label: 'Downloads', href: '#downloads' },
   ]
@@ -55,23 +52,7 @@ export function Header() {
 
           <Button size="sm" nativeButton={false} render={<a href="#downloads" />}>
             <DownloadSimpleIcon data-icon="inline-start" />
-            Get App
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            nativeButton={false}
-            render={
-              <a
-                href={RELEASES_PAGE_URL}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="GitHub release repository"
-              />
-            }
-          >
-            <GithubLogoIcon className="size-4" />
+            Download App
           </Button>
         </div>
 
@@ -110,11 +91,7 @@ export function Header() {
               <div className="flex flex-col gap-2.5 border-t border-border pt-4">
                 <Button nativeButton={false} render={<a href="#downloads" onClick={() => setIsOpen(false)} />}>
                   <DownloadSimpleIcon data-icon="inline-start" />
-                  Download JeevDristi App
-                </Button>
-                <Button variant="outline" nativeButton={false} render={<a href={RELEASES_PAGE_URL} target="_blank" rel="noreferrer" />}>
-                  <ArrowSquareOutIcon data-icon="inline-start" />
-                  GitHub Releases
+                  Download App
                 </Button>
               </div>
             </SheetContent>

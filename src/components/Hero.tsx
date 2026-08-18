@@ -20,10 +20,20 @@ type HeroProps = {
 
 export function Hero({ apk, isLoading }: HeroProps) {
   const downloadLabel = apk
-    ? `Download Android app v${apk.version}`
+    ? `Download Android App (v${apk.version})`
     : isLoading
-      ? 'Preparing Android download...'
+      ? 'Preparing Download...'
       : 'Download Android App'
+
+  const handleDownload = () => {
+    const targetUrl = apk?.url ?? RELEASES_PAGE_URL
+    const link = document.createElement('a')
+    link.href = targetUrl
+    link.style.display = 'none'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
     <section className="relative overflow-hidden bg-grid py-12 md:py-20 lg:py-24" id="top">
@@ -55,23 +65,16 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </h1>
 
             <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Rugged optical testing, on-device AI morphology analysis, and zero-cloud field reporting in one cohesive platform—engineered to work anywhere, even without internet.
+              Precision optical testing, on-device AI morphology analysis, and zero-cloud field reporting in one cohesive platform—engineered to work anywhere, even without internet.
             </p>
 
             {/* CTAs */}
             <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row sm:items-center">
               <Button
                 size="lg"
-                className="h-11 px-5 text-sm font-semibold shadow-md shadow-primary/20"
-                nativeButton={false}
-                render={
-                  <a
-                    href={apk?.url ?? RELEASES_PAGE_URL}
-                    target={apk ? undefined : '_blank'}
-                    rel={apk ? undefined : 'noreferrer'}
-                    aria-label={downloadLabel}
-                  />
-                }
+                className="h-11 px-5 text-sm font-semibold shadow-md shadow-primary/20 cursor-pointer"
+                onClick={handleDownload}
+                aria-label={downloadLabel}
               >
                 <AndroidLogoIcon className="size-4.5" weight="bold" />
                 {downloadLabel}
@@ -108,7 +111,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
                 </span>
                 <div className="flex flex-col">
                   <span className="text-xs font-semibold text-foreground">100% Offline</span>
-                  <span className="text-[10px] text-muted-foreground">Zero cloud dependency</span>
+                  <span className="text-[10px] text-muted-foreground">Zero internet needed</span>
                 </div>
               </div>
 
@@ -117,8 +120,8 @@ export function Hero({ apk, isLoading }: HeroProps) {
                   <UsbIcon className="size-3.5" weight="bold" />
                 </span>
                 <div className="flex flex-col">
-                  <span className="text-xs font-semibold text-foreground">WebUSB Sync</span>
-                  <span className="text-[10px] text-muted-foreground">Direct P2P transfer</span>
+                  <span className="text-xs font-semibold text-foreground">Direct USB Sync</span>
+                  <span className="text-[10px] text-muted-foreground">Peer-to-peer export</span>
                 </div>
               </div>
 
@@ -128,7 +131,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
                 </span>
                 <div className="flex flex-col">
                   <span className="text-xs font-semibold text-foreground">Verified</span>
-                  <span className="text-[10px] text-muted-foreground">Cryptographic hash</span>
+                  <span className="text-[10px] text-muted-foreground">Diagnostic integrity</span>
                 </div>
               </div>
             </div>
@@ -141,10 +144,10 @@ export function Hero({ apk, isLoading }: HeroProps) {
               <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
                 <div className="flex items-center gap-2">
                   <span className="size-2.5 rounded-full bg-emerald-500" />
-                  <span className="font-mono text-xs font-medium text-muted-foreground">POCT-BOX-ZERO2W</span>
+                  <span className="font-mono text-xs font-medium text-muted-foreground">JEEVDRISTI-POCT-UNIT</span>
                 </div>
                 <Badge variant="outline" className="text-[10px] gap-1 font-mono">
-                  <CpuIcon className="size-3" /> ARM64 Quad-Core
+                  <CpuIcon className="size-3" /> Built-in AI Engine
                 </Badge>
               </div>
 
@@ -164,14 +167,14 @@ export function Hero({ apk, isLoading }: HeroProps) {
               <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
                 <div className="rounded-lg bg-muted/40 p-2">
                   <p className="text-[10px] text-muted-foreground">Hardware</p>
-                  <p className="font-semibold text-foreground">Pi Zero 2W</p>
+                  <p className="font-semibold text-foreground">Optical Device</p>
                 </div>
                 <div className="rounded-lg bg-muted/40 p-2">
                   <p className="text-[10px] text-muted-foreground">Companion</p>
-                  <p className="font-semibold text-foreground">Flutter Android</p>
+                  <p className="font-semibold text-foreground">Mobile App</p>
                 </div>
                 <div className="rounded-lg bg-muted/40 p-2">
-                  <p className="text-[10px] text-muted-foreground">Inference</p>
+                  <p className="text-[10px] text-muted-foreground">Analysis</p>
                   <p className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1">
                     <CheckCircleIcon weight="fill" className="size-3" /> On-Device
                   </p>

@@ -115,7 +115,7 @@ const demoDetails: Record<string, PhoneResultDetail> = {
       cell_count: '1,420 cells',
       optical_quality: '98.2% (Pass)',
       test_duration: '42 seconds',
-      device_serial: 'ZERO2W-POCT-0482',
+      device_serial: 'JD-POCT-0482',
     },
     artifacts: [
       { id: 'clinical-pdf', kind: 'Clinical Diagnostic Report (PDF)', mime: 'application/pdf' },
@@ -132,7 +132,7 @@ const demoDetails: Record<string, PhoneResultDetail> = {
       cell_count: '1,680 cells',
       optical_quality: '99.1% (Pass)',
       test_duration: '38 seconds',
-      device_serial: 'ZERO2W-POCT-0482',
+      device_serial: 'JD-POCT-0482',
     },
     artifacts: [
       { id: 'clinical-pdf', kind: 'Clinical Diagnostic Report (PDF)', mime: 'application/pdf' },
@@ -164,7 +164,7 @@ const demoDetails: Record<string, PhoneResultDetail> = {
       sensor_snr: '46.2 dB',
       focus_index: '0.992',
       dark_current: '12 mV',
-      device_serial: 'ZERO2W-POCT-0482',
+      device_serial: 'JD-POCT-0482',
     },
     artifacts: [
       { id: 'telemetry-json', kind: 'Calibration Diagnostics Log (JSON)', mime: 'application/json' },
@@ -180,7 +180,7 @@ function formatDate(value: number) {
 }
 
 function formatSource(source: string) {
-  return source === 'poct_box' ? 'POCT Box (Pi Zero)' : source === 'mobile_app' ? 'Mobile App' : source.replaceAll('_', ' ')
+  return source === 'poct_box' ? 'POCT Device' : source === 'mobile_app' ? 'Mobile App' : source.replaceAll('_', ' ')
 }
 
 function saveBlob(blob: Blob, filename: string) {

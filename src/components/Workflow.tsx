@@ -12,37 +12,37 @@ const steps = [
   {
     step: '01',
     duration: '10 sec',
-    title: 'Pair & Initialize',
-    subtitle: 'Zero-config pairing',
+    title: 'Connect & Initialize',
+    subtitle: 'Automatic device pairing',
     description:
-      'Turn on the POCT box and open JeevDristi. The app discovers the device locally over Wi-Fi/BLE and completes automatic optical self-calibration.',
+      'Turn on the testing device and open JeevDristi on your phone. The app connects securely and completes automatic optical self-calibration.',
     icon: DeviceMobileIcon,
   },
   {
     step: '02',
     duration: '2 min',
     title: 'Load Specimen Slide',
-    subtitle: 'Microfluidic cartridge',
+    subtitle: 'Sample cartridge dock',
     description:
-      'Insert prepared capillary blood cartridge into the light-shielded optical chamber. Guided prompts ensure correct positioning and sample focus.',
+      'Insert the prepared blood cartridge into the light-shielded optical chamber. On-screen prompts confirm correct positioning and focus.',
     icon: FlaskIcon,
   },
   {
     step: '03',
     duration: '30 sec',
     title: 'Autonomous AI Scan',
-    subtitle: 'Pi Zero 2W Inference',
+    subtitle: 'Built-in diagnostic analysis',
     description:
-      'The box executes multi-frame optical capture and runs local CV/ML morphology models to identify sickled erythrocytes and cellular density.',
+      'The device captures high-resolution optical scans and executes built-in AI models to evaluate sickled cell morphology and cellular density.',
     icon: LightningIcon,
   },
   {
     step: '04',
     duration: 'Instant',
-    title: 'Review & WebUSB Export',
-    subtitle: 'Verified clinical bundle',
+    title: 'Review & Export',
+    subtitle: 'Verified clinical report',
     description:
-      'View diagnostic classification immediately on the mobile app. Connect to any PC via USB to inspect high-res artifacts and download signed ZIPs.',
+      'View diagnostic classification immediately on the mobile app. Connect to any PC via USB cable to inspect artifacts and save complete records.',
     icon: UsbIcon,
   },
 ]

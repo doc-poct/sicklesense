@@ -18,13 +18,13 @@ export function TechSpecs() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
-            SYSTEM ARCHITECTURE
+            PRODUCT SPECIFICATIONS
           </Badge>
           <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-            Modern, modular, and built on open standards.
+            Integrated hardware, companion app, and portal.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            A three-tier topology connecting embedded edge optics, mobile field control, and zero-install desktop export.
+            A cohesive diagnostic platform connecting precision optics, mobile control, and secure data export.
           </p>
         </div>
 
@@ -34,7 +34,7 @@ export function TechSpecs() {
               <TabsList className="grid h-10 w-full max-w-md grid-cols-3">
                 <TabsTrigger value="box" className="text-xs">
                   <CpuIcon className="size-3.5" />
-                  POCT Box
+                  Testing Device
                 </TabsTrigger>
                 <TabsTrigger value="app" className="text-xs">
                   <DeviceMobileIcon className="size-3.5" />
@@ -42,27 +42,27 @@ export function TechSpecs() {
                 </TabsTrigger>
                 <TabsTrigger value="webusb" className="text-xs">
                   <UsbIcon className="size-3.5" />
-                  WebUSB Portal
+                  Web Portal
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            {/* POCT Box Specs */}
+            {/* POCT Device Specs */}
             <TabsContent value="box" className="mt-6">
               <div className="grid gap-6 md:grid-cols-3">
                 <Card>
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <CpuIcon className="size-4.5 text-primary" />
-                      Compute Core
+                      Built-in AI Engine
                     </CardTitle>
-                    <CardDescription>Raspberry Pi Zero 2W</CardDescription>
+                    <CardDescription>On-Device Processing</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">CPU:</strong> Quad-core 64-bit ARM Cortex-A53 @ 1.0 GHz</p>
-                    <p><strong className="text-foreground">RAM:</strong> 512MB LPDDR2 SDRAM</p>
-                    <p><strong className="text-foreground">OS:</strong> Linux embedded runtime (Read-only rootfs)</p>
-                    <p><strong className="text-foreground">Power:</strong> 5V Micro-USB / USB-C &lt; 5W</p>
+                    <p><strong className="text-foreground">Processor:</strong> Dedicated multi-core embedded AI unit</p>
+                    <p><strong className="text-foreground">Inference:</strong> Instant cellular morphology classification</p>
+                    <p><strong className="text-foreground">Operation:</strong> 100% offline self-contained analysis</p>
+                    <p><strong className="text-foreground">Power Input:</strong> Standard 5V USB-C rechargeable</p>
                   </CardContent>
                 </Card>
 
@@ -72,13 +72,13 @@ export function TechSpecs() {
                       <TreeStructureIcon className="size-4.5 text-primary" />
                       Optics &amp; Sensors
                     </CardTitle>
-                    <CardDescription>Custom Micro-Imaging Stage</CardDescription>
+                    <CardDescription>Micro-Imaging Stage</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Sensor:</strong> High-resolution CMOS optical sensor</p>
+                    <p><strong className="text-foreground">Sensor:</strong> High-resolution micro-optical sensor</p>
                     <p><strong className="text-foreground">Illumination:</strong> Calibrated narrow-band LED source</p>
                     <p><strong className="text-foreground">Chamber:</strong> Light-shielded microfluidic slide dock</p>
-                    <p><strong className="text-foreground">Resolution:</strong> 1080p cellular field-of-view</p>
+                    <p><strong className="text-foreground">Resolution:</strong> High-magnification cellular view</p>
                   </CardContent>
                 </Card>
 
@@ -86,15 +86,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <CodeBlockIcon className="size-4.5 text-primary" />
-                      Embedded CV/ML
+                      Field Durability
                     </CardTitle>
-                    <CardDescription>Local Edge Pipeline</CardDescription>
+                    <CardDescription>Rugged Portable Enclosure</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Model:</strong> Quantized MobileNet / Edge-TFLite</p>
-                    <p><strong className="text-foreground">Inference Time:</strong> &lt; 250ms per multi-frame ROI</p>
-                    <p><strong className="text-foreground">Task:</strong> Sickled cell morphology &amp; count</p>
-                    <p><strong className="text-foreground">Security:</strong> Signed weights &amp; firmware verification</p>
+                    <p><strong className="text-foreground">Enclosure:</strong> Shock-resistant field housing</p>
+                    <p><strong className="text-foreground">Form Factor:</strong> Compact, lightweight handheld footprint</p>
+                    <p><strong className="text-foreground">Battery Life:</strong> All-day mobile screening capable</p>
+                    <p><strong className="text-foreground">Environment:</strong> Designed for tropical field clinics</p>
                   </CardContent>
                 </Card>
               </div>
@@ -107,15 +107,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <DeviceMobileIcon className="size-4.5 text-primary" />
-                      Flutter Architecture
+                      Operator Experience
                     </CardTitle>
                     <CardDescription>Android Companion</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Framework:</strong> Flutter 3.x with Dart 3</p>
-                    <p><strong className="text-foreground">Compatibility:</strong> Android 8.0+ (API 26+)</p>
-                    <p><strong className="text-foreground">Storage:</strong> Local encrypted SQLite database</p>
-                    <p><strong className="text-foreground">Offline:</strong> 100% functionality without internet</p>
+                    <p><strong className="text-foreground">Compatibility:</strong> Android 8.0 or higher</p>
+                    <p><strong className="text-foreground">Interface:</strong> Step-by-step visual timers &amp; alerts</p>
+                    <p><strong className="text-foreground">Storage:</strong> Local encrypted patient records</p>
+                    <p><strong className="text-foreground">Connectivity:</strong> Zero cellular or Wi-Fi requirement</p>
                   </CardContent>
                 </Card>
 
@@ -123,15 +123,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <LockKeyIcon className="size-4.5 text-primary" />
-                      Field Security
+                      Data Security
                     </CardTitle>
                     <CardDescription>Operator &amp; Patient Privacy</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Auth:</strong> Local PIN / Biometric operator login</p>
-                    <p><strong className="text-foreground">Encryption:</strong> AES-256 local database encryption</p>
+                    <p><strong className="text-foreground">Authentication:</strong> PIN / Biometric operator login</p>
+                    <p><strong className="text-foreground">Encryption:</strong> High-grade local database protection</p>
                     <p><strong className="text-foreground">Anonymization:</strong> De-identified demographic tokens</p>
-                    <p><strong className="text-foreground">Audit Trail:</strong> Immutable tamper-evident test log</p>
+                    <p><strong className="text-foreground">Integrity:</strong> Tamper-evident test result logs</p>
                   </CardContent>
                 </Card>
 
@@ -139,15 +139,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <HardDrivesIcon className="size-4.5 text-primary" />
-                      Diagnostics Suite
+                      Clinical Reporting
                     </CardTitle>
-                    <CardDescription>Clinical Reporting</CardDescription>
+                    <CardDescription>Instant Documentation</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">PDF Engine:</strong> Embedded native PDF rendering</p>
-                    <p><strong className="text-foreground">Export:</strong> Direct USB-AOA or local sharing</p>
-                    <p><strong className="text-foreground">Sync:</strong> Optional delayed cloud backup when online</p>
-                    <p><strong className="text-foreground">Language:</strong> Multi-language UI for rural health camps</p>
+                    <p><strong className="text-foreground">PDF Generation:</strong> On-device instant report creation</p>
+                    <p><strong className="text-foreground">Export:</strong> Direct USB transfer or local sharing</p>
+                    <p><strong className="text-foreground">Languages:</strong> Multi-language regional support</p>
+                    <p><strong className="text-foreground">Standard:</strong> Standardized diagnostic format</p>
                   </CardContent>
                 </Card>
               </div>
@@ -160,15 +160,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <UsbIcon className="size-4.5 text-primary" />
-                      USB-AOA Transport
+                      Direct USB Link
                     </CardTitle>
                     <CardDescription>Zero-Install Protocol</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Standard:</strong> Android Open Accessory (AOA 2.0)</p>
-                    <p><strong className="text-foreground">Browser:</strong> Chrome / Edge with WebUSB API</p>
-                    <p><strong className="text-foreground">Driver:</strong> WinUSB on Windows / Standard udev on Linux</p>
-                    <p><strong className="text-foreground">Speed:</strong> Direct USB 2.0 full-speed stream</p>
+                    <p><strong className="text-foreground">Browser:</strong> Works directly in Chrome and Edge</p>
+                    <p><strong className="text-foreground">Install:</strong> Zero software installation needed on PC</p>
+                    <p><strong className="text-foreground">Connection:</strong> Standard USB-C to USB-A/C cable</p>
+                    <p><strong className="text-foreground">Speed:</strong> Instantaneous local data transfer</p>
                   </CardContent>
                 </Card>
 
@@ -176,15 +176,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <ShieldCheckIcon className="size-4.5 text-primary" />
-                      Zero-Cloud Guarantee
+                      Zero-Cloud Privacy
                     </CardTitle>
                     <CardDescription>Complete Data Sovereignty</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Storage:</strong> No browser cookies, localStorage, or IndexedDB</p>
-                    <p><strong className="text-foreground">Servers:</strong> Zero backend server uploads</p>
-                    <p><strong className="text-foreground">Session:</strong> Ephemeral in-memory memory stream</p>
-                    <p><strong className="text-foreground">PIN Code:</strong> Physical 6-digit confirmation prompt</p>
+                    <p><strong className="text-foreground">Storage:</strong> No tracking cookies or browser storage</p>
+                    <p><strong className="text-foreground">Servers:</strong> Zero external server uploads</p>
+                    <p><strong className="text-foreground">Session:</strong> Ephemeral in-memory transfer</p>
+                    <p><strong className="text-foreground">PIN Code:</strong> 6-digit physical confirmation code</p>
                   </CardContent>
                 </Card>
 
@@ -192,15 +192,15 @@ export function TechSpecs() {
                   <CardHeader className="p-6">
                     <CardTitle className="text-base font-bold flex items-center gap-2">
                       <CodeBlockIcon className="size-4.5 text-primary" />
-                      Integrity &amp; Packaging
+                      Data Packaging
                     </CardTitle>
-                    <CardDescription>ZIP Bundle Format</CardDescription>
+                    <CardDescription>Verified Archive Format</CardDescription>
                   </CardHeader>
                   <CardContent className="p-6 pt-0 text-xs text-muted-foreground space-y-2">
-                    <p><strong className="text-foreground">Format:</strong> Standard ZIP package with manifest</p>
-                    <p><strong className="text-foreground">Artifacts:</strong> Clinical PDF + Cropped Images + JSON</p>
-                    <p><strong className="text-foreground">Checksum:</strong> SHA-256 payload integrity check</p>
-                    <p><strong className="text-foreground">Interoperability:</strong> HL7 FHIR compatible JSON</p>
+                    <p><strong className="text-foreground">Format:</strong> Verified ZIP package with test records</p>
+                    <p><strong className="text-foreground">Artifacts:</strong> Clinical PDF + Micrographs + Summary</p>
+                    <p><strong className="text-foreground">Integrity:</strong> Checksum-verified data bundle</p>
+                    <p><strong className="text-foreground">Compatibility:</strong> Ready for clinic database import</p>
                   </CardContent>
                 </Card>
               </div>
