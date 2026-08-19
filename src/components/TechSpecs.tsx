@@ -2,15 +2,21 @@ import {
   CodeBlockIcon,
   CpuIcon,
   DeviceMobileIcon,
+  FlaskIcon,
   HardDrivesIcon,
   LockKeyIcon,
   ShieldCheckIcon,
+  SparkleIcon,
   TreeStructureIcon,
   UsbIcon,
 } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import poctPrototypeImg from '../assets/poct-prototype.png'
+import jeevdristiAppImg from '../assets/jeevdristi-app.png'
+import poctMedicalUnitImg from '../assets/poct-medical-unit.png'
+import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.png'
 
 export function TechSpecs() {
   return (
@@ -98,6 +104,45 @@ export function TechSpecs() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* Hardware Visual Strip */}
+              <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                <div className="flex items-center gap-4 rounded-xl border border-border/70 bg-card p-4">
+                  <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-muted/40 p-1">
+                    <img
+                      src={poctPrototypeImg}
+                      alt="IIT Bhilai Functional Prototype"
+                      className="size-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div>
+                    <Badge variant="outline" className="text-[10px] mb-1 gap-1">
+                      <FlaskIcon className="size-3 text-primary" /> Prototype Stage
+                    </Badge>
+                    <h4 className="font-heading text-xs font-bold text-foreground">IIT Bhilai Optical Unit</h4>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">Lab-validated functional prototype with calibrated light chamber.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 rounded-xl border border-border/70 bg-card p-4">
+                  <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-muted/40 p-1">
+                    <img
+                      src={poctMedicalUnitImg}
+                      alt="IBITF Medical Grade Enclosure"
+                      className="size-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div>
+                    <Badge variant="outline" className="text-[10px] mb-1 gap-1">
+                      <ShieldCheckIcon className="size-3 text-primary" /> Production Target
+                    </Badge>
+                    <h4 className="font-heading text-xs font-bold text-foreground">IBITF Medical Enclosure</h4>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">Sterilizable polymer body designed for field clinic deployment.</p>
+                  </div>
+                </div>
+              </div>
             </TabsContent>
 
             {/* Mobile App Specs */}
@@ -151,6 +196,25 @@ export function TechSpecs() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* App Visual Strip */}
+              <div className="mt-6 flex items-center gap-4 rounded-xl border border-border/70 bg-card p-4">
+                <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-muted/40 p-1">
+                  <img
+                    src={jeevdristiAppImg}
+                    alt="JeevDristi Mobile App Interface"
+                    className="size-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div>
+                  <Badge variant="outline" className="text-[10px] mb-1 gap-1">
+                    <DeviceMobileIcon className="size-3 text-primary" /> Offline UI
+                  </Badge>
+                  <h4 className="font-heading text-xs font-bold text-foreground">JeevDristi Android Application</h4>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">Streamlined operator dashboard with searchable patient histories and local PDF exports.</p>
+                </div>
+              </div>
             </TabsContent>
 
             {/* WebUSB Portal Specs */}
@@ -203,6 +267,25 @@ export function TechSpecs() {
                     <p><strong className="text-foreground">Compatibility:</strong> Ready for clinic database import</p>
                   </CardContent>
                 </Card>
+              </div>
+
+              {/* Portal / Diagnostics Visual Strip */}
+              <div className="mt-6 flex items-center gap-4 rounded-xl border border-border/70 bg-card p-4">
+                <div className="relative size-20 shrink-0 overflow-hidden rounded-lg bg-muted/40 p-1">
+                  <img
+                    src={diagnosticAnalyticsImg}
+                    alt="Diagnostic Analytics and Reporting"
+                    className="size-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div>
+                  <Badge variant="outline" className="text-[10px] mb-1 gap-1">
+                    <SparkleIcon className="size-3 text-primary" /> AI Morphology Reports
+                  </Badge>
+                  <h4 className="font-heading text-xs font-bold text-foreground">Diagnostic Result Inspection</h4>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">High-magnification cell images, clear negative/positive status, and complete diagnostic packages.</p>
+                </div>
               </div>
             </TabsContent>
           </Tabs>

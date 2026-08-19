@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { DeviceShowcase } from './components/DeviceShowcase'
 import { Downloads } from './components/Downloads'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
@@ -64,6 +65,7 @@ function MarketingSite() {
       <Header />
       <main>
         <Hero apk={downloads.apk} isLoading={isLoadingDownloads} />
+        <DeviceShowcase />
         <ProjectOverview />
         <Workflow />
         <TechSpecs />

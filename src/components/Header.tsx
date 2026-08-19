@@ -19,6 +19,7 @@ export function Header() {
 
   const navLinks = [
     { label: 'Overview', href: '#product' },
+    { label: 'Showcase', href: '#gallery' },
     { label: 'Workflow', href: '#workflow' },
     { label: 'Specifications', href: '#tech-specs' },
     { label: 'Phone Results', href: 'webportal/' },

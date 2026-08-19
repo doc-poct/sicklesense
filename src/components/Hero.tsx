@@ -1,14 +1,21 @@
+import { useState } from 'react'
 import {
   AndroidLogoIcon,
   ArrowRightIcon,
   CheckCircleIcon,
   CpuIcon,
+  DeviceMobileIcon,
+  FlaskIcon,
   LightningIcon,
   ShieldCheckIcon,
+  SparkleIcon,
   UsbIcon,
   WifiSlashIcon,
 } from '@phosphor-icons/react'
-import heroImage from '../assets/jeevdristi-device.png'
+import poctPrototypeImg from '../assets/poct-prototype.png'
+import jeevdristiAppImg from '../assets/jeevdristi-app.png'
+import poctMedicalUnitImg from '../assets/poct-medical-unit.png'
+import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.png'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { RELEASES_PAGE_URL, type ReleaseDownloads } from '../releaseDownloads'
@@ -18,7 +25,69 @@ type HeroProps = {
   isLoading: boolean
 }
 
+const showcaseItems = [
+  {
+    id: 'prototype',
+    title: 'Prototype Focus',
+    subtitle: 'Celebrating Innovation: Functional Prototype',
+    category: 'IIT Bhilai Unit',
+    icon: FlaskIcon,
+    image: poctPrototypeImg,
+    alt: 'IIT Bhilai POCT functional prototype unit with mobile companion on stand',
+    specs: [
+      { label: 'Hardware', value: 'Optical Stage' },
+      { label: 'Companion', value: 'Live Synced' },
+      { label: 'Status', value: 'Functional' },
+    ],
+  },
+  {
+    id: 'app',
+    title: 'App Control & Reports',
+    subtitle: 'Seamless Data Access',
+    category: 'Android App',
+    icon: DeviceMobileIcon,
+    image: jeevdristiAppImg,
+    alt: 'JeevDristi mobile application interface showing recent patient test reports',
+    specs: [
+      { label: 'Interface', value: 'Touch UI' },
+      { label: 'Offline', value: '100% Local' },
+      { label: 'Reports', value: 'Instant PDF' },
+    ],
+  },
+  {
+    id: 'medical',
+    title: 'Medical Grade Concept',
+    subtitle: 'Future Ready: Production Grade Materials',
+    category: 'Production Model',
+    icon: ShieldCheckIcon,
+    image: poctMedicalUnitImg,
+    alt: 'IBITF medical-grade POCT enclosure concept with blood test cartridge dock',
+    specs: [
+      { label: 'Enclosure', value: 'Medical Shell' },
+      { label: 'Standards', value: 'IBITF Grade' },
+      { label: 'Durability', value: 'Field Ready' },
+    ],
+  },
+  {
+    id: 'analytics',
+    title: 'Detailed Analytics',
+    subtitle: 'Instant, Clear Results',
+    category: 'AI Diagnostics',
+    icon: SparkleIcon,
+    image: diagnosticAnalyticsImg,
+    alt: 'Dual smartphone screens showing negative and positive sickle cell diagnostic results',
+    specs: [
+      { label: 'Diagnosis', value: 'Morphology' },
+      { label: 'Inference', value: 'On-Device' },
+      { label: 'Accuracy', value: 'Micrographs' },
+    ],
+  },
+]
+
 export function Hero({ apk, isLoading }: HeroProps) {
+  const [activeIdx, setActiveIdx] = useState(0)
+  const current = showcaseItems[activeIdx]
+
   const downloadLabel = apk
     ? `Download Android App (v${apk.version})`
     : isLoading
@@ -137,48 +206,80 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </div>
           </div>
 
-          {/* Right Column: Device Showcase Graphic */}
+          {/* Right Column: Device & App Showcase Interactive Card */}
           <div className="hero-product relative flex items-center justify-center lg:col-span-6 xl:col-span-5">
-            <div className="relative w-full max-w-lg rounded-2xl border border-border/80 bg-card/60 p-4 shadow-2xl backdrop-blur-sm sm:p-6">
+            <div className="relative w-full max-w-lg rounded-2xl border border-border/80 bg-card/70 p-4 shadow-2xl backdrop-blur-sm sm:p-5">
               {/* Card top bar */}
-              <div className="mb-4 flex items-center justify-between border-b border-border/60 pb-3">
+              <div className="mb-3 flex items-center justify-between border-b border-border/60 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="size-2.5 rounded-full bg-emerald-500" />
-                  <span className="font-mono text-xs font-medium text-muted-foreground">JEEVDRISTI-POCT-UNIT</span>
+                  <span className="size-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="font-mono text-xs font-semibold text-foreground">JEEVDRISTI ECOSYSTEM</span>
                 </div>
                 <Badge variant="outline" className="text-[10px] gap-1 font-mono">
-                  <CpuIcon className="size-3" /> Built-in AI Engine
+                  <CpuIcon className="size-3" /> {current.category}
                 </Badge>
               </div>
 
-              {/* Device Image */}
-              <div className="relative overflow-hidden rounded-xl bg-muted/40 p-2 sm:p-4">
-                <img
-                  src={heroImage}
-                  alt="JeevDristi mobile application beside compact optical POCT device"
-                  className="w-full object-contain transition-transform duration-500 hover:scale-[1.02]"
-                  width="1024"
-                  height="768"
-                  fetchPriority="high"
-                />
+              {/* View Switcher Tabs */}
+              <div className="mb-3 grid grid-cols-4 gap-1 rounded-lg bg-muted/60 p-1">
+                {showcaseItems.map((item, idx) => {
+                  const Icon = item.icon
+                  const isSelected = activeIdx === idx
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => setActiveIdx(idx)}
+                      className={`flex flex-col items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[11px] font-medium transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-background text-primary shadow-xs font-semibold'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
+                      }`}
+                      aria-label={`Show ${item.title}`}
+                    >
+                      <Icon className="size-3.5" weight={isSelected ? 'fill' : 'regular'} />
+                      <span className="truncate max-w-full text-[10px]">{item.title.split(' ')[0]}</span>
+                    </button>
+                  )
+                })}
               </div>
 
-              {/* Card bottom telemetry summary */}
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
-                <div className="rounded-lg bg-muted/40 p-2">
-                  <p className="text-[10px] text-muted-foreground">Hardware</p>
-                  <p className="font-semibold text-foreground">Optical Device</p>
+              {/* Device Image Showcase Container */}
+              <div className="relative overflow-hidden rounded-xl border border-border/60 bg-gradient-to-b from-muted/30 to-muted/70 p-2 sm:p-3">
+                <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-lg bg-background/50">
+                  <img
+                    key={current.id}
+                    src={current.image}
+                    alt={current.alt}
+                    className="max-h-full max-w-full object-contain transition-all duration-300 hover:scale-[1.03]"
+                    width="510"
+                    height="560"
+                    fetchPriority="high"
+                  />
                 </div>
-                <div className="rounded-lg bg-muted/40 p-2">
-                  <p className="text-[10px] text-muted-foreground">Companion</p>
-                  <p className="font-semibold text-foreground">Mobile App</p>
-                </div>
-                <div className="rounded-lg bg-muted/40 p-2">
-                  <p className="text-[10px] text-muted-foreground">Analysis</p>
-                  <p className="font-semibold text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1">
-                    <CheckCircleIcon weight="fill" className="size-3" /> On-Device
+
+                {/* Subtitle / Caption bar */}
+                <div className="mt-2.5 px-1 text-center">
+                  <p className="font-heading text-xs font-bold text-foreground">
+                    {current.title}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    {current.subtitle}
                   </p>
                 </div>
+              </div>
+
+              {/* Dynamic telemetry specs summary */}
+              <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+                {current.specs.map((spec, i) => (
+                  <div key={i} className="rounded-lg bg-muted/40 p-2">
+                    <p className="text-[10px] text-muted-foreground">{spec.label}</p>
+                    <p className="font-semibold text-foreground flex items-center justify-center gap-1 text-[11px]">
+                      {i === 2 && <CheckCircleIcon weight="fill" className="size-3 text-emerald-500" />}
+                      {spec.value}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
