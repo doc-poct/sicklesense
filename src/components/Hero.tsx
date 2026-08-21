@@ -41,8 +41,8 @@ export function Hero({ apk, isLoading }: HeroProps) {
           src={poctWorkstationImg}
           alt="SickleSense POCT clinical workstation background"
           className="size-full object-cover object-bottom select-none"
-          width="1376"
-          height="768"
+          width="1024"
+          height="682"
           fetchPriority="high"
         />
         {/* Subtle top edge fade for smooth navbar blend */}
