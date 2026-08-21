@@ -34,7 +34,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
   }
 
   return (
-    <section className="relative isolate overflow-hidden pt-12 md:pt-20 lg:pt-24" id="top">
+    <section className="relative isolate overflow-hidden pt-8 md:pt-14 lg:pt-18" id="top">
       {/* Full Workstation Background Canvas (Unified single scene without grid) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
@@ -42,17 +42,17 @@ export function Hero({ apk, isLoading }: HeroProps) {
           alt="SickleSense POCT clinical workstation background"
           className="size-full object-cover object-bottom select-none"
           width="1024"
-          height="682"
+          height="1102"
           fetchPriority="high"
         />
         {/* Subtle top edge fade for smooth navbar blend */}
-        <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
         {/* Bottom subtle edge fade to next section */}
-        <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-background/90 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-background/90 to-transparent pointer-events-none" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-72 sm:pb-96 md:pb-[420px] lg:pb-[480px] xl:pb-[520px]">
-        {/* Centered Hero Copy Floating Cleanly in Front of the Scene */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-72 sm:pb-80 md:pb-[380px] lg:pb-[440px] xl:pb-[480px]">
+        {/* Centered Hero Copy Floating Cleanly in Upper Wall Space */}
         <div className="hero-copy mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-5 inline-flex items-center gap-2 rounded-full border-border/80 bg-background/85 px-4 py-1 text-xs font-medium shadow-xs backdrop-blur-md">
             <span className="relative flex size-2">
