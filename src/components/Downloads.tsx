@@ -116,11 +116,11 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
                   <div className="flex justify-between">
                     <span>Target Hardware:</span>
-                    <span className="font-medium text-foreground">Raspberry Pi Zero 2W</span>
+                    <span className="font-medium text-foreground">JeevDristi Testing Unit</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Distribution:</span>
-                    <span className="font-medium text-foreground">DietPi A/B Image (.xz)</span>
+                    <span className="font-medium text-foreground">Verified A/B System Image (.xz)</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Architecture:</span>
@@ -136,12 +136,12 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                   onClick={() => triggerDownload(zero2wImage?.url)}
                 >
                   <DownloadSimpleIcon data-icon="inline-start" />
-                  Download Box FW ({zero2wVersion})
+                  Download Box Firmware ({zero2wVersion})
                 </Button>
               </div>
             </Card>
 
-            {/* SCD Diagnostic Terminal RPi 5 Card */}
+            {/* SCD Diagnostic Terminal Card */}
             <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
               <div>
                 <div className="flex items-center justify-between">
@@ -163,11 +163,11 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
                   <div className="flex justify-between">
                     <span>Target Hardware:</span>
-                    <span className="font-medium text-foreground">Raspberry Pi 5</span>
+                    <span className="font-medium text-foreground">Microscopy Workstation Unit</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Distribution:</span>
-                    <span className="font-medium text-foreground">Kiosk Device Image (.xz)</span>
+                    <span className="font-medium text-foreground">Kiosk Appliance Image (.xz)</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Architecture:</span>
@@ -183,7 +183,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                   onClick={() => triggerDownload(scdTerminalImage?.url)}
                 >
                   <DownloadSimpleIcon data-icon="inline-start" />
-                  Download Terminal ({scdVersion})
+                  Download Terminal Image ({scdVersion})
                 </Button>
               </div>
             </Card>
