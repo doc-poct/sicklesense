@@ -136,18 +136,22 @@ export function Hero({ apk, isLoading }: HeroProps) {
           </div>
         </div>
 
-        {/* Grand Centered Product Shelf & Workstation Stage */}
-        <div className="hero-product relative mx-auto mt-12 max-w-5xl">
-          <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-gradient-to-b from-card/30 via-card/60 to-card/90 p-2 sm:p-4 shadow-2xl backdrop-blur-xs">
-            <img
-              src={poctWorkstationImg}
-              alt="JeevDristi POCT clinical workstation setup on laboratory shelf with testing unit, smartphone companion and sample test tubes"
-              className="w-full h-auto rounded-2xl object-cover"
-              width="1376"
-              height="768"
-              fetchPriority="high"
-            />
-          </div>
+        {/* Grand Centered Product Shelf & Workstation Stage (Full, unboxed on grid background) */}
+        <div className="hero-product relative mx-auto mt-10 sm:mt-14 max-w-6xl w-full flex justify-center">
+          {/* Ambient radial glow underlay */}
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 bg-radial from-primary/15 via-teal-500/5 to-transparent blur-3xl opacity-60"
+            aria-hidden="true"
+          />
+
+          <img
+            src={poctWorkstationImg}
+            alt="JeevDristi POCT clinical workstation setup on laboratory shelf with testing unit, smartphone companion and sample test tubes"
+            className="w-full max-w-5xl h-auto object-contain select-none [mask-image:linear-gradient(to_bottom,transparent_0%,black_6%,black_92%,transparent_100%)]"
+            width="1376"
+            height="768"
+            fetchPriority="high"
+          />
         </div>
       </div>
     </section>
