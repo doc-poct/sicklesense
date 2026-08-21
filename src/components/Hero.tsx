@@ -126,9 +126,11 @@ export function Hero({ apk, isLoading }: HeroProps) {
               <span className="font-mono text-primary font-semibold">SickleSense POCT</span>
             </Badge>
 
-            <h1 className="font-heading text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-foreground">
-              Clarity at the <br />
-              <span className="bg-gradient-to-r from-primary via-teal-600 to-emerald-600 bg-clip-text text-transparent dark:from-primary dark:to-teal-400">
+            <h1 className="font-heading tracking-tight text-foreground">
+              <span className="block text-3xl font-extrabold sm:text-4xl lg:text-5xl">
+                Clarity at the
+              </span>
+              <span className="mt-1.5 block text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl bg-gradient-to-r from-primary via-teal-600 to-emerald-600 bg-clip-text text-transparent dark:from-primary dark:to-teal-400">
                 point of care.
               </span>
             </h1>
@@ -206,22 +208,30 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </div>
           </div>
 
-          {/* Right Column: Device & App Showcase Interactive Card */}
+          {/* Right Column: Device & App Showcase Seamless Stage */}
           <div className="hero-product relative flex items-center justify-center lg:col-span-6 xl:col-span-5">
-            <div className="relative w-full max-w-lg rounded-2xl border border-border/80 bg-card/70 p-4 shadow-2xl backdrop-blur-sm sm:p-5">
+            <div className="relative w-full max-w-lg rounded-3xl border border-border/50 bg-card/40 p-4 shadow-xl backdrop-blur-md sm:p-6">
+              {/* Ambient radial glow underlay for natural blending */}
+              <div
+                className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-radial from-primary/20 via-teal-500/10 to-transparent blur-2xl opacity-70"
+                aria-hidden="true"
+              />
+
               {/* Card top bar */}
-              <div className="mb-3 flex items-center justify-between border-b border-border/60 pb-3">
+              <div className="mb-4 flex items-center justify-between border-b border-border/40 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="size-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="font-mono text-xs font-semibold text-foreground">JEEVDRISTI ECOSYSTEM</span>
+                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="font-mono text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                    JeevDristi Ecosystem
+                  </span>
                 </div>
-                <Badge variant="outline" className="text-[10px] gap-1 font-mono">
-                  <CpuIcon className="size-3" /> {current.category}
+                <Badge variant="outline" className="text-[10px] gap-1 font-mono bg-background/60 backdrop-blur-xs">
+                  <CpuIcon className="size-3 text-primary" /> {current.category}
                 </Badge>
               </div>
 
-              {/* View Switcher Tabs */}
-              <div className="mb-3 grid grid-cols-4 gap-1 rounded-lg bg-muted/60 p-1">
+              {/* View Switcher Tabs (Seamless Glass Pill Bar) */}
+              <div className="mb-4 grid grid-cols-4 gap-1.5 rounded-xl border border-border/40 bg-background/60 p-1 backdrop-blur-sm">
                 {showcaseItems.map((item, idx) => {
                   const Icon = item.icon
                   const isSelected = activeIdx === idx
@@ -230,10 +240,10 @@ export function Hero({ apk, isLoading }: HeroProps) {
                       key={item.id}
                       type="button"
                       onClick={() => setActiveIdx(idx)}
-                      className={`flex flex-col items-center justify-center gap-1 rounded-md px-1.5 py-1.5 text-[11px] font-medium transition-all cursor-pointer ${
+                      className={`flex flex-col items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[11px] font-medium transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-background text-primary shadow-xs font-semibold'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-background/40'
+                          ? 'bg-primary/15 text-primary shadow-xs font-semibold ring-1 ring-primary/30 dark:bg-primary/25'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
                       }`}
                       aria-label={`Show ${item.title}`}
                     >
@@ -244,37 +254,38 @@ export function Hero({ apk, isLoading }: HeroProps) {
                 })}
               </div>
 
-              {/* Device Image Showcase Container */}
-              <div className="relative overflow-hidden rounded-xl border border-border/60 bg-gradient-to-b from-muted/30 to-muted/70 p-2 sm:p-3">
-                <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-lg bg-background/50">
-                  <img
-                    key={current.id}
-                    src={current.image}
-                    alt={current.alt}
-                    className="max-h-full max-w-full object-contain transition-all duration-300 hover:scale-[1.03]"
-                    width="510"
-                    height="560"
-                    fetchPriority="high"
-                  />
-                </div>
+              {/* Product Visual Showcase Stage (Unboxed, Blended directly with background) */}
+              <div className="relative flex min-h-[280px] sm:min-h-[330px] w-full items-center justify-center py-2">
+                {/* Subtle soft pedestal glow */}
+                <div className="pointer-events-none absolute -bottom-2 left-1/2 -translate-x-1/2 h-6 w-3/4 rounded-full bg-primary/25 blur-xl" />
 
-                {/* Subtitle / Caption bar */}
-                <div className="mt-2.5 px-1 text-center">
-                  <p className="font-heading text-xs font-bold text-foreground">
-                    {current.title}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {current.subtitle}
-                  </p>
-                </div>
+                <img
+                  key={current.id}
+                  src={current.image}
+                  alt={current.alt}
+                  className="relative z-10 max-h-[270px] sm:max-h-[320px] w-auto max-w-full object-contain filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_15px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:scale-[1.02] select-none"
+                  width="510"
+                  height="560"
+                  fetchPriority="high"
+                />
               </div>
 
-              {/* Dynamic telemetry specs summary */}
-              <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+              {/* Subtitle / Caption bar */}
+              <div className="mt-2 text-center">
+                <p className="font-heading text-xs font-bold text-foreground sm:text-sm">
+                  {current.title}
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  {current.subtitle}
+                </p>
+              </div>
+
+              {/* Dynamic telemetry specs summary (Translucent Glass Stat Chips) */}
+              <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
                 {current.specs.map((spec, i) => (
-                  <div key={i} className="rounded-lg bg-muted/40 p-2">
+                  <div key={i} className="rounded-xl border border-border/40 bg-background/50 p-2 backdrop-blur-xs shadow-2xs">
                     <p className="text-[10px] text-muted-foreground">{spec.label}</p>
-                    <p className="font-semibold text-foreground flex items-center justify-center gap-1 text-[11px]">
+                    <p className="font-semibold text-foreground flex items-center justify-center gap-1 text-[11px] mt-0.5">
                       {i === 2 && <CheckCircleIcon weight="fill" className="size-3 text-emerald-500" />}
                       {spec.value}
                     </p>
