@@ -34,15 +34,25 @@ export function Hero({ apk, isLoading }: HeroProps) {
   }
 
   return (
-    <section className="relative overflow-hidden pt-12 md:pt-16 lg:pt-20 pb-6 sm:pb-10" id="top">
-      {/* Background ambient lighting */}
-      <div
-        className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[650px] rounded-full bg-primary/10 blur-[140px] opacity-70"
-        aria-hidden="true"
-      />
+    <section className="relative isolate overflow-hidden pt-8 md:pt-14 lg:pt-18" id="top">
+      {/* Full Workstation Background Canvas (Unified single scene without grid) */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img
+          src={poctWorkstationImg}
+          alt="SickleSense POCT clinical workstation background"
+          className="size-full object-cover object-bottom select-none"
+          width="1024"
+          height="1102"
+          fetchPriority="high"
+        />
+        {/* Subtle top edge fade for smooth navbar blend */}
+        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
+        {/* Bottom subtle edge fade to next section */}
+        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-background/90 to-transparent pointer-events-none" />
+      </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Centered Hero Copy */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-72 sm:pb-80 md:pb-[380px] lg:pb-[440px] xl:pb-[480px]">
+        {/* Centered Hero Copy Floating Cleanly in Upper Wall Space */}
         <div className="hero-copy mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-5 inline-flex items-center gap-2 rounded-full border-border/80 bg-background/85 px-4 py-1 text-xs font-medium shadow-xs backdrop-blur-md">
             <span className="relative flex size-2">
@@ -54,7 +64,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             <span className="font-mono text-primary font-semibold">SickleSense POCT</span>
           </Badge>
 
-          <h1 className="font-heading tracking-tight text-foreground">
+          <h1 className="font-heading tracking-tight text-foreground drop-shadow-xs">
             <span className="block text-3xl font-extrabold sm:text-5xl lg:text-6xl">
               Clarity at the
             </span>
@@ -63,11 +73,11 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base font-normal leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-base font-normal leading-relaxed text-foreground/80 sm:text-lg drop-shadow-2xs">
             Precision optical testing, on-device AI morphology analysis, and zero-cloud field reporting in one cohesive platform—engineered to work anywhere, even without internet.
           </p>
 
-          {/* Centered Action Buttons */}
+          {/* Centered Action Buttons overlapping the scene */}
           <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
             <Button
               size="lg"
@@ -93,9 +103,9 @@ export function Hero({ apk, isLoading }: HeroProps) {
           </div>
 
           {/* Centered Highlights Ribbon */}
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 max-w-3xl mx-auto pt-6 border-t border-border/60">
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 max-w-3xl mx-auto pt-6 border-t border-border/60 backdrop-blur-xs">
             <div className="flex items-center justify-center gap-2">
-              <span className="grid size-7 place-items-center rounded-md bg-primary/10 text-primary">
+              <span className="grid size-7 place-items-center rounded-md bg-primary/15 text-primary backdrop-blur-xs">
                 <LightningIcon className="size-3.5" weight="fill" />
               </span>
               <div className="flex flex-col text-left">
@@ -105,7 +115,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </div>
 
             <div className="flex items-center justify-center gap-2">
-              <span className="grid size-7 place-items-center rounded-md bg-primary/10 text-primary">
+              <span className="grid size-7 place-items-center rounded-md bg-primary/15 text-primary backdrop-blur-xs">
                 <WifiSlashIcon className="size-3.5" weight="bold" />
               </span>
               <div className="flex flex-col text-left">
@@ -115,7 +125,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </div>
 
             <div className="flex items-center justify-center gap-2">
-              <span className="grid size-7 place-items-center rounded-md bg-primary/10 text-primary">
+              <span className="grid size-7 place-items-center rounded-md bg-primary/15 text-primary backdrop-blur-xs">
                 <UsbIcon className="size-3.5" weight="bold" />
               </span>
               <div className="flex flex-col text-left">
@@ -125,7 +135,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </div>
 
             <div className="flex items-center justify-center gap-2">
-              <span className="grid size-7 place-items-center rounded-md bg-primary/10 text-primary">
+              <span className="grid size-7 place-items-center rounded-md bg-primary/15 text-primary backdrop-blur-xs">
                 <ShieldCheckIcon className="size-3.5" weight="fill" />
               </span>
               <div className="flex flex-col text-left">
@@ -134,18 +144,6 @@ export function Hero({ apk, isLoading }: HeroProps) {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Product Workstation Scene (Seamlessly positioned below text & buttons with top blend) */}
-        <div className="relative mx-auto mt-6 sm:mt-10 max-w-5xl flex justify-center">
-          <img
-            src={poctWorkstationImg}
-            alt="JeevDristi POCT clinical workstation setup on laboratory shelf with testing unit, smartphone companion and sample test tubes"
-            className="w-full max-w-4xl h-auto object-contain select-none [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_100%)]"
-            width="1024"
-            height="682"
-            fetchPriority="high"
-          />
         </div>
       </div>
     </section>
