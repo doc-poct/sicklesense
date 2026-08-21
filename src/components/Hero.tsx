@@ -34,9 +34,9 @@ export function Hero({ apk, isLoading }: HeroProps) {
   }
 
   return (
-    <section className="relative overflow-hidden pt-12 md:pt-20 lg:pt-24" id="top">
+    <section className="relative isolate overflow-hidden pt-12 md:pt-20 lg:pt-24" id="top">
       {/* Full Workstation Background Canvas (Unified single scene without grid) */}
-      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <img
           src={poctWorkstationImg}
           alt="SickleSense POCT clinical workstation background"
@@ -45,13 +45,13 @@ export function Hero({ apk, isLoading }: HeroProps) {
           height="768"
           fetchPriority="high"
         />
-        {/* Subtle top ambient tint for contrast and seamless navbar blend */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/40 to-transparent dark:from-background/95 dark:via-background/75 dark:to-transparent/30" />
+        {/* Subtle top edge fade for smooth navbar blend */}
+        <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
         {/* Bottom subtle edge fade to next section */}
-        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-background/90 to-transparent pointer-events-none" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-72 sm:pb-96 md:pb-[420px] lg:pb-[480px] xl:pb-[520px]">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-72 sm:pb-96 md:pb-[420px] lg:pb-[480px] xl:pb-[520px]">
         {/* Centered Hero Copy Floating Cleanly in Front of the Scene */}
         <div className="hero-copy mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-5 inline-flex items-center gap-2 rounded-full border-border/80 bg-background/85 px-4 py-1 text-xs font-medium shadow-xs backdrop-blur-md">
