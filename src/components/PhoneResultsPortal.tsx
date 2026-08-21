@@ -698,7 +698,7 @@ export function PhoneResultsPortal() {
                   <span>{error}</span>
                   {error.includes('WinUSB') ? (
                     <span className="opacity-90">
-                      <strong>Windows Fix:</strong> Use Zadig to bind the <em>WinUSB</em> driver to your Android device in AOA mode (see guide below).
+                      <strong>Windows Fix:</strong> <a href="https://github.com/pbatard/libwdi/releases/download/v1.5.1/zadig-2.9.exe" target="_blank" rel="noopener noreferrer" className="font-medium underline hover:text-foreground">Download Zadig (.exe)</a> to bind the <em>WinUSB</em> driver to your Android device in AOA mode (see setup guide below).
                     </span>
                   ) : null}
                 </AlertDescription>
@@ -1262,7 +1262,7 @@ export function PhoneResultsPortal() {
                     </p>
                     <ol className="list-decimal space-y-1 pl-4 text-[11px] leading-relaxed">
                       <li>
-                        Download <a href="https://zadig.akeo.ie/" target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline">Zadig</a>.
+                        Download <a href="https://github.com/pbatard/libwdi/releases/download/v1.5.1/zadig-2.9.exe" target="_blank" rel="noopener noreferrer" className="font-medium text-primary underline">Zadig (direct .exe)</a>.
                       </li>
                       <li>In Zadig, select <strong>Options → List All Devices</strong>.</li>
                       <li>Select your connected phone from the list, choose <strong>WinUSB</strong>, and click <strong>Replace Driver</strong>.</li>
