@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   AndroidLogoIcon,
   ArrowRightIcon,
   CheckCircleIcon,
-  CpuIcon,
   DeviceMobileIcon,
   FlaskIcon,
   LightningIcon,
@@ -29,7 +28,7 @@ const showcaseItems = [
   {
     id: 'prototype',
     title: 'Prototype Focus',
-    subtitle: 'Celebrating Innovation: Functional Prototype',
+    subtitle: 'Celebrating Innovation: Functional Prototype Unit',
     category: 'IIT Bhilai Unit',
     icon: FlaskIcon,
     image: poctPrototypeImg,
@@ -43,7 +42,7 @@ const showcaseItems = [
   {
     id: 'app',
     title: 'App Control & Reports',
-    subtitle: 'Seamless Data Access',
+    subtitle: 'Seamless Data Access and Automated Reporting',
     category: 'Android App',
     icon: DeviceMobileIcon,
     image: jeevdristiAppImg,
@@ -71,7 +70,7 @@ const showcaseItems = [
   {
     id: 'analytics',
     title: 'Detailed Analytics',
-    subtitle: 'Instant, Clear Results',
+    subtitle: 'Instant, Clear RBC Morphology & Classification',
     category: 'AI Diagnostics',
     icon: SparkleIcon,
     image: diagnosticAnalyticsImg,
@@ -86,7 +85,16 @@ const showcaseItems = [
 
 export function Hero({ apk, isLoading }: HeroProps) {
   const [activeIdx, setActiveIdx] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
   const current = showcaseItems[activeIdx]
+
+  useEffect(() => {
+    if (isPaused) return
+    const timer = setInterval(() => {
+      setActiveIdx((prev) => (prev + 1) % showcaseItems.length)
+    }, 4200)
+    return () => clearInterval(timer)
+  }, [isPaused])
 
   const downloadLabel = apk
     ? `Download Android App (v${apk.version})`
@@ -208,88 +216,83 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </div>
           </div>
 
-          {/* Right Column: Device & App Showcase Seamless Stage */}
-          <div className="hero-product relative flex items-center justify-center lg:col-span-6 xl:col-span-5">
-            <div className="relative w-full max-w-lg rounded-3xl border border-border/50 bg-card/40 p-4 shadow-xl backdrop-blur-md sm:p-6">
-              {/* Ambient radial glow underlay for natural blending */}
-              <div
-                className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-radial from-primary/20 via-teal-500/10 to-transparent blur-2xl opacity-70"
-                aria-hidden="true"
-              />
+          {/* Right Column: Device & App Showcase Seamless Shuffling Stage */}
+          <div
+            className="hero-product relative flex flex-col items-center justify-center lg:col-span-6 xl:col-span-5"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {/* Ambient radial glow underlay directly illuminating the grid */}
+            <div
+              className="pointer-events-none absolute -inset-4 -z-10 rounded-full bg-radial from-primary/20 via-teal-500/10 to-transparent blur-3xl opacity-80"
+              aria-hidden="true"
+            />
 
-              {/* Card top bar */}
-              <div className="mb-4 flex items-center justify-between border-b border-border/40 pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="font-mono text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                    JeevDristi Ecosystem
-                  </span>
-                </div>
-                <Badge variant="outline" className="text-[10px] gap-1 font-mono bg-background/60 backdrop-blur-xs">
-                  <CpuIcon className="size-3 text-primary" /> {current.category}
+            {/* Floating Live Product Image on grid */}
+            <div className="relative flex min-h-[300px] sm:min-h-[380px] lg:min-h-[420px] w-full items-center justify-center py-2">
+              {/* Soft floor shadow & pedestal glow under device */}
+              <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 h-8 w-4/5 rounded-full bg-primary/25 blur-2xl" />
+
+              <img
+                key={current.id}
+                src={current.image}
+                alt={current.alt}
+                className="relative z-10 max-h-[290px] sm:max-h-[360px] lg:max-h-[400px] w-auto max-w-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_25px_45px_rgba(0,0,0,0.55)] transition-all duration-700 ease-out select-none animate-in fade-in-0 zoom-in-95"
+                width="510"
+                height="560"
+                fetchPriority="high"
+              />
+            </div>
+
+            {/* Shuffling Text & Details seamlessly floating on page */}
+            <div key={`text-${current.id}`} className="mt-2 w-full text-center lg:text-left animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
+              {/* Category pill & live pulse */}
+              <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
+                <Badge variant="outline" className="gap-1.5 rounded-full border-primary/30 bg-background/50 px-3 py-1 font-mono text-[11px] text-primary shadow-xs backdrop-blur-xs">
+                  <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <current.icon className="size-3 text-primary" weight="fill" />
+                  <span>{current.category}</span>
                 </Badge>
               </div>
 
-              {/* View Switcher Tabs (Seamless Glass Pill Bar) */}
-              <div className="mb-4 grid grid-cols-4 gap-1.5 rounded-xl border border-border/40 bg-background/60 p-1 backdrop-blur-sm">
-                {showcaseItems.map((item, idx) => {
-                  const Icon = item.icon
-                  const isSelected = activeIdx === idx
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => setActiveIdx(idx)}
-                      className={`flex flex-col items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[11px] font-medium transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-primary/15 text-primary shadow-xs font-semibold ring-1 ring-primary/30 dark:bg-primary/25'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
-                      }`}
-                      aria-label={`Show ${item.title}`}
-                    >
-                      <Icon className="size-3.5" weight={isSelected ? 'fill' : 'regular'} />
-                      <span className="truncate max-w-full text-[10px]">{item.title.split(' ')[0]}</span>
-                    </button>
-                  )
-                })}
-              </div>
+              {/* Title & Subtitle */}
+              <h3 className="font-heading text-lg font-bold tracking-tight text-foreground sm:text-xl">
+                {current.title}
+              </h3>
+              <p className="mt-1 text-xs text-muted-foreground sm:text-sm leading-relaxed max-w-md mx-auto lg:mx-0">
+                {current.subtitle}
+              </p>
 
-              {/* Product Visual Showcase Stage (Unboxed, Blended directly with background) */}
-              <div className="relative flex min-h-[280px] sm:min-h-[330px] w-full items-center justify-center py-2">
-                {/* Subtle soft pedestal glow */}
-                <div className="pointer-events-none absolute -bottom-2 left-1/2 -translate-x-1/2 h-6 w-3/4 rounded-full bg-primary/25 blur-xl" />
-
-                <img
-                  key={current.id}
-                  src={current.image}
-                  alt={current.alt}
-                  className="relative z-10 max-h-[270px] sm:max-h-[320px] w-auto max-w-full object-contain filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_15px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:scale-[1.02] select-none"
-                  width="510"
-                  height="560"
-                  fetchPriority="high"
-                />
-              </div>
-
-              {/* Subtitle / Caption bar */}
-              <div className="mt-2 text-center">
-                <p className="font-heading text-xs font-bold text-foreground sm:text-sm">
-                  {current.title}
-                </p>
-                <p className="text-[11px] text-muted-foreground">
-                  {current.subtitle}
-                </p>
-              </div>
-
-              {/* Dynamic telemetry specs summary (Translucent Glass Stat Chips) */}
-              <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
+              {/* Minimalist Key Specs Tag Strip */}
+              <div className="mt-3.5 flex flex-wrap items-center justify-center lg:justify-start gap-2">
                 {current.specs.map((spec, i) => (
-                  <div key={i} className="rounded-xl border border-border/40 bg-background/50 p-2 backdrop-blur-xs shadow-2xs">
-                    <p className="text-[10px] text-muted-foreground">{spec.label}</p>
-                    <p className="font-semibold text-foreground flex items-center justify-center gap-1 text-[11px] mt-0.5">
+                  <div
+                    key={i}
+                    className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/60 px-2.5 py-1 text-xs backdrop-blur-xs shadow-2xs text-foreground/90"
+                  >
+                    <span className="text-[11px] text-muted-foreground">{spec.label}:</span>
+                    <span className="font-semibold text-foreground flex items-center gap-1">
                       {i === 2 && <CheckCircleIcon weight="fill" className="size-3 text-emerald-500" />}
                       {spec.value}
-                    </p>
+                    </span>
                   </div>
+                ))}
+              </div>
+
+              {/* Sleek Pagination / Progress Indicators */}
+              <div className="mt-5 flex items-center justify-center lg:justify-start gap-2">
+                {showcaseItems.map((item, idx) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setActiveIdx(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
+                      activeIdx === idx
+                        ? 'w-7 bg-primary shadow-xs shadow-primary/40'
+                        : 'w-2 bg-border/80 hover:bg-muted-foreground'
+                    }`}
+                    aria-label={`Show ${item.title}`}
+                  />
                 ))}
               </div>
             </div>
