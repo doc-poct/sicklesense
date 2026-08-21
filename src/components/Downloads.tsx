@@ -3,6 +3,7 @@ import {
   CpuIcon,
   DownloadSimpleIcon,
   LifebuoyIcon,
+  MicroscopeIcon,
 } from '@phosphor-icons/react'
 import { Brand } from './Brand'
 import { Button } from '@/components/ui/button'
@@ -14,9 +15,10 @@ type DownloadsProps = ReleaseDownloads & {
   isLoading: boolean
 }
 
-export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
+export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: DownloadsProps) {
   const appVersion = apk ? `v${apk.version}` : isLoading ? 'Resolving...' : 'Current Version'
-  const imageVersion = zero2wImage ? `v${zero2wImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
+  const zero2wVersion = zero2wImage ? `v${zero2wImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
+  const scdVersion = scdTerminalImage ? `v${scdTerminalImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
 
   const triggerDownload = (targetUrl?: string | null) => {
     const url = targetUrl ?? RELEASES_PAGE_URL
@@ -41,11 +43,11 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
               Ready for the field. Download official packages.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-              Official application packages and device runtime updates for field deployments and clinical screening camps.
+              Official application packages, testing unit firmware, and diagnostic workstation images for field deployments and clinical screening camps.
             </p>
           </div>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {/* JeevDristi Mobile App Card */}
             <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
               <div>
@@ -72,11 +74,11 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
                   </div>
                   <div className="flex justify-between">
                     <span>Package Format:</span>
-                    <span className="font-medium text-foreground">Official Android Package (.apk)</span>
+                    <span className="font-medium text-foreground">Official APK (.apk)</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Verification:</span>
-                    <span className="font-medium text-foreground">Digitally Signed &amp; Verified</span>
+                    <span className="font-medium text-foreground">Signed &amp; Verified</span>
                   </div>
                 </div>
               </div>
@@ -87,7 +89,7 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
                   onClick={() => triggerDownload(apk?.url)}
                 >
                   <DownloadSimpleIcon data-icon="inline-start" />
-                  Download Android App ({appVersion})
+                  Download App ({appVersion})
                 </Button>
               </div>
             </Card>
@@ -100,29 +102,29 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
                     <CpuIcon className="size-6" weight="duotone" />
                   </span>
                   <Badge variant="secondary" className="font-mono text-xs">
-                    {imageVersion}
+                    {zero2wVersion}
                   </Badge>
                 </div>
 
                 <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
-                  Device Software Package
+                  POCT Box Firmware
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Complete device runtime bundle including autonomous AI diagnostic models, optical drivers, and device services.
+                  Firmware image for the portable POCT turbidity testing box with autonomous optical capture and BLE device link.
                 </p>
 
                 <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
                   <div className="flex justify-between">
                     <span>Target Hardware:</span>
-                    <span className="font-medium text-foreground">JeevDristi POCT Testing Unit</span>
+                    <span className="font-medium text-foreground">Raspberry Pi Zero 2W</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Distribution:</span>
-                    <span className="font-medium text-foreground">Standard Device Image</span>
+                    <span className="font-medium text-foreground">DietPi A/B Image (.xz)</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Status:</span>
-                    <span className="font-medium text-foreground">Production Stable Release</span>
+                    <span>Architecture:</span>
+                    <span className="font-medium text-foreground">ARM64 (aarch64)</span>
                   </div>
                 </div>
               </div>
@@ -134,13 +136,60 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
                   onClick={() => triggerDownload(zero2wImage?.url)}
                 >
                   <DownloadSimpleIcon data-icon="inline-start" />
-                  Download Device Package
+                  Download Box FW ({zero2wVersion})
+                </Button>
+              </div>
+            </Card>
+
+            {/* SCD Diagnostic Terminal RPi 5 Card */}
+            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <MicroscopeIcon className="size-6" weight="duotone" />
+                  </span>
+                  <Badge variant="secondary" className="font-mono text-xs">
+                    {scdVersion}
+                  </Badge>
+                </div>
+
+                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
+                  SCD Terminal Image
+                </h3>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  Kiosk appliance image for single-cell automated microscopy terminal with ONNX Cellpose segmentation.
+                </p>
+
+                <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
+                  <div className="flex justify-between">
+                    <span>Target Hardware:</span>
+                    <span className="font-medium text-foreground">Raspberry Pi 5</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Distribution:</span>
+                    <span className="font-medium text-foreground">Kiosk Device Image (.xz)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Architecture:</span>
+                    <span className="font-medium text-foreground">ARM64 (aarch64)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-border/40">
+                <Button
+                  variant="outline"
+                  className="w-full font-semibold cursor-pointer"
+                  onClick={() => triggerDownload(scdTerminalImage?.url)}
+                >
+                  <DownloadSimpleIcon data-icon="inline-start" />
+                  Download Terminal ({scdVersion})
                 </Button>
               </div>
             </Card>
 
             {/* Support & Deployment Guide Card */}
-            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md md:col-span-2 lg:col-span-1">
+            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
               <div>
                 <div className="flex items-center justify-between">
                   <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
@@ -152,10 +201,10 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
                 </div>
 
                 <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
-                  Support &amp; User Guide
+                  Support &amp; Portal
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Access operator instructions, optical calibration procedures, and technical support for healthcare camps.
+                  Connect phone via WebUSB to review clinical results, preview data, and access user guides.
                 </p>
 
                 <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
@@ -165,11 +214,11 @@ export function Downloads({ apk, zero2wImage, isLoading }: DownloadsProps) {
                   </div>
                   <div className="flex justify-between">
                     <span>Web Portal:</span>
-                    <span className="font-medium text-foreground">Zero-Install Browser Access</span>
+                    <span className="font-medium text-foreground">Zero-Install WebUSB</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Assistance:</span>
-                    <span className="font-medium text-foreground">Institutional Research Team</span>
+                    <span className="font-medium text-foreground">Research Team</span>
                   </div>
                 </div>
               </div>

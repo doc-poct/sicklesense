@@ -1,5 +1,5 @@
 const RELEASES_API_URL = 'https://api.github.com/repos/doc-poct/poct_fw_app_releases/releases?per_page=100'
-const CACHE_KEY = 'jeevdristi-release-downloads-v5'
+const CACHE_KEY = 'jeevdristi-release-downloads-v6'
 const RETRY_KEY = 'jeevdristi-release-downloads-retry-at'
 const CACHE_TTL_MS = 60 * 60 * 1000
 const FAILURE_RETRY_MS = 60 * 60 * 1000
@@ -21,6 +21,7 @@ type Version = readonly [number, number, number]
 export type ReleaseDownloads = {
   apk: { url: string; version: string } | null
   zero2wImage: { url: string; version: string } | null
+  scdTerminalImage: { url: string; version: string } | null
 }
 
 type CachedReleaseDownloads = {
@@ -39,6 +40,10 @@ const FALLBACK_DOWNLOADS: ReleaseDownloads = {
   zero2wImage: {
     url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/firmware-v2.1.10/poct-2.1.10-dietpi-zero2w-arm64-ab.img.xz',
     version: '2.1.10',
+  },
+  scdTerminalImage: {
+    url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct-scd-terminal-0.1.0-dietpi-rpi5-arm64.img.xz',
+    version: '0.1.0',
   },
 }
 
@@ -95,6 +100,7 @@ export function getCachedReleaseDownloads(): ReleaseDownloads | null {
   return {
     apk: downloads?.apk ?? FALLBACK_DOWNLOADS.apk,
     zero2wImage: downloads?.zero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
+    scdTerminalImage: downloads?.scdTerminalImage ?? FALLBACK_DOWNLOADS.scdTerminalImage,
   }
 }
 
@@ -165,6 +171,8 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
   let latestApkVersion: Version | null = null
   let latestZero2wImage: ReleaseDownloads['zero2wImage'] = null
   let latestFirmwareVersion: Version | null = null
+  let latestScdTerminalImage: ReleaseDownloads['scdTerminalImage'] = null
+  let latestScdVersion: Version | null = null
 
   for (const release of stableReleases(await response.json())) {
     const tagName = release.tag_name as string
@@ -188,11 +196,21 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
       }
     }
 
+    const scdVersion = parseVersion(tagName, 'scd-terminal-')
+    if (scdVersion && isNewer(scdVersion, latestScdVersion)) {
+      const version = scdVersion.join('.')
+      const url = findAsset(release, `poct-scd-terminal-${version}-dietpi-rpi5-arm64.img.xz`)
+      if (url) {
+        latestScdTerminalImage = { url, version }
+        latestScdVersion = scdVersion
+      }
+    }
   }
 
   const downloads = {
     apk: latestApk ?? FALLBACK_DOWNLOADS.apk,
     zero2wImage: latestZero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
+    scdTerminalImage: latestScdTerminalImage ?? FALLBACK_DOWNLOADS.scdTerminalImage,
   }
   writeCache(downloads, response.headers.get('etag'))
   clearRetryAfter()
