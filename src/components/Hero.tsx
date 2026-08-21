@@ -33,6 +33,8 @@ const showcaseItems = [
     icon: FlaskIcon,
     image: poctPrototypeImg,
     alt: 'IIT Bhilai POCT functional prototype unit with mobile companion on stand',
+    bgTop: '#bbbbb5',
+    bgBottom: '#cacbc3',
     specs: [
       { label: 'Hardware', value: 'Optical Stage' },
       { label: 'Companion', value: 'Live Synced' },
@@ -47,6 +49,8 @@ const showcaseItems = [
     icon: DeviceMobileIcon,
     image: jeevdristiAppImg,
     alt: 'JeevDristi mobile application interface showing recent patient test reports',
+    bgTop: '#eff3f6',
+    bgBottom: '#f0f3f7',
     specs: [
       { label: 'Interface', value: 'Touch UI' },
       { label: 'Offline', value: '100% Local' },
@@ -61,6 +65,8 @@ const showcaseItems = [
     icon: ShieldCheckIcon,
     image: poctMedicalUnitImg,
     alt: 'IBITF medical-grade POCT enclosure concept with blood test cartridge dock',
+    bgTop: '#d0d9dd',
+    bgBottom: '#d0d2cd',
     specs: [
       { label: 'Enclosure', value: 'Medical Shell' },
       { label: 'Standards', value: 'IBITF Grade' },
@@ -75,6 +81,8 @@ const showcaseItems = [
     icon: SparkleIcon,
     image: diagnosticAnalyticsImg,
     alt: 'Dual smartphone screens showing negative and positive sickle cell diagnostic results',
+    bgTop: '#f3f7f9',
+    bgBottom: '#ecf0f3',
     specs: [
       { label: 'Diagnosis', value: 'Morphology' },
       { label: 'Inference', value: 'On-Device' },
@@ -218,48 +226,42 @@ export function Hero({ apk, isLoading }: HeroProps) {
 
           {/* Right Column: Device & App Showcase Seamless Shuffling Stage */}
           <div
-            className="hero-product relative flex flex-col items-center justify-center lg:col-span-6 xl:col-span-5"
+            className="hero-product relative flex flex-col items-center justify-between lg:col-span-6 xl:col-span-5 rounded-3xl overflow-hidden p-6 sm:p-8 transition-all duration-700 shadow-2xl border border-black/5 dark:border-white/10"
+            style={{
+              background: `linear-gradient(180deg, ${current.bgTop} 0%, ${current.bgBottom} 100%)`,
+            }}
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            {/* Ambient radial glow underlay directly illuminating the grid */}
-            <div
-              className="pointer-events-none absolute -inset-4 -z-10 rounded-full bg-radial from-primary/20 via-teal-500/10 to-transparent blur-3xl opacity-80"
-              aria-hidden="true"
-            />
-
-            {/* Floating Live Product Image on grid */}
-            <div className="relative flex min-h-[300px] sm:min-h-[380px] lg:min-h-[420px] w-full items-center justify-center py-2">
-              {/* Soft floor shadow & pedestal glow under device */}
-              <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 h-8 w-4/5 rounded-full bg-primary/25 blur-2xl" />
-
+            {/* Floating Live Product Image directly on matching canvas */}
+            <div className="relative flex min-h-[280px] sm:min-h-[340px] lg:min-h-[380px] w-full items-center justify-center py-2">
               <img
                 key={current.id}
                 src={current.image}
                 alt={current.alt}
-                className="relative z-10 max-h-[290px] sm:max-h-[360px] lg:max-h-[400px] w-auto max-w-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_25px_45px_rgba(0,0,0,0.55)] transition-all duration-700 ease-out select-none animate-in fade-in-0 zoom-in-95"
+                className="relative z-10 max-h-[280px] sm:max-h-[340px] lg:max-h-[380px] w-auto max-w-full object-contain select-none animate-in fade-in-0 zoom-in-95 transition-all duration-700"
                 width="510"
                 height="560"
                 fetchPriority="high"
               />
             </div>
 
-            {/* Shuffling Text & Details seamlessly floating on page */}
+            {/* Shuffling Text & Details seamlessly floating on canvas */}
             <div key={`text-${current.id}`} className="mt-2 w-full text-center lg:text-left animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
               {/* Category pill & live pulse */}
               <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
-                <Badge variant="outline" className="gap-1.5 rounded-full border-primary/30 bg-background/50 px-3 py-1 font-mono text-[11px] text-primary shadow-xs backdrop-blur-xs">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white/80 px-3 py-1 font-mono text-[11px] font-semibold text-slate-800 shadow-2xs backdrop-blur-xs">
                   <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <current.icon className="size-3 text-primary" weight="fill" />
+                  <current.icon className="size-3 text-teal-700" weight="fill" />
                   <span>{current.category}</span>
-                </Badge>
+                </span>
               </div>
 
               {/* Title & Subtitle */}
-              <h3 className="font-heading text-lg font-bold tracking-tight text-foreground sm:text-xl">
+              <h3 className="font-heading text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
                 {current.title}
               </h3>
-              <p className="mt-1 text-xs text-muted-foreground sm:text-sm leading-relaxed max-w-md mx-auto lg:mx-0">
+              <p className="mt-1 text-xs text-slate-700 sm:text-sm leading-relaxed max-w-md mx-auto lg:mx-0">
                 {current.subtitle}
               </p>
 
@@ -268,11 +270,11 @@ export function Hero({ apk, isLoading }: HeroProps) {
                 {current.specs.map((spec, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/60 px-2.5 py-1 text-xs backdrop-blur-xs shadow-2xs text-foreground/90"
+                    className="flex items-center gap-1.5 rounded-lg border border-black/10 bg-white/70 px-2.5 py-1 text-xs backdrop-blur-xs shadow-2xs text-slate-900"
                   >
-                    <span className="text-[11px] text-muted-foreground">{spec.label}:</span>
-                    <span className="font-semibold text-foreground flex items-center gap-1">
-                      {i === 2 && <CheckCircleIcon weight="fill" className="size-3 text-emerald-500" />}
+                    <span className="text-[11px] text-slate-600">{spec.label}:</span>
+                    <span className="font-semibold text-slate-900 flex items-center gap-1">
+                      {i === 2 && <CheckCircleIcon weight="fill" className="size-3 text-emerald-600" />}
                       {spec.value}
                     </span>
                   </div>
@@ -288,8 +290,8 @@ export function Hero({ apk, isLoading }: HeroProps) {
                     onClick={() => setActiveIdx(idx)}
                     className={`h-1.5 rounded-full transition-all duration-500 cursor-pointer ${
                       activeIdx === idx
-                        ? 'w-7 bg-primary shadow-xs shadow-primary/40'
-                        : 'w-2 bg-border/80 hover:bg-muted-foreground'
+                        ? 'w-7 bg-slate-900 shadow-xs'
+                        : 'w-2 bg-slate-400/60 hover:bg-slate-700'
                     }`}
                     aria-label={`Show ${item.title}`}
                   />
