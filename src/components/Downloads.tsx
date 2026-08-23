@@ -4,6 +4,7 @@ import {
   DownloadSimpleIcon,
   LifebuoyIcon,
   MicroscopeIcon,
+  UsbIcon,
 } from '@phosphor-icons/react'
 import { Brand } from './Brand'
 import { Button } from '@/components/ui/button'
@@ -32,7 +33,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
 
   return (
     <>
-      <section className="section-deferred border-t border-border/60 bg-muted/20 py-20 lg:py-28" id="downloads">
+      <section className="section-deferred scroll-mt-20 border-t border-border/60 bg-muted/20 py-20 lg:py-28" id="downloads">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
@@ -47,190 +48,191 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
             </p>
           </div>
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {/* JeevDristi Mobile App Card */}
-            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <AndroidLogoIcon className="size-6" weight="fill" />
+            <Card className="flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
+                    <AndroidLogoIcon className="size-5" weight="fill" />
                   </span>
-                  <Badge variant="secondary" className="font-mono text-xs">
+                  <Badge variant="secondary" className="font-mono text-xs shrink-0">
                     {appVersion}
                   </Badge>
                 </div>
 
-                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
+                <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
                   JeevDristi Mobile App
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   Companion Android application for guided testing, on-screen results, patient history, and report export.
                 </p>
 
-                <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Compatibility:</span>
-                    <span className="font-medium text-foreground">Android 8.0+</span>
+                <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Compatibility:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Android 8.0+</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Package Format:</span>
-                    <span className="font-medium text-foreground">Official APK (.apk)</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Format:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Official APK (.apk)</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Verification:</span>
-                    <span className="font-medium text-foreground">Signed &amp; Verified</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Verification:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Signed &amp; Verified</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border/40">
+              <div className="mt-6 border-t border-border/40 pt-4">
                 <Button
-                  className="w-full font-semibold cursor-pointer"
+                  className="h-10 w-full px-3 text-xs font-semibold cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
                   onClick={() => triggerDownload(apk?.url)}
                 >
-                  <DownloadSimpleIcon data-icon="inline-start" />
-                  Download App ({appVersion})
+                  <DownloadSimpleIcon className="size-4 shrink-0" />
+                  <span className="truncate">Download Android APK</span>
                 </Button>
               </div>
             </Card>
 
             {/* POCT Device Runtime Card */}
-            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <CpuIcon className="size-6" weight="duotone" />
+            <Card className="flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
+                    <CpuIcon className="size-5" weight="duotone" />
                   </span>
-                  <Badge variant="secondary" className="font-mono text-xs">
+                  <Badge variant="secondary" className="font-mono text-xs shrink-0">
                     {zero2wVersion}
                   </Badge>
                 </div>
 
-                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
+                <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
                   POCT Box Firmware
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Firmware image for the portable POCT turbidity testing box with autonomous optical capture and BLE device link.
+                  Firmware image for the portable POCT turbidity testing box with autonomous optical capture and BLE link.
                 </p>
 
-                <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Target Hardware:</span>
-                    <span className="font-medium text-foreground">JeevDristi Testing Unit</span>
+                <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Target Unit:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">JeevDristi Box</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Distribution:</span>
-                    <span className="font-medium text-foreground">Verified A/B System Image (.xz)</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Format:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">A/B Image (.xz)</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Architecture:</span>
-                    <span className="font-medium text-foreground">ARM64 (aarch64)</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Architecture:</span>
+                    <span className="text-right font-medium text-foreground text-[11px] font-mono">ARM64</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border/40">
+              <div className="mt-6 border-t border-border/40 pt-4">
                 <Button
                   variant="outline"
-                  className="w-full font-semibold cursor-pointer"
+                  className="h-10 w-full px-3 text-xs font-semibold cursor-pointer border-border hover:bg-muted/70 flex items-center justify-center gap-1.5"
                   onClick={() => triggerDownload(zero2wImage?.url)}
                 >
-                  <DownloadSimpleIcon data-icon="inline-start" />
-                  Download Box Firmware ({zero2wVersion})
+                  <DownloadSimpleIcon className="size-4 shrink-0" />
+                  <span className="truncate">Download Box Firmware</span>
                 </Button>
               </div>
             </Card>
 
             {/* SCD Diagnostic Terminal Card */}
-            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <MicroscopeIcon className="size-6" weight="duotone" />
+            <Card className="flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
+                    <MicroscopeIcon className="size-5" weight="duotone" />
                   </span>
-                  <Badge variant="secondary" className="font-mono text-xs">
+                  <Badge variant="secondary" className="font-mono text-xs shrink-0">
                     {scdVersion}
                   </Badge>
                 </div>
 
-                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
+                <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
                   SCD Terminal Image
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   Kiosk appliance image for single-cell automated microscopy terminal with ONNX Cellpose segmentation.
                 </p>
 
-                <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Target Hardware:</span>
-                    <span className="font-medium text-foreground">Microscopy Workstation Unit</span>
+                <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Target Unit:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Microscopy Unit</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Distribution:</span>
-                    <span className="font-medium text-foreground">Kiosk Appliance Image (.xz)</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Format:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Kiosk Image (.xz)</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Architecture:</span>
-                    <span className="font-medium text-foreground">ARM64 (aarch64)</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Architecture:</span>
+                    <span className="text-right font-medium text-foreground text-[11px] font-mono">ARM64</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border/40">
+              <div className="mt-6 border-t border-border/40 pt-4">
                 <Button
                   variant="outline"
-                  className="w-full font-semibold cursor-pointer"
+                  className="h-10 w-full px-3 text-xs font-semibold cursor-pointer border-border hover:bg-muted/70 flex items-center justify-center gap-1.5"
                   onClick={() => triggerDownload(scdTerminalImage?.url)}
                 >
-                  <DownloadSimpleIcon data-icon="inline-start" />
-                  Download Terminal Image ({scdVersion})
+                  <DownloadSimpleIcon className="size-4 shrink-0" />
+                  <span className="truncate">Download Terminal Image</span>
                 </Button>
               </div>
             </Card>
 
             {/* Support & Deployment Guide Card */}
-            <Card className="flex flex-col justify-between border-border/80 bg-card p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <LifebuoyIcon className="size-6" weight="duotone" />
+            <Card className="flex flex-col justify-between border-border/80 bg-card p-5 sm:p-6 shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
+              <div className="flex flex-col">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary shrink-0">
+                    <LifebuoyIcon className="size-5" weight="duotone" />
                   </span>
-                  <Badge variant="outline" className="font-mono text-xs">
+                  <Badge variant="outline" className="font-mono text-xs shrink-0">
                     Assistance
                   </Badge>
                 </div>
 
-                <h3 className="mt-4 font-heading text-lg font-bold text-foreground">
+                <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
                   Support &amp; Portal
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   Connect phone via WebUSB to review clinical results, preview data, and access user guides.
                 </p>
 
-                <div className="mt-4 flex flex-col gap-1.5 border-t border-border/50 pt-3 text-xs text-muted-foreground">
-                  <div className="flex justify-between">
-                    <span>Institution:</span>
-                    <span className="font-medium text-foreground">IIT Bhilai POCT Project</span>
+                <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Institution:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">IIT Bhilai POCT</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Web Portal:</span>
-                    <span className="font-medium text-foreground">Zero-Install WebUSB</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Portal:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Direct WebUSB</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Assistance:</span>
-                    <span className="font-medium text-foreground">Research Team</span>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-muted-foreground text-[11px] shrink-0">Assistance:</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">Research Team</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-border/40">
+              <div className="mt-6 border-t border-border/40 pt-4">
                 <Button
                   variant="outline"
-                  className="w-full font-semibold"
+                  className="h-10 w-full px-3 text-xs font-semibold border-border hover:bg-muted/70 flex items-center justify-center gap-1.5"
                   nativeButton={false}
                   render={<a href="webportal/" />}
                 >
-                  Launch Web Portal
+                  <UsbIcon className="size-4 shrink-0" />
+                  <span className="truncate">Launch Web Portal</span>
                 </Button>
               </div>
             </Card>

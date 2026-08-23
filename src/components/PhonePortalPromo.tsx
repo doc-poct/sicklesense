@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 
 export function PhonePortalPromo() {
   return (
-    <section className="section-deferred mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8" id="phone-results">
+    <section className="section-deferred scroll-mt-20 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8" id="phone-results">
       <Card className="relative overflow-hidden border-border/80 bg-gradient-to-br from-card via-card to-primary/5 p-2 shadow-xl sm:p-4">
         {/* Subtle decorative glow */}
         <div

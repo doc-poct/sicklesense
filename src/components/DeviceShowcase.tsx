@@ -69,7 +69,7 @@ const showcaseCards = [
 
 export function DeviceShowcase() {
   return (
-    <section className="section-deferred relative border-t border-border/60 bg-muted/10 py-20 lg:py-28" id="gallery">
+    <section className="section-deferred scroll-mt-20 relative border-t border-border/60 bg-muted/10 py-20 lg:py-28" id="gallery">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">

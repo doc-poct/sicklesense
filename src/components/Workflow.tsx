@@ -49,7 +49,7 @@ const steps = [
 
 export function Workflow() {
   return (
-    <section className="section-deferred py-20 lg:py-28" id="workflow">
+    <section className="section-deferred scroll-mt-20 py-20 lg:py-28" id="workflow">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">

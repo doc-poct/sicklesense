@@ -20,7 +20,7 @@ import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.webp'
 
 export function TechSpecs() {
   return (
-    <section className="section-deferred border-t border-border/60 bg-muted/30 py-20 lg:py-28" id="tech-specs">
+    <section className="section-deferred scroll-mt-20 border-t border-border/60 bg-muted/30 py-20 lg:py-28" id="tech-specs">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">

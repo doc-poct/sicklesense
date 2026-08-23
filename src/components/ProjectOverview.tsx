@@ -64,7 +64,7 @@ const features = [
 
 export function ProjectOverview() {
   return (
-    <section className="section-deferred relative border-y border-border/60 bg-muted/20 py-20 lg:py-28" id="product">
+    <section className="section-deferred scroll-mt-20 relative border-y border-border/60 bg-muted/20 py-20 lg:py-28" id="product">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
