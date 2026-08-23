@@ -7,10 +7,10 @@ import {
 } from '@phosphor-icons/react'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import poctPrototypeImg from '../assets/poct-prototype.png'
-import jeevdristiAppImg from '../assets/jeevdristi-app.png'
-import poctMedicalUnitImg from '../assets/poct-medical-unit.png'
-import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.png'
+import poctPrototypeImg from '../assets/poct-prototype.webp'
+import jeevdristiAppImg from '../assets/jeevdristi-app.webp'
+import poctMedicalUnitImg from '../assets/poct-medical-unit.webp'
+import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.webp'
 
 const showcaseCards = [
   {
@@ -69,7 +69,7 @@ const showcaseCards = [
 
 export function DeviceShowcase() {
   return (
-    <section className="relative border-t border-border/60 bg-muted/10 py-20 lg:py-28" id="gallery">
+    <section className="section-deferred relative border-t border-border/60 bg-muted/10 py-20 lg:py-28" id="gallery">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
@@ -77,10 +77,10 @@ export function DeviceShowcase() {
             <SparkleIcon className="size-3 text-primary" weight="fill" />
             PLATFORM SHOWCASE
           </Badge>
-          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
             Complete ecosystem from optics to mobile analytics.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg text-pretty">
             Explore the physical optical unit, companion application, medical enclosure, and diagnostic reporting engineered for field reliability.
           </p>
         </div>
@@ -104,6 +104,7 @@ export function DeviceShowcase() {
                       width="510"
                       height="560"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <Badge

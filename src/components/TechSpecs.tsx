@@ -13,23 +13,23 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import poctPrototypeImg from '../assets/poct-prototype.png'
-import jeevdristiAppImg from '../assets/jeevdristi-app.png'
-import poctMedicalUnitImg from '../assets/poct-medical-unit.png'
-import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.png'
+import poctPrototypeImg from '../assets/poct-prototype.webp'
+import jeevdristiAppImg from '../assets/jeevdristi-app.webp'
+import poctMedicalUnitImg from '../assets/poct-medical-unit.webp'
+import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.webp'
 
 export function TechSpecs() {
   return (
-    <section className="border-t border-border/60 bg-muted/30 py-20 lg:py-28" id="tech-specs">
+    <section className="section-deferred border-t border-border/60 bg-muted/30 py-20 lg:py-28" id="tech-specs">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
             PRODUCT SPECIFICATIONS
           </Badge>
-          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-balance">
             Integrated hardware, companion app, and portal.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground text-pretty">
             A cohesive diagnostic platform connecting precision optics, mobile control, and secure data export.
           </p>
         </div>
@@ -114,13 +114,14 @@ export function TechSpecs() {
                       alt="IIT Bhilai Functional Prototype"
                       className="size-full object-contain"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div>
                     <Badge variant="outline" className="text-[10px] mb-1 gap-1">
                       <FlaskIcon className="size-3 text-primary" /> Prototype Stage
                     </Badge>
-                    <h4 className="font-heading text-xs font-bold text-foreground">IIT Bhilai Optical Unit</h4>
+                    <h3 className="font-heading text-xs font-bold text-foreground">IIT Bhilai Optical Unit</h3>
                     <p className="text-[11px] text-muted-foreground mt-0.5">Lab-validated functional prototype with calibrated light chamber.</p>
                   </div>
                 </div>
@@ -132,13 +133,14 @@ export function TechSpecs() {
                       alt="IBITF Medical Grade Enclosure"
                       className="size-full object-contain"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div>
                     <Badge variant="outline" className="text-[10px] mb-1 gap-1">
                       <ShieldCheckIcon className="size-3 text-primary" /> Production Target
                     </Badge>
-                    <h4 className="font-heading text-xs font-bold text-foreground">IBITF Medical Enclosure</h4>
+                    <h3 className="font-heading text-xs font-bold text-foreground">IBITF Medical Enclosure</h3>
                     <p className="text-[11px] text-muted-foreground mt-0.5">Sterilizable polymer body designed for field clinic deployment.</p>
                   </div>
                 </div>
@@ -205,13 +207,14 @@ export function TechSpecs() {
                     alt="JeevDristi Mobile App Interface"
                     className="size-full object-contain"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div>
                   <Badge variant="outline" className="text-[10px] mb-1 gap-1">
                     <DeviceMobileIcon className="size-3 text-primary" /> Offline UI
                   </Badge>
-                  <h4 className="font-heading text-xs font-bold text-foreground">JeevDristi Android Application</h4>
+                  <h3 className="font-heading text-xs font-bold text-foreground">JeevDristi Android Application</h3>
                   <p className="text-[11px] text-muted-foreground mt-0.5">Streamlined operator dashboard with searchable patient histories and local PDF exports.</p>
                 </div>
               </div>
@@ -277,13 +280,14 @@ export function TechSpecs() {
                     alt="Diagnostic Analytics and Reporting"
                     className="size-full object-contain"
                     loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div>
                   <Badge variant="outline" className="text-[10px] mb-1 gap-1">
                     <SparkleIcon className="size-3 text-primary" /> AI Morphology Reports
                   </Badge>
-                  <h4 className="font-heading text-xs font-bold text-foreground">Diagnostic Result Inspection</h4>
+                  <h3 className="font-heading text-xs font-bold text-foreground">Diagnostic Result Inspection</h3>
                   <p className="text-[11px] text-muted-foreground mt-0.5">High-magnification cell images, clear negative/positive status, and complete diagnostic packages.</p>
                 </div>
               </div>

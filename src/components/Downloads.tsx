@@ -32,17 +32,17 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
 
   return (
     <>
-      <section className="border-t border-border/60 bg-muted/20 py-20 lg:py-28" id="downloads">
+      <section className="section-deferred border-t border-border/60 bg-muted/20 py-20 lg:py-28" id="downloads">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
               <DownloadSimpleIcon className="size-3 text-primary" />
               OFFICIAL SOFTWARE &amp; PACKAGES
             </Badge>
-            <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-balance">
               Ready for the field. Download official packages.
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground text-pretty">
               Official application packages, testing unit firmware, and diagnostic workstation images for field deployments and clinical screening camps.
             </p>
           </div>

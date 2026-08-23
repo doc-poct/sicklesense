@@ -49,17 +49,17 @@ const steps = [
 
 export function Workflow() {
   return (
-    <section className="py-20 lg:py-28" id="workflow">
+    <section className="section-deferred py-20 lg:py-28" id="workflow">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
             STEP-BY-STEP OPERATION
           </Badge>
-          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
             From sample to verified result. One unified flow.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg text-pretty">
             Designed for minimal cognitive overhead so community health workers and clinicians can conduct rapid tests with high repeatability.
           </p>
         </div>

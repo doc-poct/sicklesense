@@ -10,14 +10,14 @@ export default defineConfig({
   build: {
     rolldownOptions: {
       input: {
-        main: path.resolve(__dirname, 'index.html'),
-        webportal: path.resolve(__dirname, 'webportal/index.html'),
+        main: path.resolve(import.meta.dirname, 'index.html'),
+        webportal: path.resolve(import.meta.dirname, 'webportal/index.html'),
       },
     },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(import.meta.dirname, './src'),
     },
   },
 })

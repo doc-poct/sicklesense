@@ -13,13 +13,23 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: light dark;
     @apply font-sans antialiased text-foreground bg-background;
   }
 
   body {
     min-width: 320px;
     min-height: 100vh;
+    overflow-x: clip;
     @apply bg-background text-foreground selection:bg-primary/20 selection:text-primary;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   body,
@@ -48,6 +58,10 @@
 }
 
 @layer utilities {
+  .section-deferred {
+    content-visibility: auto;
+    contain-intrinsic-size: auto none auto 600px;
+  }
   .hero-copy {
     animation: rise-in 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }

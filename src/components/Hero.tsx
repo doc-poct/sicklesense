@@ -7,6 +7,7 @@ import {
   WifiSlashIcon,
 } from '@phosphor-icons/react'
 import poctWorkstationImg from '../assets/poct-hero-workstation.webp'
+import poctWorkstationImg640 from '../assets/poct-hero-workstation-640.webp'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { RELEASES_PAGE_URL, type ReleaseDownloads } from '../releaseDownloads'
@@ -37,14 +38,18 @@ export function Hero({ apk, isLoading }: HeroProps) {
     <section className="relative isolate overflow-hidden pt-8 md:pt-14 lg:pt-18" id="top">
       {/* Full Workstation Background Canvas (Unified single scene without grid) */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <img
-          src={poctWorkstationImg}
-          alt="SickleSense POCT clinical workstation background"
-          className="size-full object-cover object-bottom select-none"
-          width="1024"
-          height="1102"
-          fetchPriority="high"
-        />
+        <picture>
+          <source media="(max-width: 640px)" srcSet={poctWorkstationImg640} type="image/webp" />
+          <img
+            src={poctWorkstationImg}
+            alt="SickleSense POCT clinical workstation background"
+            className="size-full object-cover object-bottom select-none"
+            width="1024"
+            height="1102"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
         {/* Subtle top edge fade for smooth navbar blend */}
         <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-background/80 to-transparent pointer-events-none" />
         {/* Bottom subtle edge fade to next section */}
@@ -64,7 +69,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             <span className="font-mono text-primary font-semibold">SickleSense POCT</span>
           </Badge>
 
-          <h1 className="font-heading tracking-tight text-foreground drop-shadow-xs">
+          <h1 className="font-heading tracking-tight text-foreground drop-shadow-xs text-balance">
             <span className="block text-3xl font-extrabold sm:text-5xl lg:text-6xl">
               Clarity at the
             </span>
@@ -73,7 +78,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base font-normal leading-relaxed text-foreground/80 sm:text-lg drop-shadow-2xs">
+          <p className="mx-auto mt-6 max-w-2xl text-base font-normal leading-relaxed text-foreground/80 sm:text-lg drop-shadow-2xs text-pretty">
             Precision optical testing, on-device AI morphology analysis, and zero-cloud field reporting in one cohesive platform—engineered to work anywhere, even without internet.
           </p>
 

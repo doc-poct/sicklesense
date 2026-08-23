@@ -29,7 +29,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md transition-colors">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a className="no-underline transition-opacity hover:opacity-90" href="#top" aria-label="JeevDristi home">
+        <a className="no-underline transition-opacity hover:opacity-90" href="#top">
           <Brand />
         </a>
 

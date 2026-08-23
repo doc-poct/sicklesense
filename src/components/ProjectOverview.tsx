@@ -64,7 +64,7 @@ const features = [
 
 export function ProjectOverview() {
   return (
-    <section className="relative border-y border-border/60 bg-muted/20 py-20 lg:py-28" id="product">
+    <section className="section-deferred relative border-y border-border/60 bg-muted/20 py-20 lg:py-28" id="product">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
@@ -72,10 +72,10 @@ export function ProjectOverview() {
             <SparkleIcon className="size-3 text-primary" weight="fill" />
             ENGINEERED FOR THE FIELD
           </Badge>
-          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
             Designed around the realities of rural &amp; point-of-care clinics.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg text-pretty">
             Every layer of the JeevDristi platform—from precision optics to intuitive mobile UI—is built to ensure high diagnostic reliability in resource-limited environments.
           </p>
         </div>

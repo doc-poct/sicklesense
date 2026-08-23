@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 
 export function PhonePortalPromo() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8" id="phone-results">
+    <section className="section-deferred mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8" id="phone-results">
       <Card className="relative overflow-hidden border-border/80 bg-gradient-to-br from-card via-card to-primary/5 p-2 shadow-xl sm:p-4">
         {/* Subtle decorative glow */}
         <div
@@ -20,11 +20,11 @@ export function PhonePortalPromo() {
               DIRECT PHONE EXPORT
             </Badge>
 
-            <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+            <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl text-balance">
               Inspect results directly from your phone.
             </h2>
 
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base text-pretty">
               Connect your Android device via standard USB cable to access the zero-cloud Web Portal. Review patient test histories, preview generated PDF clinical summaries, inspect cropped cellular images, and download integrity-verified ZIP packages directly onto your desktop.
             </p>
 
