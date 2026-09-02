@@ -2,8 +2,11 @@ import { ArrowRightIcon, CheckCircleIcon, LockKeyIcon, ShieldCheckIcon, UsbIcon 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useLanguage } from '@/lib/i18n'
 
 export function PhonePortalPromo() {
+  const { t } = useLanguage()
+
   return (
     <section className="section-deferred scroll-mt-20 mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8" id="phone-results">
       <Card className="relative overflow-hidden border-border/80 bg-gradient-to-br from-card via-card to-primary/5 p-2 shadow-xl sm:p-4">
@@ -17,29 +20,29 @@ export function PhonePortalPromo() {
           <div className="lg:col-span-7">
             <Badge variant="outline" className="mb-4 gap-1.5 px-3 py-1 text-xs">
               <UsbIcon className="size-3 text-primary" weight="bold" />
-              DIRECT PHONE EXPORT
+              {t.promo.badge}
             </Badge>
 
             <h2 className="font-heading text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl text-balance">
-              Inspect results directly from your phone.
+              {t.promo.heading}
             </h2>
 
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base text-pretty">
-              Connect your Android device via standard USB cable to access the zero-cloud Web Portal. Review patient test histories, preview generated PDF clinical summaries, inspect cropped cellular images, and download integrity-verified ZIP packages directly onto your desktop.
+              {t.promo.description}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <CheckCircleIcon className="size-4 text-emerald-500" weight="fill" />
-                <span>Zero cloud upload</span>
+                <span>{t.promo.bulletCloud}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircleIcon className="size-4 text-emerald-500" weight="fill" />
-                <span>Zero browser storage</span>
+                <span>{t.promo.bulletStorage}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircleIcon className="size-4 text-emerald-500" weight="fill" />
-                <span>PIN code authorization</span>
+                <span>{t.promo.bulletPin}</span>
               </div>
             </div>
           </div>
@@ -50,24 +53,24 @@ export function PhonePortalPromo() {
                 <ShieldCheckIcon className="size-5" weight="duotone" />
               </span>
               <div>
-                <h3 className="font-heading text-sm font-bold text-foreground">Phone Results Portal</h3>
-                <p className="text-xs text-muted-foreground">Hardware-authenticated WebUSB session</p>
+                <h3 className="font-heading text-sm font-bold text-foreground">{t.promo.portalBoxTitle}</h3>
+                <p className="text-xs text-muted-foreground">{t.promo.portalBoxSub}</p>
               </div>
             </div>
 
             <p className="text-xs leading-relaxed text-muted-foreground">
-              No software installation required on your computer. Open directly in Chrome or Edge.
+              {t.promo.portalBoxDesc}
             </p>
 
             <Button size="lg" className="w-full font-semibold" nativeButton={false} render={<a href="webportal/" />}>
               <UsbIcon data-icon="inline-start" />
-              Open Phone Results Portal
+              {t.promo.btnOpen}
               <ArrowRightIcon data-icon="inline-end" />
             </Button>
 
             <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
               <LockKeyIcon className="size-3.5 shrink-0" />
-              <span>Data stays strictly between your phone and this browser.</span>
+              <span>{t.promo.privacyNote}</span>
             </p>
           </div>
         </div>

@@ -11,63 +11,62 @@ import poctPrototypeImg from '../assets/poct-prototype.webp'
 import jeevdristiAppImg from '../assets/jeevdristi-app.webp'
 import poctMedicalUnitImg from '../assets/poct-medical-unit.webp'
 import diagnosticAnalyticsImg from '../assets/diagnostic-analytics.webp'
-
-const showcaseCards = [
-  {
-    id: 'prototype',
-    badge: 'IIT Bhilai Unit',
-    badgeVariant: 'secondary' as const,
-    title: 'Prototype Focus',
-    subtitle: 'Celebrating Innovation: Functional Prototype',
-    description:
-      'Lab-tested optical unit engineered at IIT Bhilai, pairing precision LED illumination with a dedicated companion stand for real-time sample processing.',
-    image: poctPrototypeImg,
-    alt: 'IIT Bhilai functional POCT device prototype beside mobile companion',
-    icon: FlaskIcon,
-    highlights: ['Micro-optical stage', 'IIT Bhilai seal & calibrated dock', 'Live companion synchronization'],
-  },
-  {
-    id: 'app',
-    badge: 'Android Companion',
-    badgeVariant: 'secondary' as const,
-    title: 'App Control & Reports',
-    subtitle: 'Seamless Data Access',
-    description:
-      'JeevDristi Android interface providing comprehensive patient search, organized test history, and instant clinical report generation completely offline.',
-    image: jeevdristiAppImg,
-    alt: 'JeevDristi mobile application showing recent test records',
-    icon: DeviceMobileIcon,
-    highlights: ['100% Offline patient database', 'Recent reports & search filters', 'Instant PDF clinical summaries'],
-  },
-  {
-    id: 'medical',
-    badge: 'Production Target',
-    badgeVariant: 'secondary' as const,
-    title: 'Final Product Concept - Medical Grade',
-    subtitle: 'Future Ready: Production Grade Materials',
-    description:
-      'Next-generation clinical enclosure designed to IBITF medical standards, featuring light-shielded cartridge insertion and durable, sterilizable field housing.',
-    image: poctMedicalUnitImg,
-    alt: 'IBITF medical grade POCT device concept with inserted test sample',
-    icon: ShieldCheckIcon,
-    highlights: ['IBITF institutional design', 'Light-shielded sample chamber', 'Ultra-rugged clinical durability'],
-  },
-  {
-    id: 'analytics',
-    badge: 'AI Diagnostics',
-    badgeVariant: 'secondary' as const,
-    title: 'Detailed Analytics',
-    subtitle: 'Instant, Clear Results',
-    description:
-      'Direct on-device AI morphology analysis delivering unequivocal negative vs. positive classifications with full cellular metrics and micrograph inspection.',
-    image: diagnosticAnalyticsImg,
-    alt: 'Dual mobile screens demonstrating negative and positive diagnostic test details',
-    icon: SparkleIcon,
-    highlights: ['On-device RBC classification', 'Clear green/red diagnostic alerts', 'High-res micrograph audit trail'],
-  },
-]
+import { useLanguage } from '@/lib/i18n'
 
 export function DeviceShowcase() {
+  const { t } = useLanguage()
+
+  const showcaseCards = [
+    {
+      id: 'prototype',
+      badge: t.showcase.cards.prototype.badge,
+      badgeVariant: 'secondary' as const,
+      title: t.showcase.cards.prototype.title,
+      subtitle: t.showcase.cards.prototype.subtitle,
+      description: t.showcase.cards.prototype.description,
+      image: poctPrototypeImg,
+      alt: 'IIT Bhilai functional POCT device prototype beside mobile companion',
+      icon: FlaskIcon,
+      highlights: t.showcase.cards.prototype.highlights,
+    },
+    {
+      id: 'app',
+      badge: t.showcase.cards.app.badge,
+      badgeVariant: 'secondary' as const,
+      title: t.showcase.cards.app.title,
+      subtitle: t.showcase.cards.app.subtitle,
+      description: t.showcase.cards.app.description,
+      image: jeevdristiAppImg,
+      alt: 'JeevDristi mobile application showing recent test records',
+      icon: DeviceMobileIcon,
+      highlights: t.showcase.cards.app.highlights,
+    },
+    {
+      id: 'medical',
+      badge: t.showcase.cards.medical.badge,
+      badgeVariant: 'secondary' as const,
+      title: t.showcase.cards.medical.title,
+      subtitle: t.showcase.cards.medical.subtitle,
+      description: t.showcase.cards.medical.description,
+      image: poctMedicalUnitImg,
+      alt: 'IBITF medical grade POCT device concept with inserted test sample',
+      icon: ShieldCheckIcon,
+      highlights: t.showcase.cards.medical.highlights,
+    },
+    {
+      id: 'analytics',
+      badge: t.showcase.cards.analytics.badge,
+      badgeVariant: 'secondary' as const,
+      title: t.showcase.cards.analytics.title,
+      subtitle: t.showcase.cards.analytics.subtitle,
+      description: t.showcase.cards.analytics.description,
+      image: diagnosticAnalyticsImg,
+      alt: 'Dual mobile screens demonstrating negative and positive diagnostic test details',
+      icon: SparkleIcon,
+      highlights: t.showcase.cards.analytics.highlights,
+    },
+  ]
+
   return (
     <section className="section-deferred scroll-mt-20 relative border-t border-border/60 bg-muted/10 py-20 lg:py-28" id="gallery">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -75,13 +74,13 @@ export function DeviceShowcase() {
         <div className="mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="mb-3 gap-1.5 px-3 py-1 text-xs">
             <SparkleIcon className="size-3 text-primary" weight="fill" />
-            PLATFORM SHOWCASE
+            {t.showcase.badge}
           </Badge>
           <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
-            Complete ecosystem from optics to mobile analytics.
+            {t.showcase.heading}
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg text-pretty">
-            Explore the physical optical unit, companion application, medical enclosure, and diagnostic reporting engineered for field reliability.
+            {t.showcase.description}
           </p>
         </div>
 

@@ -7,16 +7,20 @@ import {
   UsbIcon,
 } from '@phosphor-icons/react'
 import { Brand } from './Brand'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { RELEASES_PAGE_URL, type ReleaseDownloads } from '../releaseDownloads'
+import { useLanguage } from '@/lib/i18n'
 
 type DownloadsProps = ReleaseDownloads & {
   isLoading: boolean
 }
 
 export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: DownloadsProps) {
+  const { t } = useLanguage()
+
   const appVersion = apk ? `v${apk.version}` : isLoading ? 'Resolving...' : 'Current Version'
   const zero2wVersion = zero2wImage ? `v${zero2wImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
   const scdVersion = scdTerminalImage ? `v${scdTerminalImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
@@ -38,13 +42,13 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
           <div className="mx-auto max-w-3xl text-center">
             <Badge variant="outline" className="mb-3 px-3 py-1 text-xs">
               <DownloadSimpleIcon className="size-3 text-primary" />
-              OFFICIAL SOFTWARE &amp; PACKAGES
+              {t.downloads.badge}
             </Badge>
             <h2 className="font-heading text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl text-balance">
-              Ready for the field. Download official packages.
+              {t.downloads.heading}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground text-pretty">
-              Official application packages, testing unit firmware, and diagnostic workstation images for field deployments and clinical screening camps.
+              {t.downloads.description}
             </p>
           </div>
 
@@ -62,24 +66,24 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 </div>
 
                 <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
-                  JeevDristi Mobile App
+                  {t.downloads.cardApp.title}
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Companion Android application for guided testing, on-screen results, patient history, and report export.
+                  {t.downloads.cardApp.desc}
                 </p>
 
                 <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Compatibility:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Android 8.0+</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardApp.compatLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardApp.compatVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Format:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Official APK (.apk)</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardApp.formatLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardApp.formatVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Verification:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Signed &amp; Verified</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardApp.verifLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardApp.verifVal}</span>
                   </div>
                 </div>
               </div>
@@ -90,7 +94,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                   onClick={() => triggerDownload(apk?.url)}
                 >
                   <DownloadSimpleIcon className="size-4 shrink-0" />
-                  <span className="truncate">Download Android APK</span>
+                  <span className="truncate">{t.downloads.cardApp.btn}</span>
                 </Button>
               </div>
             </Card>
@@ -108,24 +112,24 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 </div>
 
                 <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
-                  POCT Box Firmware
+                  {t.downloads.cardBox.title}
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Firmware image for the portable POCT turbidity testing box with autonomous optical capture and BLE link.
+                  {t.downloads.cardBox.desc}
                 </p>
 
                 <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Target Unit:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">JeevDristi Box</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardBox.targetLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardBox.targetVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Format:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">A/B Image (.xz)</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardBox.formatLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardBox.formatVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Architecture:</span>
-                    <span className="text-right font-medium text-foreground text-[11px] font-mono">ARM64</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardBox.archLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px] font-mono">{t.downloads.cardBox.archVal}</span>
                   </div>
                 </div>
               </div>
@@ -137,7 +141,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                   onClick={() => triggerDownload(zero2wImage?.url)}
                 >
                   <DownloadSimpleIcon className="size-4 shrink-0" />
-                  <span className="truncate">Download Box Firmware</span>
+                  <span className="truncate">{t.downloads.cardBox.btn}</span>
                 </Button>
               </div>
             </Card>
@@ -155,24 +159,24 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 </div>
 
                 <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
-                  SCD Terminal Image
+                  {t.downloads.cardTerminal.title}
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Kiosk appliance image for single-cell automated microscopy terminal with ONNX Cellpose segmentation.
+                  {t.downloads.cardTerminal.desc}
                 </p>
 
                 <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Target Unit:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Microscopy Unit</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardTerminal.targetLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardTerminal.targetVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Format:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Kiosk Image (.xz)</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardTerminal.formatLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardTerminal.formatVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Architecture:</span>
-                    <span className="text-right font-medium text-foreground text-[11px] font-mono">ARM64</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardTerminal.archLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px] font-mono">{t.downloads.cardTerminal.archVal}</span>
                   </div>
                 </div>
               </div>
@@ -184,7 +188,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                   onClick={() => triggerDownload(scdTerminalImage?.url)}
                 >
                   <DownloadSimpleIcon className="size-4 shrink-0" />
-                  <span className="truncate">Download Terminal Image</span>
+                  <span className="truncate">{t.downloads.cardTerminal.btn}</span>
                 </Button>
               </div>
             </Card>
@@ -202,24 +206,24 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 </div>
 
                 <h3 className="mt-3.5 font-heading text-base font-bold text-foreground">
-                  Support &amp; Portal
+                  {t.downloads.cardSupport.title}
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                  Connect phone via WebUSB to review clinical results, preview data, and access user guides.
+                  {t.downloads.cardSupport.desc}
                 </p>
 
                 <div className="mt-5 flex flex-col gap-2 border-t border-border/50 pt-3.5 text-xs">
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Institution:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">IIT Bhilai POCT</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardSupport.instLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardSupport.instVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Portal:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Direct WebUSB</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardSupport.portalLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardSupport.portalVal}</span>
                   </div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-muted-foreground text-[11px] shrink-0">Assistance:</span>
-                    <span className="text-right font-medium text-foreground text-[11px]">Research Team</span>
+                    <span className="text-muted-foreground text-[11px] shrink-0">{t.downloads.cardSupport.assistLabel}</span>
+                    <span className="text-right font-medium text-foreground text-[11px]">{t.downloads.cardSupport.assistVal}</span>
                   </div>
                 </div>
               </div>
@@ -232,7 +236,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                   render={<a href="webportal/" />}
                 >
                   <UsbIcon className="size-4 shrink-0" />
-                  <span className="truncate">Launch Web Portal</span>
+                  <span className="truncate">{t.downloads.cardSupport.btn}</span>
                 </Button>
               </div>
             </Card>
@@ -247,28 +251,34 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
             <div className="flex flex-col gap-2">
               <Brand />
               <p className="text-xs text-muted-foreground max-w-md">
-                A point-of-care medical diagnostics and computer vision innovation project developed at the Indian Institute of Technology Bhilai (IIT Bhilai).
+                {t.footer.about}
               </p>
             </div>
 
-            <nav className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium text-muted-foreground" aria-label="Footer navigation">
-              <a className="transition-colors hover:text-foreground" href="#top">Top</a>
-              <a className="transition-colors hover:text-foreground" href="#product">Overview</a>
-              <a className="transition-colors hover:text-foreground" href="#workflow">Workflow</a>
-              <a className="transition-colors hover:text-foreground" href="#tech-specs">Specifications</a>
-              <a className="transition-colors hover:text-foreground" href="webportal/">Phone Results Portal</a>
-              <a className="transition-colors hover:text-foreground" href="#downloads">Downloads</a>
-            </nav>
+            <div className="flex flex-col items-start gap-4 md:items-end">
+              <nav className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-medium text-muted-foreground" aria-label="Footer navigation">
+                <a className="transition-colors hover:text-foreground" href="#top">{t.footer.navTop}</a>
+                <a className="transition-colors hover:text-foreground" href="#product">{t.nav.overview}</a>
+                <a className="transition-colors hover:text-foreground" href="#workflow">{t.nav.workflow}</a>
+                <a className="transition-colors hover:text-foreground" href="#tech-specs">{t.nav.specs}</a>
+                <a className="transition-colors hover:text-foreground" href="webportal/">{t.nav.results}</a>
+                <a className="transition-colors hover:text-foreground" href="#downloads">{t.nav.downloads}</a>
+              </nav>
+
+              <div className="flex items-center gap-2">
+                <LanguageSwitcher variant="outline" size="xs" />
+              </div>
+            </div>
           </div>
 
           <div className="mt-8 flex flex-col gap-4 border-t border-border/40 pt-6 text-[11px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} IIT Bhilai POCT Project. All rights reserved.</p>
+            <p>{t.footer.rights(new Date().getFullYear())}</p>
             <div className="flex items-center gap-2">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
               </span>
-              <span>All Systems Operational • Offline-First Ready</span>
+              <span>{t.footer.status}</span>
             </div>
           </div>
         </div>

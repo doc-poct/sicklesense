@@ -14,6 +14,7 @@ import {
   shouldRefreshReleaseDownloads,
   type ReleaseDownloads,
 } from './releaseDownloads'
+import { LanguageProvider } from './lib/i18n'
 
 const PhoneResultsPortal = lazy(() =>
   import('./components/PhoneResultsPortal').then((mod) => ({
@@ -96,7 +97,11 @@ function App() {
     )
   }
 
-  return <MarketingSite />
+  return (
+    <LanguageProvider>
+      <MarketingSite />
+    </LanguageProvider>
+  )
 }
 
 export default App
