@@ -67,7 +67,7 @@ export function Header() {
 
         {/* Mobile top bar actions */}
         <div className="flex items-center gap-2 md:hidden">
-          <LanguageSwitcher variant="outline" size="xs" />
+          <LanguageSwitcher size="xs" />
 
           <Button variant="outline" size="xs" nativeButton={false} render={<a href="webportal/" />}>
             <UsbIcon data-icon="inline-start" />
@@ -102,7 +102,7 @@ export function Header() {
               <div className="flex flex-col gap-3 border-t border-border pt-4">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs text-muted-foreground">{t.nav.language}:</span>
-                  <LanguageSwitcher variant="outline" size="xs" />
+                  <LanguageSwitcher size="xs" />
                 </div>
                 <Button nativeButton={false} render={<a href="#downloads" onClick={() => setIsOpen(false)} />}>
                   <DownloadSimpleIcon data-icon="inline-start" />

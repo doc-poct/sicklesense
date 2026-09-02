@@ -266,7 +266,7 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
               </nav>
 
               <div className="flex items-center gap-2">
-                <LanguageSwitcher variant="outline" size="xs" />
+                <LanguageSwitcher size="xs" />
               </div>
             </div>
           </div>
