@@ -49,3 +49,8 @@ another server.
 - Denying phone approval cleanly ends only that attempt. The next Connect click
   discards any stale pre-handshake USB frame, generates a fresh key and code,
   and can be approved without unplugging the cable or restarting either side.
+
+## Architecture & Design Guides
+
+- [Hero Workstation Layout & Bilingual i18n Architecture](docs/HERO_LAYOUT_AND_I18N.md): Detailed mathematical root-cause analysis of the 16:9 fullscreen hero layout, widescreen asset engineering, and the bilingual (`English` / `हिन्दी`) translation architecture.
+
