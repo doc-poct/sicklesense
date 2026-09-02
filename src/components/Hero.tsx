@@ -39,22 +39,22 @@ export function Hero({ apk, isLoading }: HeroProps) {
 
   return (
     <section
-      className="relative isolate overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between pt-6 sm:pt-8 md:pt-12 pb-72 sm:pb-80 md:pb-[380px] lg:pb-[440px] xl:pb-[480px]"
+      className="relative isolate overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-between pt-3 sm:pt-5 md:pt-7 pb-52 sm:pb-60 md:pb-68 lg:pb-76"
       id="top"
     >
-      {/* Full Workstation Background Canvas
-          Stretched edge-to-edge (left to right) like a full-screen product landing page.
-          object-[50%_18%] to [50%_24%] preserves the expansive blank wall space at the top
-          for the centered headline and text, preventing it from clipping off-screen and colliding with the device. */}
+      {/* 16:9 Widescreen Panoramic Workstation Canvas
+          Full-bleed edge-to-edge product landing scene.
+          Native 16:9 ratio ensures the empty wall space at the top and the complete
+          POCT device, test tube, phone, and table are all visible without cropping. */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <picture>
           <source media="(max-width: 640px)" srcSet={poctWorkstationImg640} type="image/webp" />
           <img
             src={poctWorkstationImg}
             alt="SickleSense POCT clinical workstation background"
-            className="size-full object-cover object-[50%_16%] sm:object-[50%_18%] md:object-[50%_20%] lg:object-[50%_22%] xl:object-[50%_24%] select-none"
-            width="1024"
-            height="1102"
+            className="size-full object-cover object-bottom select-none"
+            width="1920"
+            height="1072"
             fetchPriority="high"
             decoding="async"
           />
@@ -62,7 +62,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
         {/* Subtle top edge fade for smooth navbar blend */}
         <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-background/85 to-transparent pointer-events-none" />
         {/* Bottom subtle edge fade to next section */}
-        <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-background/95 via-background/40 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-background/90 to-transparent pointer-events-none" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -70,7 +70,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
         <div className="hero-copy mx-auto max-w-3xl text-center">
           <Badge
             variant="outline"
-            className="mb-4 inline-flex items-center gap-2 rounded-full border-border/80 bg-background/85 px-4 py-1 text-xs font-medium shadow-xs backdrop-blur-md"
+            className="mb-2.5 inline-flex items-center gap-2 rounded-full border-border/80 bg-background/85 px-4 py-1 text-xs font-medium shadow-xs backdrop-blur-md"
           >
             <span className="relative flex size-2">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-75" />
@@ -83,20 +83,20 @@ export function Hero({ apk, isLoading }: HeroProps) {
             <span className="block text-3xl font-extrabold sm:text-5xl lg:text-6xl">
               {t.hero.headingLine1}
             </span>
-            <span className="mt-1.5 block text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-primary via-teal-600 to-emerald-600 bg-clip-text text-transparent dark:from-primary dark:to-teal-400">
+            <span className="mt-1 block text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl bg-gradient-to-r from-primary via-teal-600 to-emerald-600 bg-clip-text text-transparent dark:from-primary dark:to-teal-400">
               {t.hero.headingLine2}
             </span>
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-base font-normal leading-relaxed text-foreground/80 sm:text-lg drop-shadow-2xs text-pretty">
+          <p className="mx-auto mt-3.5 max-w-2xl text-base font-normal leading-relaxed text-foreground/80 sm:text-lg drop-shadow-2xs text-pretty">
             {t.hero.description}
           </p>
 
           {/* Centered Action Buttons in Upper Wall Space */}
-          <div className="mt-7 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+          <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button
               size="lg"
-              className="h-12 px-6 text-sm font-semibold shadow-xl shadow-primary/25 hover:shadow-primary/35 transition-all cursor-pointer"
+              className="h-11 px-6 text-sm font-semibold shadow-xl shadow-primary/25 hover:shadow-primary/35 transition-all cursor-pointer"
               onClick={handleDownload}
               aria-label={downloadLabel}
             >
@@ -107,7 +107,7 @@ export function Hero({ apk, isLoading }: HeroProps) {
             <Button
               variant="outline"
               size="lg"
-              className="h-12 px-6 text-sm font-semibold border-border/80 bg-background/90 backdrop-blur-md hover:bg-background transition-all shadow-sm"
+              className="h-11 px-6 text-sm font-semibold border-border/80 bg-background/90 backdrop-blur-md hover:bg-background transition-all shadow-sm"
               nativeButton={false}
               render={<a href="webportal/" />}
             >
@@ -117,8 +117,8 @@ export function Hero({ apk, isLoading }: HeroProps) {
             </Button>
           </div>
 
-          {/* Centered Highlights Ribbon Floating Above Workstation */}
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 max-w-3xl mx-auto pt-5 border-t border-border/60 backdrop-blur-xs">
+          {/* Centered Highlights Ribbon */}
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 max-w-3xl mx-auto pt-4 border-t border-border/50 backdrop-blur-xs">
             <div className="flex items-center justify-center gap-2">
               <span className="grid size-7 place-items-center rounded-md bg-primary/15 text-primary backdrop-blur-xs">
                 <LightningIcon className="size-3.5" weight="fill" />
