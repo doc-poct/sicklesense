@@ -28,6 +28,11 @@ The separate **Phone Results** dashboard is served at `/sicklesense/webportal/`
 and uses WebUSB directly in supported HTTPS browsers. It provides the secure
 phone connection, completed-result search, artifact preview, and verified ZIP
 export workflow.
+
+SCST-LMA `scst.analysis.v1` results display research measurement availability,
+dimensionless paired loss and the algorithm version. Clinical interpretation
+remains explicitly unestablished. Legacy results keep their existing presentation;
+the phone export transport is unchanged.
 Clinical bytes remain in transient browser memory and travel only over the
 approved encrypted USB session; they are never uploaded to GitHub Pages or
 another server.

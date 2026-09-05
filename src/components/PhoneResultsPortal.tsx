@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { scstSummary } from '@/scstSummary'
 import {
   AndroidLogoIcon,
   ArrowClockwiseIcon,
@@ -1148,7 +1149,7 @@ export function PhoneResultsPortal() {
                       <Tabs defaultValue="summary" className="w-full">
                         <TabsList className="grid h-8 w-full grid-cols-2">
                           <TabsTrigger value="summary" className="text-xs">
-                            Clinical Metrics
+                            {scstSummary(detail.summary) ? 'Research measurements' : 'Clinical Metrics'}
                           </TabsTrigger>
                           <TabsTrigger value="artifacts" className="text-xs">
                             Artifacts ({detail.artifacts.length})
@@ -1163,7 +1164,7 @@ export function PhoneResultsPortal() {
                             <dt className="text-muted-foreground">Source</dt>
                             <dd className="text-right font-medium text-foreground">{formatSource(detail.source)}</dd>
 
-                            {Object.entries(detail.summary).map(([key, value]) => (
+                            {(scstSummary(detail.summary) ?? Object.entries(detail.summary)).map(([key, value]) => (
                               <span className="contents" key={key}>
                                 <dt className="capitalize text-muted-foreground">
                                   {key.replaceAll('_', ' ')}
