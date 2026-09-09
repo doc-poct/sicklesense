@@ -32,16 +32,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/85 backdrop-blur-md transition-colors">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a className="no-underline transition-opacity hover:opacity-90" href="#top">
+        <a className="shrink-0 no-underline transition-opacity hover:opacity-90" href="#top">
           <Brand />
         </a>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-0.5 lg:flex xl:gap-1.5 shrink-0" aria-label="Primary navigation">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+              className="rounded-md px-2.5 py-1.5 text-xs font-medium text-muted-foreground whitespace-nowrap transition-colors hover:bg-muted/60 hover:text-foreground xl:px-3"
             >
               {link.label}
             </a>
@@ -49,33 +49,38 @@ export function Header() {
         </nav>
 
         {/* Desktop actions: Language Switcher + Portal + Download */}
-        <div className="hidden items-center gap-2.5 md:flex">
-          <LanguageSwitcher />
+        <div className="hidden items-center gap-2 lg:flex xl:gap-2.5 shrink-0">
+          <LanguageSwitcher size="sm" />
 
-          <div className="h-4 w-px bg-border/80" />
+          <div className="h-4 w-px bg-border/80 shrink-0" />
 
-          <Button variant="outline" size="sm" nativeButton={false} render={<a href="webportal/" />}>
+          <Button variant="outline" size="sm" nativeButton={false} render={<a href="webportal/" />} className="whitespace-nowrap">
             <UsbIcon data-icon="inline-start" />
             {t.nav.portal}
           </Button>
 
-          <Button size="sm" nativeButton={false} render={<a href="#downloads" />}>
+          <Button size="sm" nativeButton={false} render={<a href="#downloads" />} className="whitespace-nowrap">
             <DownloadSimpleIcon data-icon="inline-start" />
             {t.nav.downloadApp}
           </Button>
         </div>
 
-        {/* Mobile top bar actions */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Mobile & tablet top bar actions */}
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:hidden shrink-0">
           <LanguageSwitcher size="xs" />
 
-          <Button variant="outline" size="xs" nativeButton={false} render={<a href="webportal/" />}>
+          <Button variant="outline" size="xs" nativeButton={false} render={<a href="webportal/" />} className="whitespace-nowrap">
             <UsbIcon data-icon="inline-start" />
             {t.nav.portal}
           </Button>
 
+          <Button size="xs" nativeButton={false} render={<a href="#downloads" />} className="hidden sm:inline-flex whitespace-nowrap">
+            <DownloadSimpleIcon data-icon="inline-start" />
+            {t.nav.downloadApp}
+          </Button>
+
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Open navigation menu" />}>
+            <SheetTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Open navigation menu" className="shrink-0" />}>
               <ListIcon className="size-5" />
             </SheetTrigger>
             <SheetContent side="right" className="flex w-72 flex-col justify-between p-6">

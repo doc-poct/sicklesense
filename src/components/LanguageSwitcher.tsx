@@ -56,7 +56,7 @@ export function LanguageSwitcher({
           weight="bold"
         />
 
-        <span className="leading-none">
+        <span className="leading-none whitespace-nowrap">
           {isCompact ? currentLocale.compactLabel : currentLocale.shortLabel}
         </span>
 
