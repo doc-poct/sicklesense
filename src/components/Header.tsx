@@ -102,7 +102,7 @@ export function Header() {
               <div className="flex flex-col gap-3 border-t border-border pt-4">
                 <div className="flex items-center justify-between px-1">
                   <span className="text-xs text-muted-foreground">{t.nav.language}:</span>
-                  <LanguageSwitcher size="xs" />
+                  <LanguageSwitcher size="sm" compact={false} />
                 </div>
                 <Button nativeButton={false} render={<a href="#downloads" onClick={() => setIsOpen(false)} />}>
                   <DownloadSimpleIcon data-icon="inline-start" />

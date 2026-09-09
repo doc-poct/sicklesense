@@ -7,6 +7,7 @@ export interface LocaleOption {
   label: string
   nativeLabel: string
   shortLabel: string
+  compactLabel: string
 }
 
 export const SUPPORTED_LOCALES: LocaleOption[] = [
@@ -15,12 +16,14 @@ export const SUPPORTED_LOCALES: LocaleOption[] = [
     label: 'English (India)',
     nativeLabel: 'English (India)',
     shortLabel: 'English',
+    compactLabel: 'EN',
   },
   {
     code: 'hi',
     label: 'Hindi (India)',
     nativeLabel: 'हिन्दी',
     shortLabel: 'हिन्दी',
+    compactLabel: 'हि',
   },
 ]
 

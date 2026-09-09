@@ -7,6 +7,13 @@ describe('i18n localization suite', () => {
     expect(codes).toContain('en-IN')
     expect(codes).toContain('hi')
     expect(codes.length).toBe(2)
+
+    for (const locale of SUPPORTED_LOCALES) {
+      expect(locale.compactLabel).toBeTruthy()
+      expect(locale.compactLabel.length).toBeLessThanOrEqual(4)
+      expect(locale.shortLabel).toBeTruthy()
+      expect(locale.nativeLabel).toBeTruthy()
+    }
   })
 
   test('both locales have required top-level sections', () => {
