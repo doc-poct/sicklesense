@@ -24,7 +24,7 @@ const PhoneResultsPortal = lazy(() =>
 
 function MarketingSite() {
   const [downloads, setDownloads] = useState<ReleaseDownloads>(
-    () => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null, scdTerminalImage: null }
+    () => getCachedReleaseDownloads() ?? { apk: null, zero2wImage: null, scdTerminalImage: null, scdTerminalWindowsExe: null }
   )
   const [isLoadingDownloads, setIsLoadingDownloads] = useState(false)
 

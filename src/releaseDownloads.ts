@@ -1,5 +1,5 @@
 const RELEASES_API_URL = 'https://api.github.com/repos/doc-poct/poct_fw_app_releases/releases?per_page=100'
-const CACHE_KEY = 'jeevdristi-release-downloads-v6'
+const CACHE_KEY = 'jeevdristi-release-downloads-v7'
 const RETRY_KEY = 'jeevdristi-release-downloads-retry-at'
 const CACHE_TTL_MS = 60 * 60 * 1000
 const FAILURE_RETRY_MS = 60 * 60 * 1000
@@ -22,6 +22,7 @@ export type ReleaseDownloads = {
   apk: { url: string; version: string } | null
   zero2wImage: { url: string; version: string } | null
   scdTerminalImage: { url: string; version: string } | null
+  scdTerminalWindowsExe: { url: string; version: string } | null
 }
 
 type CachedReleaseDownloads = {
@@ -43,6 +44,10 @@ const FALLBACK_DOWNLOADS: ReleaseDownloads = {
   },
   scdTerminalImage: {
     url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct-scd-terminal-0.1.0-dietpi-rpi5-arm64.img.xz',
+    version: '0.1.0',
+  },
+  scdTerminalWindowsExe: {
+    url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct-scd-terminal-0.1.0-windows-x64-setup.exe',
     version: '0.1.0',
   },
 }
@@ -101,6 +106,7 @@ export function getCachedReleaseDownloads(): ReleaseDownloads | null {
     apk: downloads?.apk ?? FALLBACK_DOWNLOADS.apk,
     zero2wImage: downloads?.zero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
     scdTerminalImage: downloads?.scdTerminalImage ?? FALLBACK_DOWNLOADS.scdTerminalImage,
+    scdTerminalWindowsExe: downloads?.scdTerminalWindowsExe ?? FALLBACK_DOWNLOADS.scdTerminalWindowsExe,
   }
 }
 
@@ -172,6 +178,7 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
   let latestZero2wImage: ReleaseDownloads['zero2wImage'] = null
   let latestFirmwareVersion: Version | null = null
   let latestScdTerminalImage: ReleaseDownloads['scdTerminalImage'] = null
+  let latestScdWindowsExe: ReleaseDownloads['scdTerminalWindowsExe'] = null
   let latestScdVersion: Version | null = null
 
   for (const release of stableReleases(await response.json())) {
@@ -204,6 +211,11 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
         latestScdTerminalImage = { url, version }
         latestScdVersion = scdVersion
       }
+      const exeUrl = findAsset(release, `poct-scd-terminal-${version}-windows-x64-setup.exe`)
+        ?? findAsset(release, `poct_scd_terminal_${version}_x64-setup.exe`)
+      if (exeUrl) {
+        latestScdWindowsExe = { url: exeUrl, version }
+      }
     }
   }
 
@@ -211,6 +223,7 @@ async function resolveLatestStableDownloads(signal?: AbortSignal): Promise<Relea
     apk: latestApk ?? FALLBACK_DOWNLOADS.apk,
     zero2wImage: latestZero2wImage ?? FALLBACK_DOWNLOADS.zero2wImage,
     scdTerminalImage: latestScdTerminalImage ?? FALLBACK_DOWNLOADS.scdTerminalImage,
+    scdTerminalWindowsExe: latestScdWindowsExe ?? FALLBACK_DOWNLOADS.scdTerminalWindowsExe,
   }
   writeCache(downloads, response.headers.get('etag'))
   clearRetryAfter()

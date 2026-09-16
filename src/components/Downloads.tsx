@@ -5,6 +5,7 @@ import {
   LifebuoyIcon,
   MicroscopeIcon,
   UsbIcon,
+  WindowsLogoIcon,
 } from '@phosphor-icons/react'
 import { Brand } from './Brand'
 import { LanguageSwitcher } from './LanguageSwitcher'
@@ -18,12 +19,22 @@ type DownloadsProps = ReleaseDownloads & {
   isLoading: boolean
 }
 
-export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: DownloadsProps) {
+export function Downloads({
+  apk,
+  zero2wImage,
+  scdTerminalImage,
+  scdTerminalWindowsExe,
+  isLoading,
+}: DownloadsProps) {
   const { t } = useLanguage()
 
   const appVersion = apk ? `v${apk.version}` : isLoading ? 'Resolving...' : 'Current Version'
   const zero2wVersion = zero2wImage ? `v${zero2wImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
-  const scdVersion = scdTerminalImage ? `v${scdTerminalImage.version}` : isLoading ? 'Resolving...' : 'Current Version'
+  const scdVersion = (scdTerminalWindowsExe ?? scdTerminalImage)
+    ? `v${(scdTerminalWindowsExe ?? scdTerminalImage)!.version}`
+    : isLoading
+      ? 'Resolving...'
+      : 'Current Version'
 
   const triggerDownload = (targetUrl?: string | null) => {
     const url = targetUrl ?? RELEASES_PAGE_URL
@@ -181,14 +192,21 @@ export function Downloads({ apk, zero2wImage, scdTerminalImage, isLoading }: Dow
                 </div>
               </div>
 
-              <div className="mt-6 border-t border-border/40 pt-4">
+              <div className="mt-6 border-t border-border/40 pt-4 flex flex-col gap-2">
+                <Button
+                  className="h-10 w-full px-3 text-xs font-semibold cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                  onClick={() => triggerDownload(scdTerminalWindowsExe?.url)}
+                >
+                  <WindowsLogoIcon className="size-4 shrink-0" weight="fill" />
+                  <span className="truncate">{t.downloads.cardTerminal.btnWindows}</span>
+                </Button>
                 <Button
                   variant="outline"
-                  className="h-10 w-full px-3 text-xs font-semibold cursor-pointer border-border hover:bg-muted/70 flex items-center justify-center gap-1.5"
+                  className="h-9 w-full px-3 text-xs font-semibold cursor-pointer border-border hover:bg-muted/70 flex items-center justify-center gap-1.5"
                   onClick={() => triggerDownload(scdTerminalImage?.url)}
                 >
                   <DownloadSimpleIcon className="size-4 shrink-0" />
-                  <span className="truncate">{t.downloads.cardTerminal.btn}</span>
+                  <span className="truncate">{t.downloads.cardTerminal.btnKiosk}</span>
                 </Button>
               </div>
             </Card>

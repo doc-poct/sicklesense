@@ -28,6 +28,8 @@ test('getCachedReleaseDownloads returns default fallbacks when cache is empty', 
   expect(downloads?.zero2wImage?.url).toContain('poct-2.1.10-dietpi-zero2w-arm64-ab.img.xz')
   expect(downloads?.scdTerminalImage?.version).toBe('0.1.0')
   expect(downloads?.scdTerminalImage?.url).toContain('poct-scd-terminal-0.1.0-dietpi-rpi5-arm64.img.xz')
+  expect(downloads?.scdTerminalWindowsExe?.version).toBe('0.1.0')
+  expect(downloads?.scdTerminalWindowsExe?.url).toContain('poct-scd-terminal-0.1.0-windows-x64-setup.exe')
 })
 
 test('fetchLatestStableDownloads parses app, zero2w, and scd-terminal releases', async () => {
@@ -44,6 +46,10 @@ test('fetchLatestStableDownloads parses app, zero2w, and scd-terminal releases',
         {
           name: 'poct_scd_terminal-0.1.0-aarch64.tar.gz',
           browser_download_url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct_scd_terminal-0.1.0-aarch64.tar.gz',
+        },
+        {
+          name: 'poct-scd-terminal-0.1.0-windows-x64-setup.exe',
+          browser_download_url: 'https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct-scd-terminal-0.1.0-windows-x64-setup.exe',
         },
       ],
     },
@@ -101,7 +107,10 @@ test('fetchLatestStableDownloads parses app, zero2w, and scd-terminal releases',
     expect(result.scdTerminalImage?.version).toBe('0.1.0')
     expect(result.scdTerminalImage?.url).toBe('https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct-scd-terminal-0.1.0-dietpi-rpi5-arm64.img.xz')
 
-    expect(storage.get('jeevdristi-release-downloads-v6')).toContain('"0.1.0"')
+    expect(result.scdTerminalWindowsExe?.version).toBe('0.1.0')
+    expect(result.scdTerminalWindowsExe?.url).toBe('https://github.com/doc-poct/poct_fw_app_releases/releases/download/scd-terminal-v0.1.0/poct-scd-terminal-0.1.0-windows-x64-setup.exe')
+
+    expect(storage.get('jeevdristi-release-downloads-v7')).toContain('"0.1.0"')
     expect(shouldRefreshReleaseDownloads()).toBe(false)
   } finally {
     globalThis.fetch = originalFetch
