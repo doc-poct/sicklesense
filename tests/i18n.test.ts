@@ -63,4 +63,19 @@ describe('i18n localization suite', () => {
       expect(translations.hi.showcase.cards[key].highlights.length).toBeGreaterThan(0)
     }
   })
+
+  test('website text does not reveal proprietary internal technology or hardware specifics', () => {
+    const serializedEn = JSON.stringify(translations['en-IN']).toLowerCase()
+    const serializedHi = JSON.stringify(translations.hi).toLowerCase()
+
+    const forbiddenEn = ['raspberry', 'rpi', 'onnx', 'cellpose']
+    for (const term of forbiddenEn) {
+      expect(serializedEn).not.toContain(term)
+    }
+
+    const forbiddenHi = ['रास्पबेरी', 'आरपाई', 'ऑनिक्स', 'सेलपोज़']
+    for (const term of forbiddenHi) {
+      expect(serializedHi).not.toContain(term)
+    }
+  })
 })
