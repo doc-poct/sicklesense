@@ -369,6 +369,8 @@ export const translations = {
       about:
         'A point-of-care medical diagnostics and computer vision innovation project developed at the Indian Institute of Technology Bhilai (IIT Bhilai).',
       navTop: 'Top',
+      privacy: 'Privacy policy',
+      deletion: 'Request account deletion',
       rights: (year: number) => `© ${year} IIT Bhilai POCT Project. All rights reserved.`,
       status: 'All Systems Operational • Offline-First Ready',
     },
@@ -712,6 +714,8 @@ export const translations = {
       about:
         'भारतीय प्रौद्योगिकी संस्थान भिलाई (आईआईटी भिलाई) में विकसित एक पॉइंट-ऑफ-केयर मेडिकल डायग्नोस्टिक्स एवं कंप्यूटर विज़न नवाचार परियोजना।',
       navTop: 'शीर्ष पर जाएँ',
+      privacy: 'गोपनीयता नीति',
+      deletion: 'खाता हटाने का अनुरोध',
       rights: (year: number) => `© ${year} आईआईटी भिलाई पीओसीटी परियोजना। सर्वाधिकार सुरक्षित।`,
       status: 'सभी प्रणालियाँ सक्रिय • 100% ऑफलाइन तैयार',
     },

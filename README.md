@@ -59,3 +59,12 @@ another server.
 
 - [Hero Workstation Layout & Bilingual i18n Architecture](docs/HERO_LAYOUT_AND_I18N.md): Detailed mathematical root-cause analysis of the 16:9 fullscreen hero layout, widescreen asset engineering, and the bilingual (`English` / `हिन्दी`) translation architecture.
 
+
+## Privacy policy
+
+The static, public policy and account deletion request instructions are in
+`public/privacy.html`, linked from the bilingual site footer and Phone Results portal. After deployment its URL is
+<https://doc-poct.github.io/sicklesense/privacy.html>; the deletion section is
+`privacy.html#account-deletion`. Keep this copy synchronized with
+`../poct_app_flutter/PRIVACY.md`. This policy covers the Authentication-only
+app version; verify the URL and release behavior before entering it in stores.

@@ -281,6 +281,8 @@ export function Downloads({
                 <a className="transition-colors hover:text-foreground" href="#tech-specs">{t.nav.specs}</a>
                 <a className="transition-colors hover:text-foreground" href="webportal/">{t.nav.results}</a>
                 <a className="transition-colors hover:text-foreground" href="#downloads">{t.nav.downloads}</a>
+                <a className="transition-colors hover:text-foreground" href="privacy.html">{t.footer.privacy}</a>
+                <a className="transition-colors hover:text-foreground" href="privacy.html#account-deletion">{t.footer.deletion}</a>
               </nav>
 
               <div className="flex items-center gap-2">

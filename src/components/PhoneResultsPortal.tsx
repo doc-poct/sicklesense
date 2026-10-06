@@ -273,8 +273,14 @@ function PortalSidebar({
             Zero-Cloud Privacy
           </div>
           <p className="text-[11px] leading-relaxed text-sidebar-foreground/70">
-            P2P local connection. No server uploads. No browser storage. Direct ZIP export.
+            P2P local connection. No server uploads or browser storage of clinical data. Direct ZIP export.
           </p>
+          <a className="text-xs text-sidebar-foreground underline underline-offset-4" href={`${import.meta.env.BASE_URL}privacy.html`}>
+            Privacy policy
+          </a>
+          <a className="text-xs text-sidebar-foreground underline underline-offset-4" href={`${import.meta.env.BASE_URL}privacy.html#account-deletion`}>
+            Request account deletion
+          </a>
         </div>
 
         <div className="mt-2 flex items-center gap-2 px-1 text-[11px] text-sidebar-foreground/70 group-data-[collapsible=icon]:justify-center">
